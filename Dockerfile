@@ -53,10 +53,8 @@ RUN apt-get autoremove -y && \
     apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# Install crontab to run tasks - keep backup last 2 days, update tracking every 3 hours
+# Install crontab to run tasks - keep backup last 2 days
 RUN apt-get update && apt-get install -y cron
-RUN echo "0 2 * * * python manage.py generate_mapdata /code/data/ordercoords.json" >> /code/cronjob
-RUN echo "0 */3 * * * python manage.py update_tracking" >> /code/cronjob
 RUN echo "0 1 * * * /bin/bash /code/scripts/backup_db.sh" >> /code/cronjob
 RUN crontab /code/cronjob
 

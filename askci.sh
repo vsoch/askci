@@ -145,6 +145,8 @@ function ask_for_envs {
     echo;
     echo "Asking for host details :->"; echo;
     ask_for_hostname;
+    echo "Asking for server details:->";echo;
+    ask_for_configs;
     printf "Generating a secret for you... ";
     put_secret_key;
     printf "done \xE2\x9C\x94 \n";
@@ -158,6 +160,26 @@ function ask_for_hostname {
     prompt_user "your host domain name" "(e.g. google.com)" ASKCIHDOMNN;
     echo "ASKCI_HOSTS=['$ASKCIHIPADDR','$ASKCIHDOMNN']" >> "$SCRIPTDIR/.env";
 }
+
+# As user for variables that are put in configuration
+function ask_for_configs {
+    prompt_user "a help contact email for your server" "(e.g., name@institution.edu)" HELP_CONTACT_EMAIL;
+    prompt_user "an institutional help or support site" "(e.g., https://srcc.stanford.edu)" HELP_INSTITUTION_SITE;
+    prompt_user "your institution or affiliation " "(e.g., Stanford University)" NODE_INSTITUTION;
+    prompt_user "a lowercase (no spaces) unique resource identifier for the server " "(e.g., askci-server)" NODE_URI;
+    prompt_user "the name of the server " "(e.g., AskCI)" NODE_NAME;
+    prompt_user "a Twitter account " "(e.g., askcyberinfra)" NODE_TWITTER;
+    echo "HELP_CONTACT_EMAIL=\"$HELP_CONTACT_EMAIL\"" >> "$SCRIPTDIR/.env";
+    echo "HELP_INSTITUTION_SITE=\"$HELP_INSTITUTION_SITE\"" >> "$SCRIPTDIR/.env";
+    echo "NODE_INSTITUTION=\"$NODE_INSTITUTION\"" >> "$SCRIPTDIR/.env";
+    echo "NODE_URI=\"$NODE_URI\"" >> "$SCRIPTDIR/.env";
+    echo "NODE_NAME=\"$NODE_NAME\"" >> "$SCRIPTDIR/.env";
+    echo "NODE_TWITTER=\"$NODE_TWITTER\"" >> "$SCRIPTDIR/.env";
+}
+
+
+
+
 
 # Starts development Docker containers.
 function dev {

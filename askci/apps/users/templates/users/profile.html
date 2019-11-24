@@ -1,0 +1,88 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+{% include "style/sliders.html" %}
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/default.min.css">
+<style>
+.btn-sm {
+  margin-top:20px !important;
+}
+.active {
+    font-weight:400;
+}
+
+.pill-button {
+    padding: 20px;
+    background-color: #F7F7F7;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.pill-button a {
+  color: #28a745 !important;
+  font-weight: 600;
+  text-decoration: none;
+}
+</style>
+
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <div class="row">
+    <div class="col-md-12">
+        <div style="padding: 50px 0px 30px;">
+            <div class="header">
+                 <h3 class="title">{{ profile.username }}
+                     <a href="https://www.github.com/{{ profile.username }}" target="_blank"><i style="padding-left:25px; float:right; font-size:30px" class="fa fa-github"></i></a>
+                  </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <ul class="nav flex-column nav-pills nav-stacked" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <li class="active pill-button"><a data-toggle="pill" id="pill-profile" href="#profile">User Profile</a></li>
+            {% if request.user.is_authenticated %}{% if request.user.username == profile.username %}
+            <li class="pill-button"><a data-toggle="pill" id="pill-danger" href="#account">Account</a></li>
+            {% endif %}{% endif %}
+        </ul>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-8">
+        <div style="float:right">
+            <a href="https://www.github.com/{{ profile.username }}" target="_blank">
+            {% gravatar profile.email 100 %}</a>
+        </div>
+        <div class="tab-content">
+            <div id="profile" class="tab-pane fade in active">
+               {% include "users/_profile_settings.html" %}
+            </div>{% if request.user.username == profile.username %}
+            <div id="account" class="tab-pane fade">
+               {% include "users/_profile_admin.html" %}
+            </div>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include "messages/notification.html" %}
+<script src="{% static "js/cookie-token.js" %}"></script>
+<script>
+
+$(document).ready(function(){
+
+    $('a[href="#profile"]').tab('show');
+    $('.gravatar').addClass('thumbnail');
+    $("#delete_account").click(function(){
+        var response = confirm("Are you sure you want to delete your account?");
+        if (response == true) {
+           document.location = "{% url 'delete_account' %}";
+        }
+    })
+})
+</script>
+{% endblock %}

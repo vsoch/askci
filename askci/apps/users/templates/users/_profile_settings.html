@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-12" style="padding-bottom:20px">
+
+        <h3>{{ profile.username }}</h3>
+        <hr>
+
+        {% if request.user.is_superuser %}<a target="_blank" href="{% url 'admin:index' %}"><button class="btn btn-secondary">Admin</button></a>{% endif %}
+    </div>
+</div>
+
+ <hr style='margin-top:50px'>
+
+{% if request.user.username == profile.username %}
+    <div class="row" style="padding-top:30px">
+        <div class="col-md-12">
+        <h3>API Token</h3>
+        <p><small>Interact with the {{ NODE_NAME }} API</small></p>
+        </div>
+    </div>
+    <div class="row">
+       <div class="col-md-12" style="padding-bottom:20px">
+       Store this in a safe place, keep private, and do not include in github repositories.
+       </div>
+    </div>
+
+    <div class="row">
+       <div style="margin-left:15px" class="col-md-8 alert alert-info" id="token_well" role="alert">
+       {{ request.user.token }}
+       </div>
+    </div>
+{% else %}
+    <div style="padding-top:20px" class="alert alert-info" role="alert">You aren't authorized to see this. Sneaky!</div>
+{% endif %}

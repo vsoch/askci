@@ -1,0 +1,51 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static "css/social-auth.css"%}">
+{% if 'ldap_auth' in PLUGINS_ENABLED %}<link rel="stylesheet" href="{% static "css/ldap_auth.css"%}">{% endif %}
+{% if 'saml_auth' in PLUGINS_ENABLED %}<link rel="stylesheet" href="{% static "css/saml_auth.css"%}">{% endif %}
+{% if ENABLE_GLOBUS_AUTH %}<link rel="stylesheet" href="{% static "css/globus_auth.css"%}">{% endif %}
+
+<div class="container" style='padding-top:200px'>
+  <div class="row">
+    <div class="col-md-12">
+
+    {% include 'messages/message.html' %}
+    {% if user and not user.is_anonymous %}<h3>Hello, {{ user.get_full_name }}</h3><br>
+    <div>
+     <!-- If all credentials provided, give user full access -->
+     <a href="{% url 'profile' %}"><button class="btn btn-default btn-sm">Profile</button></a>
+     <a href="{% url 'logout' %}"><button class="btn btn-default btn-sm">Logout</button></a>
+     {% if request.user.is_staff %}<a href="{% url 'admin:index' %}"><button class="btn btn-default btn-sm">Admin</button></a>{% endif %}
+    {% else %}
+
+    <!-- User isn't logged in yet! -->
+    <div class="login-box">
+
+        {% if ENABLE_TWITTER_AUTH %}<a class="social-button" style="color: black !important" id="twitter-connect" href="{% url 'social:begin' 'twitter' %}?next={{ domain }}{{ request.path }}">Login with Twitter</a>{% endif %}
+
+        {% if ENABLE_ORCID_AUTH_SANDBOX %}<a class="social-button" id="orcid-connect" href="{% url 'social:begin' 'orcid-sandbox' %}?next={{ domain }}{{ request.path }}">Login with Orcid Sandbox</a>{% endif %}
+
+        {% if ENABLE_ORCID_AUTH %}<a class="social-button" id="orcid-connect" href="{% url 'social:begin' 'orcid' %}?next={{ domain }}{{ request.path }}">Login with Orcid</a>{% endif %}
+
+        {% if ENABLE_GLOBUS_AUTH %}<a class="social-button" id="globus-login" style="color:black !important" href="{% url 'social:begin' 'globus' %}?next={{ domain }}{{ request.path }}">Login with Globus</a>{% endif %}
+
+        {% if ENABLE_GITHUB_AUTH %}<a class="social-button" style="color:black !important" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Login with Github</a>{% endif %}
+
+        {% if ENABLE_GITLAB_AUTH %}<a class="social-button" id="gitlab-connect" href="{% url 'social:begin' 'gitlab' %}?next={{ domain }}{{ request.path }}">Login with Gitlab</a>{% endif %}
+
+        {% if ENABLE_BITBUCKET_AUTH %}<a class="social-button" id="bitbucket-connect" href="{% url 'social:begin' 'bitbucket' %}?next={{ domain }}{{ request.path }}">Login with Bitbucket</a>{% endif %}
+
+        {% if ENABLE_GOOGLE_AUTH %}<a class="social-button" id="google-connect" style="color:black !important" href="{% url 'social:begin' 'google-oauth2' %}?next={{ domain }}{{ request.path }}">Login with Google</a>{% endif %}
+
+        {% if 'saml_auth' in PLUGINS_ENABLED %}<a class="social-button" id="saml-connect" href="{% url 'social:begin' 'saml' %}?next={{ request.path }};idp={{ AUTH_SAML_IDP }}">{{ AUTH_SAML_INSTITUTION }} Login</a>{% endif %}
+
+        {% if 'ldap_auth' in PLUGINS_ENABLED %}<a class="social-button" id="ldap-login" href="{% url 'ldap_auth-login' %}?next={{ domain }}{{ request.path }}">Login with LDAP</a>{% endif %}
+
+        {% if 'pam_auth' in PLUGINS_ENABLED %}<a class="social-button" id="saml-connect" href="{% url 'pam_auth-login' %}?next={{ domain }}{{ request.path }}">Login with Username (PAM)</a>{% endif %}
+    {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
