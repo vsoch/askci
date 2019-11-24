@@ -1,0 +1,69 @@
+db:
+  image: postgres
+  container_name: askci_postgres
+
+uwsgi:
+  restart: always
+  container_name: askci_base
+  build: .
+  ports:
+    - "8000:8000"
+  volumes:
+    - .:/code
+    - ./static:/var/www/static
+    # uncomment for PAM auth
+    #- /etc/passwd:/etc/passwd 
+    #- /etc/shadow:/etc/shadow
+  env_file:
+    - ./.env
+  links:
+    - redis
+    - db
+
+nginx:
+  restart: always
+  container_name: askci_nginx
+  image: nginx
+  ports:
+    - "80:80"
+  volumes:
+    - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    - ./docker/uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
+  volumes_from:
+    - uwsgi
+  links:
+    - uwsgi
+    - db
+
+redis:
+  restart: always
+  container_name: askci_redis
+  image: redis:latest
+
+scheduler:
+  image: quay.io/vsoch/freegenes
+  container_name: askci_scheduler
+  command: python /code/manage.py rqscheduler
+  volumes:
+    - .:/code
+  env_file:
+    - ./.env
+  volumes_from:
+    - uwsgi
+  links:
+    - redis
+    - db
+
+worker:
+  image: quay.io/vsoch/freegenes
+  container_name: askci_worker
+  command: python /code/manage.py rqworker default
+  volumes:
+    - .:/code
+  volumes_from:
+    - uwsgi
+  env_file:
+    - ./.env
+  links:
+    - redis
+    - db

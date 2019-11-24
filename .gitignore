@@ -1,0 +1,34 @@
+# Compiled pyc #
+################
+*.pkl
+*.pyc
+!/.gitignore
+__pycache__
+*.img
+_site
+.env
+
+# Other #
+#########
+scripts/data
+*.json
+migrations/
+make_video.sh
+celerybeat-schedule.db
+*.mp4
+OLD
+secrets.py
+local_settings.py
+cronjob
+.DS_Store
+
+# Static #
+##########
+/images
+/data
+/static
+/static/css
+/static/images
+/static/js
+/static/favicon.ico
+/static/fonts

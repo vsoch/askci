@@ -1,0 +1,12 @@
+- title: Documentation
+  url: docs
+  links:
+    - title: "Development"
+      url: "docs/development"
+      children:
+        - title: Overview
+          url: "docs/development"
+    - title: "About"
+      url: "about"
+    - title: "News"
+      url: "news"
