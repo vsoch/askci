@@ -45,7 +45,7 @@ SOCIAL_AUTH_PIPELINE = (
 SOCIAL_AUTH_GITHUB_READONLY_SCOPE = ["user:email"]
 SOCIAL_AUTH_GITHUB_SCOPE = [
     "admin:repo_hook",
-    "repo:status",
+    "repo",
     "user:email",
     "read:org",
     "admin:org_hook",

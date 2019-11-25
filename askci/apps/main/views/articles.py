@@ -16,7 +16,7 @@ from ratelimit.decorators import ratelimit
 
 from askci.apps.main.models import Article, Tag, TemplateRepository
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
-from askci.apps.main.github import get_namespaces
+from askci.apps.main.github import get_namespaces, copy_repository_template
 
 import os
 
@@ -29,6 +29,27 @@ def new_article(request):
     """create a new article, only if the user has the appropriate GitHub 
        credential
     """
+    if request.method == "POST":
+        namespace = request.POST.get("namespace")
+        repository = request.POST.get("repository")
+        repository = os.path.join(namespace, repository)
+
+        # We only have one template repo to start
+        template = TemplateRepository.objects.last()
+
+        # Generate the template repository
+        article = copy_respository_template(
+            user=user, template=template.repo, repository=repository
+        )
+
+        # The article was created!
+        if article:
+            return redirect("article_details", args=(article.uuid,))
+
+        # if we get here, there was an error
+        messages.warning(request, "There was an error creating %s" % repository)
+
+    # Request is GET, or POST has error
     if not request.user.has_github_create():
         messages.warning(
             request,
@@ -41,5 +62,3 @@ def new_article(request):
 
     context = {"templates": TemplateRepository.objects.all(), "namespaces": namespaces}
     return render(request, "articles/new_article.html", context)
-
-    # STOPPED HERE - this needs to convert to have GET and POST, POST should collect form data

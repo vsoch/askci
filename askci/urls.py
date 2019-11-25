@@ -44,7 +44,7 @@ urlpatterns = [
     url(r"^api/schema/$", schema_view, name="api-schema"),
     url(r"^api/docs/", include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
     url(r"^", include(main_urls)),
-    url(r"^u/", include(user_urls)),
+    url(r"^", include(user_urls)),
     url(r"^django-rq/", include("django_rq.urls")),
 ]
 
