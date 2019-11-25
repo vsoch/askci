@@ -9,11 +9,18 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.core.management import call_command
+
+from askci.apps.main.models import TemplateRepository
+from askci.settings import REPO_TEMPLATES
+
 import django_rq
 import hashlib
 import json
 import shutil
 import os
+
+
+# Database Backup
 
 
 def backup_db():
@@ -47,6 +54,15 @@ def backup_db():
         call_command("dumpdata", format="json", indent=3, stdout=output)
 
 
+def init_template_repos():
+    """a function to handle init, so it can be called from within the application"""
+    if TemplateRepository.objects.count() == 0:
+        for repo in REPO_TEMPLATES:
+            template, created = TemplateRepository.objects.get_or_create(repo=repo)
+            if created:
+                print("Created TemplateRepository %s" % template)
+
+
 def generate_sha256(content):
     """Generate a sha256 hex digest for a string or dictionary. If it's a 
        dictionary, we dump as a string (with sorted keys) and encode for utf-8.
@@ -59,6 +75,9 @@ def generate_sha256(content):
     if isinstance(content, dict):
         content = json.dumps(content, sort_keys=True).encode("utf-8")
     return "sha256:%s" % hashlib.sha256().hexdigest()
+
+
+# Json
 
 
 def save_json(input_dict, output_file):

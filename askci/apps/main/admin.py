@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.contrib import admin
-from askci.apps.main.models import Article, Question, Tag
+from askci.apps.main.models import Article, Question, Tag, TemplateRepository
 
 
 class ArticleAdmin(admin.ModelAdmin):
@@ -24,6 +24,11 @@ class TagAdmin(admin.ModelAdmin):
     list_display = ("tag",)
 
 
+class TemplateRepositoryAdmin(admin.ModelAdmin):
+    list_display = ("repo",)
+
+
+admin.site.register(TemplateRepository, TemplateRepositoryAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Tag, TagAdmin)

@@ -178,9 +178,6 @@ function ask_for_configs {
 }
 
 
-
-
-
 # Starts development Docker containers.
 function dev {
     setup;

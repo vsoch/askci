@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.http import JsonResponse
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
+from social_core.backends.github import GithubOAuth2
 
 from ratelimit.decorators import ratelimit
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
@@ -84,6 +85,31 @@ def redirect_if_no_refresh_token(backend, response, social, *args, **kwargs):
         and social.extra_data.get("refresh_token") is None
     ):
         return redirect("/login/google-oauth2?approval_prompt=force")
+
+
+# GitHub Read only (no repos)
+class GithubReadOnlyOAuth2(GithubOAuth2):
+    name = "github-readonly"
+
+
+def get_credentials(user, provider):
+    """return one or more credentials, or None"""
+    credential = None
+    if not user.is_anonymous:
+        try:
+            # Case 1: one credential
+            credential = user.social_auth.get(provider=provider)
+            return credential
+
+        # Credential doesn't exist
+        except user.social_auth.model.DoesNotExist:
+            return credential
+
+        except:
+            # Case 2: more than one credential for the provider
+            credential = user.social_auth.filter(provider=provider)
+            if len(credential) > 0:
+                return credential.last()
 
 
 ## Ensure equivalent email across accounts

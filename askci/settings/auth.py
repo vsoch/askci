@@ -39,6 +39,18 @@ SOCIAL_AUTH_PIPELINE = (
     "social_core.pipeline.user.user_details",
 )
 
+# Scopes for social auth
+
+# Read Only means we only see their email - the user cannot create repos
+SOCIAL_AUTH_GITHUB_READONLY_SCOPE = ["user:email"]
+SOCIAL_AUTH_GITHUB_SCOPE = [
+    "admin:repo_hook",
+    "repo:status",
+    "user:email",
+    "read:org",
+    "admin:org_hook",
+    "deployment_status",
+]
 
 # http://psa.matiasaguirre.net/docs/configuration/settings.html#urls-options
 # SOCIAL_AUTH_REDIRECT_IS_HTTPS = True

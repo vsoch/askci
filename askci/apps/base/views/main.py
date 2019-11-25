@@ -16,11 +16,6 @@ from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as 
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
-def index_view(request):
-    return render(request, "main/index.html")
-
-
-@ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def about_view(request):
     return render(request, "main/about.html")
 
@@ -36,7 +31,7 @@ def privacy_view(request):
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
-def dashboard_view(request):
+def index_view(request):
     """Show new questions and articles.
     """
     context = {}
@@ -47,7 +42,7 @@ def dashboard_view(request):
         "articles": Article.objects.count(),
         "tags": Tag.objects.count(),
     }
-    return render(request, "main/dashboard.html", context)
+    return render(request, "main/index.html", context)
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)

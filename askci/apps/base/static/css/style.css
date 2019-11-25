@@ -1,0 +1,214 @@
+/*!
+ * Start Bootstrap - Landing Page v5.0.6 (https://startbootstrap.com/template-overviews/landing-page)
+ * Copyright 2013-2019 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-landing-page/blob/master/LICENSE)
+ */
+
+body {
+  font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+h2 {
+  margin-top:50px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  color: #074f66;
+}
+
+/* Search */
+
+.searchbar{
+  width: 50%;
+  margin: auto;
+  height: 60px;
+  background-color: #353b48;
+  border-radius: 30px;
+  padding: 10px;
+}
+
+.search_input{
+  color: white;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: 0;
+  caret-color:transparent;
+  line-height: 40px;
+  transition: width 0.4s linear;
+}
+
+.searchbar:hover > .search_input{
+  padding: 0 10px;
+  width: 450px;
+  caret-color:red;
+  transition: width 0.4s linear;
+}
+
+.searchbar:hover > .search_icon{
+  background: white;
+  color: #e74c3c;
+}
+
+.search_icon{
+  height: 40px;
+  width: 40px;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color:white;
+}
+
+.learn-more {
+  margin:auto; 
+  padding-top:20px;
+  padding-bottom:30px;
+}
+
+
+.navbar {
+    background: white !important;
+    z-index: 9999;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) !important; 
+    -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) !important;
+    padding: 10px 0;
+    background: #1d3655;
+    color: #fff;
+    position: fixed;
+    width: 100%;
+}
+
+.logo-title {
+  font-family: 'Dosis', sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  color: #1d3655;
+}
+
+/* Links */
+
+a {
+  color: #1d3655;
+  -webkit-transition: all 0.4s ease-in-out;
+  -moz-transition: all 0.4s ease-in-out;
+  -ms-transition: all 0.4s ease-in-out;
+  -o-transition: all 0.4s ease-in-out;
+}
+
+
+.navbar.navbar-light .breadcrumb .nav-item .nav-link, .navbar.navbar-light .navbar-nav .nav-item .nav-link {
+   color: #000 !important;
+}
+
+.navbar .dropdown-menu a {
+    color: #000 !important;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #0e98c5;
+}
+
+/* Ordered List */
+
+ol.custom-counter { 
+  line-height: 1.6;
+  list-style-type: none;
+  counter-reset: section;
+  margin-left: 3rem;
+}
+.custom-counter > li {
+    counter-increment: section;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.custom-counter > li:before {
+    content: counters(section,"");
+    border: 2px solid #000;
+    border-radius: 50%;
+    display: inline-block;
+    float: left;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    padding-top: .55rem;
+    font-weight: 700;
+    margin-left: -5rem;
+    margin-right: 1rem;
+    background: rgba(0,0,0,0.025);
+}
+
+@media screen and (max-width: 30em) { 
+  ol { margin-left: 0; } 
+li:before { 
+  display: block;
+  float: none;
+  margin: 1rem auto;
+}
+
+
+.features-icons {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.features-icons .features-icons-item {
+  max-width: 20rem;
+}
+
+.features-icons .features-icons-item .features-icons-icon {
+  height: 7rem;
+}
+
+.features-icons .features-icons-item .features-icons-icon i {
+  font-size: 4.5rem;
+}
+
+.features-icons .features-icons-item:hover .features-icons-icon i {
+  font-size: 5rem;
+}
+
+.testimonials {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.testimonials .testimonial-item {
+  max-width: 18rem;
+}
+
+.testimonials .testimonial-item img {
+  max-width: 12rem;
+  -webkit-box-shadow: 0px 5px 5px 0px #adb5bd;
+  box-shadow: 0px 5px 5px 0px #adb5bd;
+}
+
+.call-to-action {
+  position: relative;
+  background-color: #343a40;
+  background: url("../img/bg-masthead.jpg") no-repeat center center;
+  background-size: cover;
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.call-to-action .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0.3;
+}
+
+footer.footer {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}

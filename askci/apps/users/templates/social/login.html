@@ -12,7 +12,7 @@
     <div class="col-md-12">
 
     {% include 'messages/message.html' %}
-    {% if user and not user.is_anonymous %}<h3>Hello, {{ user.get_full_name }}</h3><br>
+    {% if user and not user.is_anonymous %}<h3>Hello, {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}!</h3><br>
     <div>
      <!-- If all credentials provided, give user full access -->
      <a href="{% url 'profile' %}"><button class="btn btn-default btn-sm">Profile</button></a>
@@ -31,7 +31,9 @@
 
         {% if ENABLE_GLOBUS_AUTH %}<a class="social-button" id="globus-login" style="color:black !important" href="{% url 'social:begin' 'globus' %}?next={{ domain }}{{ request.path }}">Login with Globus</a>{% endif %}
 
-        {% if ENABLE_GITHUB_AUTH %}<a class="social-button" style="color:black !important" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Login with Github</a>{% endif %}
+        <a class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Login with Github</a>
+
+        <a class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}">Github (viewer only)</a>
 
         {% if ENABLE_GITLAB_AUTH %}<a class="social-button" id="gitlab-connect" href="{% url 'social:begin' 'gitlab' %}?next={{ domain }}{{ request.path }}">Login with Gitlab</a>{% endif %}
 

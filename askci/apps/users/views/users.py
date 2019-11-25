@@ -37,8 +37,7 @@ def view_profile(request, username=None):
         user = request.user
     else:
         user = get_object_or_404(User, username=username)
-
-    context = {"profile": user, "institutions": Institution.objects.all()}
+    context = {"profile": user}
     return render(request, "users/profile.html", context)
 
 

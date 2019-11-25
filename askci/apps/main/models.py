@@ -17,6 +17,29 @@ import re
 import time
 
 
+class TemplateRepository(models.Model):
+    """a template repository must be a template, and serves to provide a starter
+       template for creating a documentation file to update the server. The
+       repository should minimally have a README.md and a testing setup
+       to validate tags. See https://github.com/hpsee/askci-template-term.
+    """
+
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    repo = models.CharField(max_length=250, blank=False, null=False, unique=True)
+
+    def __str__(self):
+        return "<TemplateRepository:%s>" % self.repo
+
+    def __repr__(self):
+        return self.__str__()
+
+    def get_label(self):
+        return "templaterepository"
+
+    class Meta:
+        app_label = "main"
+
+
 class Tag(models.Model):
     """tags are ways to organize the different categories they are associated with. 
        As an example, we may tag a plasmid part as conferring ampicillin 

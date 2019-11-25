@@ -1,3 +1,4 @@
+from .articles import new_article
 from .details import article_details, tag_details
 
 from .catalog import (

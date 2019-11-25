@@ -15,7 +15,6 @@ import askci.apps.base.views as views
 urlpatterns = [
     url(r"^$", views.index_view, name="index"),
     url(r"^about/?$", views.about_view, name="about"),
-    url(r"^dashboard/?$", views.dashboard_view, name="dashboard"),
     url(r"^contact/?$", views.contact_view, name="contact"),
     url(r"^terms/?$", views.terms_view, name="terms"),
     url(r"^privacy-policy/?$", views.privacy_view, name="privacy-policy"),

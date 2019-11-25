@@ -12,11 +12,11 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 from django.db import models
 
 from rest_framework.authtoken.models import Token
 from askci.apps.users.utils import get_usertoken
+
 import os
 
 
@@ -75,6 +75,14 @@ class User(AbstractUser):
 
     class Meta:
         app_label = "users"
+
+    def has_github_create(self):
+        """determine if the user is logged in with adequate GitHub permissions
+           to create repositories (not github-readonly)
+        """
+        from askci.apps.users.views import get_credentials
+
+        return get_credentials(self, "github") is not None
 
     def get_label(self):
         return "users"

@@ -173,6 +173,10 @@
 /* Github */
 
 
+#github-connect a:hover {
+    color: white !important;
+}
+
 #github-connect {
     color: black;
     background: rgb(255, 255, 255) url('/static/img/social-buttons/github.png') no-repeat scroll 13px 10px / 28px 28px padding-box border-box;
@@ -180,7 +184,7 @@
 }
 
 #github-connect:hover {
-    color: white;
+    color: white !important;
     border-color: rgb(0, 119, 181);
     background: black url('/static/img/social-buttons/github-white.png') no-repeat scroll 13px 10px / 28px 28px padding-box border-box;
     -webkit-transition: all .8s ease-out;

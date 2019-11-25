@@ -11,6 +11,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import os
 
 # AUTHENTICATION
+# GitHub is default with or without private
 
 # Which social auths do you want to use?
 ENABLE_GLOBUS_AUTH = False
@@ -18,7 +19,6 @@ ENABLE_GOOGLE_AUTH = False
 ENABLE_ORCID_AUTH = False
 ENABLE_ORCID_AUTH_SANDBOX = False
 ENABLE_TWITTER_AUTH = False
-ENABLE_GITHUB_AUTH = True
 ENABLE_GITLAB_AUTH = False
 ENABLE_BITBUCKET_AUTH = False
 
@@ -45,7 +45,7 @@ SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 ADMINS = (("vsochat", "vsochat@gmail.com"),)
 MANAGERS = ADMINS
 
-# BioNode Parameters
+# AskCI Parameters
 
 HELP_CONTACT_EMAIL = os.environ.get("HELP_CONTACT_EMAIL", "vsochat@stanford.edu").strip(
     '"'
@@ -57,6 +57,9 @@ NODE_INSTITUTION = os.environ.get("NODE_INSTITUTION", "Stanford University").str
 NODE_URI = os.environ.get("NODE_URI", "askci-server").strip('"')
 NODE_NAME = os.environ.get("NODE_NAME", "AskCI").strip('"')
 NODE_TWITTER = os.environ.get("NODE_TWITTER", "askcyberinfra").strip('"')
+
+# Repository Templates
+REPO_TEMPLATES = ["https://github.com/hpsee/askci-template-term"]
 
 # Permissions and Views
 
