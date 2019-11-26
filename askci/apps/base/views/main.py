@@ -34,7 +34,7 @@ def privacy_view(request):
 def index_view(request):
     """Show new questions and articles.
     """
-    context = {}
+    context = {"articles": Article.objects.all()}
 
     # Counts go into the bar chart, should be scaled similarity
     context["counts"] = {

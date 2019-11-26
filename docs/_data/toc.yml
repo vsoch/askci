@@ -6,6 +6,8 @@
       children:
         - title: Overview
           url: "docs/development"
+        - title: Thinking
+          url: "docs/thinking"
     - title: "About"
       url: "about"
     - title: "News"

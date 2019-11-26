@@ -132,6 +132,7 @@ class Article(models.Model):
        letters are not allowed.
     """
 
+    secret = models.UUIDField(default=uuid.uuid4)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
@@ -139,7 +140,7 @@ class Article(models.Model):
         max_length=250, blank=False, unique=True, default="library"
     )
     name = models.CharField(max_length=250, blank=False, unique=True)
-    commit = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    commit = models.CharField(max_length=250, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
 
     # Don't delete article if owner deletes account, set null
@@ -164,9 +165,10 @@ class Article(models.Model):
         """names are enforced as all lowercase to avoid duplication, along
            with removing all special characters except for dashes.
         """
+        from askci.apps.main.utils import lowercase_cleaned_name
+
         if self.pk is None:
-            self.tag = self.tag.replace(" ", "-")  # replace space with -
-            self.tag = re.sub("[^A-Za-z0-9-]+", "", self.tag).lower()
+            self.tag = lowercase_cleaned_name(self.tag)
         return super(Article, self).save(*args, **kwargs)
 
     def __str__(self):

@@ -9,6 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.conf import settings
+from askci.apps.main.models import Article
 
 
 def domain_processor(request):
@@ -17,6 +18,7 @@ def domain_processor(request):
         "NODE_URI": settings.NODE_URI,
         "NODE_NAME": settings.NODE_NAME,
         "NODE_TWITTER": settings.NODE_TWITTER,
+        "TOTAL_ARTICLES": Article.objects.count(),
     }
 
 

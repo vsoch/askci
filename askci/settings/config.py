@@ -63,6 +63,9 @@ REPO_TEMPLATES = ["https://github.com/hpsee/askci-template-term"]
 
 # Permissions and Views
 
+# disable all webhooks to update terms from repos
+DISABLE_WEBHOOKS = False
+
 # DATABASE
 
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases

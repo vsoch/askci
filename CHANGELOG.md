@@ -11,5 +11,5 @@ represented by the pull requests that fixed them. Critical items to know are:
  - backward incompatible changes
 
 
-## [master](https://github.com/hpsee/askci/tree/master) (master)
+## [master](https://github.com/vsoch/askci/tree/master) (master)
  - initial draft (0.0.0)

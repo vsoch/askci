@@ -18,7 +18,7 @@ import hashlib
 import json
 import shutil
 import os
-
+import re
 
 # Database Backup
 
@@ -52,6 +52,12 @@ def backup_db():
     with open("/code/backup/db.json", "w") as output:
         print("Dumping tables for entire database")
         call_command("dumpdata", format="json", indent=3, stdout=output)
+
+
+def lowercase_cleaned_name(name):
+    name = name.replace(" ", "-")  # replace space with -
+    name = re.sub("[^A-Za-z0-9-]+", "", name).lower()
+    return name
 
 
 def init_template_repos():
