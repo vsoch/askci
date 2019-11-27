@@ -1,0 +1,156 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.description {
+  padding: 22px 52px;
+  background-color: rgba(81, 92, 230, 0.1);
+  line-height: 1.4em;
+}
+
+.description,
+.description a {
+  font-family: Arial;
+  font-size: 14px;
+  color: #515ce6;
+}
+
+.contents {
+  padding: 20px 52px;
+}
+</style>
+
+<!-- Editor's Dependencies -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+<!-- Editor's Extension Dependencies -->
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.chart/v3.7.0/tui-chart.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/tui-color-picker/v2.2.1/tui-color-picker.css">
+<!-- Editor -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-contents.css">
+
+<div class="container" style='padding-top:150px'>
+  {% include "messages/message.html" %}
+  <div class="row" style="margin-bottom:20px">
+      <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-primary">Edit</button></a>{% endif %}
+             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">GitHub</button></a>
+             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">Download (txt)</button></a>
+             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">Download (pdf)</button></a>
+ <i style="cursor:help" title="Share the term or download in multiple formats."></i>
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="true">{{ instance.namespace }}/{{ instance.name }}</a>
+                {% if instance.question_set.count > 0 %}<a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="true">Questions <i class="fas fa-question-circle"></i></a>{% endif %}
+                {% if request.user.has_github_create %}<a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab" aria-controls="nav-edit" aria-selected="true"><i class="fas fa-edit"></i></a>{% endif %}
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
+              {{ instance.html | safe }}
+            </div>
+            {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
+                                                        style="margin-top:20px"
+                                                        role="tabpanel" aria-labelledby="nav-edit-tab">
+                <form id="form" method="post">{% csrf_token %}
+                <div class="description" id="response-messages">
+                   Click the left box to edit the term, and submit to request review for your changes.
+                </div>
+               <div class="contents code-html">
+                   <div id="editSection"></div>
+                   </div>
+                   <button class="btn btn-primary" id="submit-button"><i class="save icon"></i> Submit</button>
+                </form>  
+            </div>{% endif %}
+            {% if instance.question_set.count > 0 %}<div class="tab-pane fade" id="nav-questions" 
+                                                        style="margin-top:20px"
+                                                        role="tabpanel" aria-labelledby="nav-questions-tab">
+                 {% for question in instance.question_set.all %}  <div class="row">
+                 <div class="col-md-12">
+                   <div class="card">
+                     <div class="card-body">
+                        <strong><a href="#{{ question.text }}"> {{ question.pretty }}</a>
+                     </div>
+                   </div>
+                 </div></div>{% endfor %}
+         </div>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block pagescripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-Editor-full.js"></script>
+    <script class="code-js">
+      var content = [{% for line in instance.lines %}
+        '{{ line | safe }}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}
+      ].join('\n');
+
+      var editor = new tui.Editor({
+        el: document.querySelector('#editSection'),
+        previewStyle: 'vertical',
+        height: '400px',
+        initialEditType: 'markdown',
+        initialValue: content,
+        exts: [
+          {
+            name: 'chart',
+            minWidth: 100,
+            maxWidth: 600,
+            minHeight: 100,
+            maxHeight: 300
+          },
+          'scrollSync',
+          'colorSyntax',
+          'uml',
+          'mark',
+          'table'
+        ]
+      });
+    </script>
+<script>
+$(document).ready(function() {
+
+  $("#submit-button").click(function(event) {
+     event.preventDefault();
+
+     var url = "{% url 'article_details' instance.name %}";
+     let form = document.getElementById('form');
+     let data = new FormData(form);
+     data.append('csrfmiddlewaretoken', $('input[name="csrfmiddlewaretoken"]').attr('value'));
+     data.append('markdown', editor.getMarkdown());
+     console.log(data)
+     fetch(url, {
+       method: 'POST',
+       body: data,
+       credentials: 'same-origin'
+     }).then(res => res.json()) 
+    .then(function(response) {
+      console.log('Response:', response)
+      // If a message is provided, show it
+      if ("message" in response) {
+         $("#response-messages").text(response['message'])
+         $("#response-messages").show();
+      } else {
+         $("#response-messages").text()
+         $("#response-messages").hide();
+      }
+    })
+    .catch(function(response) {
+       var response = JSON.stringify(response);
+       console.log("Error", response)
+       event.preventDefault();
+    })
+  });
+});
+</script>
+{% endblock %}

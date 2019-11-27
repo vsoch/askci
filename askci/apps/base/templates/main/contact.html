@@ -1,0 +1,29 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="container" style='padding-top:200px'>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Contact Us</h1>
+	<form action="https://formspree.io/{{ HELP_CONTACT_EMAIL }}" method="POST">
+	  <div class="form-group">
+	    <label for="inputName">Name</label>
+	    <input type="text" class="form-control" id="inputName" name="name" placeholder="Your name">
+	    <small id="emailHelp" class="form-text text-muted">How should we address you?</small>
+	  </div>
+	  <div class="form-group">
+	    <label for="inputEmail">Email</label>
+	    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" name="_replyto" placeholder="Enter email">
+	    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+	  </div>
+	  <div class="form-group">
+	    <label for="message">Message</label>
+	    <input type="textarea" class="form-control" id="message" name="message" placeholder="Your message" aria-describedby="yourMessage">
+	    <small id="yourMessage" class="form-text text-muted">What would you like to ask?</small>
+	  </div>
+	  <button value="Send" type="submit" class="btn btn-primary">Submit</button>
+	</form>
+      </div>
+   </div>
+{% endblock %}

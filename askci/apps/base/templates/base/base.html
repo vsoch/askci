@@ -1,0 +1,58 @@
+{% load static from staticfiles %}
+{% load gravatar %}
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+
+        <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+        <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+        <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+        <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title %}{{ NODE_NAME }}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="{{ NODE_NAME }} Node" />
+        <meta name="keywords" content="synthetic biology, freegenes, bionet, bionet server" />
+        <meta name="author" content="vsoch" />
+
+        <link rel="icon" type="image/ico" href="/static/img/favicon.ico"/>
+
+        <!-- Facebook and Twitter integration -->
+        <meta property="og:title" content="{{ NODE_NAME }}: Node for opensource genomics"/>
+        <meta property="og:image" content=""/>
+        <meta property="og:url" content=""/>
+        <meta property="og:site_name" content="{{ NODE_NAME }} Node"/>
+        <meta property="og:description" content="{{ NODE_NAME }} Node"/>
+        <meta name="twitter:title" content="{{ NODE_TWITTER }}" />
+        <meta name="twitter:image" content="{% static 'img/logo/logo.png' %}" />
+        <meta name="twitter:url" content="https://www.twitter.com/{{ NODE_TWITTER }}" />
+        <meta name="twitter:card" content="" />
+
+        {% include "base/google_analytics.html" %}
+
+        <!-- Google Webfonts -->
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,100,500' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,500' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet"> 
+        <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+        {% block fonts %}{% endblock %}
+        {% block css %}{% endblock %}
+        {% block head %}{% endblock %}
+        {% block functions %}{% endblock %}
+    </head>
+
+    {% block body %}
+    <body>
+        
+    {% block navigation %}{% endblock %}
+    {% block content %}{% endblock %} 
+    {% block footer %}{% endblock %}
+    {% block basescripts %}{% endblock %}
+    {% block scripts %}{% endblock %}
+    {% block pagescripts %}{% endblock %}
+
+    </body>
+    {% endblock %}
+</html>

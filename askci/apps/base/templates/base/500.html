@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Error! 500</title>
+    <style>
+    #robot {
+        position: absolute;
+        top:25%;
+        left:25%;
+        text-align: center;
+        font-family: Dosis, sans-serif;
+    }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Dosis&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+    <div id="robot">
+        <h1 style="color:lightskyblue">Error! Our team has been notified!</h1>
+        <img height="300px" src="{% static "img/answer-man-no-loop.gif"%}">
+    </div>
+  </body>
+</html>

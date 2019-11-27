@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
 
-from askci.apps.main.models import Article, Tag
+from askci.apps.main.models import Article, PullRequest, Tag
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from askci.apps.main.github import request_review
 
@@ -51,8 +51,14 @@ def article_details(request, name):
             )
 
         # Set off a task to parse and submit dispatch request
-        status_code = request_review(request.user, article, markdown)
+        status_code, pr_id = request_review(request.user, article, markdown)
         if status_code == 204:
+
+            # Create PullRequest object request
+            pr, created = PullRequest.objects.get_or_create(
+                pr_id=pr_id, article=article, owner=request.user
+            )
+
             return JsonResponse(
                 {
                     "message": "Your changes have been submit for review to %s"

@@ -107,12 +107,13 @@ class Question(models.Model):
         sentences = self.text.replace("-", "")
 
         # Pairs of sentences and ending punctuation.
-        pairs = [t for t in re.split("(\.|\!|\?)", text) if t]
+        pairs = [t for t in re.split("(\.|\!|\?)", sentences) if t]
         pairs = [
             " %s" % p.strip().capitalize() if p not in ["!", ".", "?"] else p
             for p in pairs
         ]
-        return "".join(pairs).strip()
+        print(pairs)
+        return "%s ?" % " ".join(pairs)
 
     def get_absolute_url(self):
         return reverse("tag_details", args=[self.uuid])
@@ -194,6 +195,47 @@ class Article(models.Model):
 
     def get_label(self):
         return "article"
+
+    class Meta:
+        app_label = "main"
+
+
+class PullRequest(models.Model):
+    """A pull request is an ephemeral object to hold a review request for a term.
+       When a user logs in and submits a request, we create the object with status
+       "request." When the pull request is opened, the url is updated and the status
+       is "open." When the pull request is closed, we delete the object (as we don't
+       need it anymore).
+    """
+
+    STATUS_OPTIONS = [
+        ("request", "request"),
+        ("closed", "closed"),
+        ("reject", "reject"),
+        ("open", "open"),
+    ]
+
+    pr_id = models.UUIDField(default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created = models.DateTimeField("date created", auto_now_add=True)
+    modified = models.DateTimeField("date modified", auto_now=True)
+    url = models.CharField(max_length=500, blank=True, null=True, unique=True)
+    status = models.CharField(max_length=32, choices=STATUS_OPTIONS, default="request")
+    article = models.ForeignKey(
+        "main.Article", on_delete=models.CASCADE, blank=False, null=False
+    )
+    owner = models.ForeignKey(
+        "users.User", on_delete=models.SET_NULL, blank=True, null=True
+    )
+
+    def __str__(self):
+        return "<PullRequest:%s>" % self.url
+
+    def __repr__(self):
+        return self.__str__()
+
+    def get_label(self):
+        return "pullrequest"
 
     class Meta:
         app_label = "main"
