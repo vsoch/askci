@@ -13,8 +13,8 @@ import askci.apps.main.views as views
 
 urlpatterns = [
     # Details (e corresponds for entity)
-    url(r"^e/article/(?P<uuid>.+)/?$", views.article_details, name="article_details"),
-    url(r"^e/tag/(?P<uuid>.+)/?$", views.tag_details, name="tag_details"),
+    url(r"^e/article/(?P<name>.+)/?$", views.article_details, name="article_details"),
+    url(r"^e/tag/(?P<tag>.+)/?$", views.tag_details, name="tag_details"),
     # Articles
     url(r"a/new/?$", views.new_article, name="new_article"),
     # Catalog views

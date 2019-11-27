@@ -12,6 +12,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.postgres.fields import JSONField
 
+import markdown
 import uuid
 import re
 import time
@@ -67,7 +68,7 @@ class Tag(models.Model):
         return super(Tag, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("tag_details", args=[self.uuid])
+        return reverse("tag_details", args=[self.tag])
 
     def get_label(self):
         return "tag"
@@ -81,7 +82,7 @@ class Question(models.Model):
        only be answered by one post - if there is more detail needed, a link
        to a different article can be added. Questions are parsed from
        text in the repository files, and must be provided in all lowercase
-       with dashes.
+       with dashes. See askci.apps.main.tasks.update_article for parsing.
     """
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -93,7 +94,7 @@ class Question(models.Model):
     )
 
     def __str__(self):
-        return "<Question:%s>" % self.tag
+        return "<Question:%s>" % self.text
 
     def __repr__(self):
         return self.__str__()
@@ -142,6 +143,7 @@ class Article(models.Model):
     name = models.CharField(max_length=250, blank=False, unique=True)
     commit = models.CharField(max_length=250, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
+    text = models.TextField(blank=True, null=True)
 
     # Don't delete article if owner deletes account, set null
     owner = models.ForeignKey(
@@ -161,6 +163,16 @@ class Article(models.Model):
         related_query_name="article_tags",
     )
 
+    @property
+    def html(self):
+        return markdown.markdown(self.text)
+
+    def lines(self):
+        """an iterator for yielding each line (without newlines)
+        """
+        for line in self.text.split("\n"):
+            yield line
+
     def save(self, *args, **kwargs):
         """names are enforced as all lowercase to avoid duplication, along
            with removing all special characters except for dashes.
@@ -178,7 +190,7 @@ class Article(models.Model):
         return self.__str__()
 
     def get_absolute_url(self):
-        return reverse("article_details", args=[self.uuid])
+        return reverse("article_details", args=[self.name])
 
     def get_label(self):
         return "article"

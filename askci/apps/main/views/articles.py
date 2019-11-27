@@ -16,6 +16,7 @@ from ratelimit.decorators import ratelimit
 
 from askci.apps.main.models import Article, Tag, TemplateRepository
 from askci.apps.main.utils import lowercase_cleaned_name
+from askci.apps.main.tasks import update_article
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from askci.apps.main.github import get_namespaces, fork_repository, create_webhook
 
@@ -69,7 +70,15 @@ def new_article(request):
                 repo=repo,
                 summary=summary,
             )
-            return redirect("article_details", args=(article.uuid,))
+
+            # Run the first task
+            res = django_rq.enqueue(update_article, article_uuid=article.uuid)
+
+            messages.info(
+                request,
+                "%s has been created! Refresh the page for updated content." % term,
+            )
+            return redirect("article_details", args=(article.name,))
 
         # if we get here, there was an error
         messages.warning(request, "There was an error creating %s" % repository)

@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from importlib import import_module
-
+from django.urls import path
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -45,6 +45,7 @@ urlpatterns = [
     url(r"^api/docs/", include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
     url(r"^", include(main_urls)),
     url(r"^", include(user_urls)),
+    path("editor/", include("django_summernote.urls")),
     url(r"^django-rq/", include("django_rq.urls")),
 ]
 
