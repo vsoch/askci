@@ -45,7 +45,6 @@ urlpatterns = [
     url(r"^api/docs/", include_docs_urls(title=API_TITLE, description=API_DESCRIPTION)),
     url(r"^", include(main_urls)),
     url(r"^", include(user_urls)),
-    path("editor/", include("django_summernote.urls")),
     url(r"^django-rq/", include("django_rq.urls")),
 ]
 

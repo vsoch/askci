@@ -9,6 +9,9 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.conf.urls import url
-from askci.apps.api.views import receive_hook
+import askci.apps.api.views as views
 
-urlpatterns = [url(r"^hook/push/?$", receive_hook, name="receive_hook")]
+urlpatterns = [
+    url(r"^hook/push/?$", views.receive_hook, name="receive_hook")
+    url(r"^hook/receive_pr_request/?$", views.receive_pr_request, name="receive_pr_request")
+]

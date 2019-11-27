@@ -16,7 +16,6 @@ django-notifications-hq
 django-ratelimit==2.0.0
 django-rest-swagger
 django-rq
-django-summernote==0.8.11.4
 django-taggit
 django-taggit-templatetags
 django-user-agents

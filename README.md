@@ -25,6 +25,10 @@ The images are the following:
  - **redis**: database to organize the jobs themselves.
  - **scheduler** jobs can be scheduled using the scheduler.
 
+## Thank Yous
+
+ - [tui.editor](https://github.com/nhn/tui.editor) offers a beautiful editor for markdown.
+
 ## License
 
 This project is under the MIT License. See the [LICENSE](LICENSE) file for the full license text. See [LICENSE-djacket](.github/LICENSE-djacket) for the upstream license.
