@@ -8,6 +8,10 @@ body {
   padding: 0;
 }
 
+.btn-rounded {
+    border-radius: 10em;
+}
+
 .description {
   padding: 22px 52px;
   background-color: rgba(81, 92, 230, 0.1);
@@ -19,6 +23,14 @@ body {
   font-family: Arial;
   font-size: 14px;
   color: #515ce6;
+}
+
+.article p {
+  /* maybe 400 here? */
+  font-weight: 300;
+}
+.article a {
+  font-weight: 600;
 }
 
 .contents {
@@ -39,10 +51,8 @@ body {
 <div class="container" style='padding-top:150px'>
   {% include "messages/message.html" %}
   <div class="row" style="margin-bottom:20px">
-      <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-primary">Edit</button></a>{% endif %}
-             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">GitHub</button></a>
-             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">Download (txt)</button></a>
-             <a href="#" style="float:right"><button class="btn btn-sm btn-primary">Download (pdf)</button></a>
+      <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-info btn-rounded">Edit</button></a>{% endif %}
+             <a href="{% url 'download_article_text' instance.uuid %}" style="float:right"><button class="btn btn-sm btn-indigo btn-rounded">Download (txt)</button></a>
  <i style="cursor:help" title="Share the term or download in multiple formats."></i>
       </div>
   </div>
@@ -51,12 +61,16 @@ body {
         <nav>
             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                 <a class="nav-item nav-link active" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="true">{{ instance.namespace }}/{{ instance.name }}</a>
-                {% if instance.question_set.count > 0 %}<a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="true">Questions <i class="fas fa-question-circle"></i></a>{% endif %}
+                {% if instance.pullrequest_set.count > 0 %}<a class="nav-item nav-link" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">Review</a>{% endif %}
+                {% if instance.question_set.count > 0 %}<a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="true">Questions</a>{% endif %}
                 {% if request.user.has_github_create %}<a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab" aria-controls="nav-edit" aria-selected="true"><i class="fas fa-edit"></i></a>{% endif %}
+                <a class="nav-item nav-link" id="nav-github-tab" target="_blank" href="https://github.com/{{ instance.repo.full_name }}" role="tab" aria-controls="nav-github" aria-selected="true"><i style="color:black" class="fab fa-github"></i></a>
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
+            <div class="tab-pane fade show active tui-editor-contents article" 
+                 style="padding: 30px; background-color:#F8F8F8;"
+                 id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
               {{ instance.html | safe }}
             </div>
             {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
@@ -69,9 +83,21 @@ body {
                <div class="contents code-html">
                    <div id="editSection"></div>
                    </div>
-                   <button class="btn btn-primary" id="submit-button"><i class="save icon"></i> Submit</button>
+                   <button class="btn btn-info" id="submit-button"><i class="save icon"></i> Submit</button>
                 </form>  
             </div>{% endif %}
+            {% if instance.pullrequest_set.count > 0 %}<div class="tab-pane fade" id="nav-review" 
+                                                        style="margin-top:20px"
+                                                        role="tabpanel" aria-labelledby="nav-review-tab">
+                 {% for pr in instance.pullrequest_set.all %}  <div class="row">
+                 <div class="col-md-12">
+                   <div class="card">
+                     <div class="card-body">
+                        <strong><span style="margin-right:30px" class="badge badge-{% if pr.status == 'pending' %}primary{% else %}success{% endif %}">{{ pr.status }}</span> submit by {{ pr.owner.username }} on {{ pr.created }} {% if pr.url %}<a style="float:right" href="{{ pr.url }}">View on GitHub</a>{% endif %}
+                     </div>
+                   </div>
+                 </div></div>{% endfor %}
+         </div>{% endif %}
             {% if instance.question_set.count > 0 %}<div class="tab-pane fade" id="nav-questions" 
                                                         style="margin-top:20px"
                                                         role="tabpanel" aria-labelledby="nav-questions-tab">
@@ -79,11 +105,16 @@ body {
                  <div class="col-md-12">
                    <div class="card">
                      <div class="card-body">
-                        <strong><a href="#{{ question.text }}"> {{ question.pretty }}</a>
+                        <strong><a class="question-link" href="#{{ question.text }}"> {{ question.pretty }}</a>
                      </div>
                    </div>
                  </div></div>{% endfor %}
          </div>{% endif %}
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                 <span style="float:right"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></span>
+            </div>
         </div>
     </div>
 </div>
@@ -119,6 +150,28 @@ body {
     </script>
 <script>
 $(document).ready(function() {
+
+  // Ensure that we switch to the content tab when a question is provided
+  let url = location.href.replace(/\/$/, "");
+ 
+  function navigate() {
+    const hash = url.split("#");
+    $('#nav-details a[href="#'+hash[1]+'"]').tab("show");
+    $('#nav-details-tab').addClass('active');
+    $('#nav-details').addClass('show active');
+    $('#nav-questions-tab').removeClass('active');
+    $('#nav-questions').removeClass('show active');
+  }
+
+  if (location.hash) {
+    navigate();
+    url = location.href.replace(/\/#/, "#");
+    history.replaceState(null, null, url);
+  } 
+   
+  $(".question-link").click(function(event) {
+     navigate()
+  });
 
   $("#submit-button").click(function(event) {
      event.preventDefault();

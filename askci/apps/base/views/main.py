@@ -12,7 +12,11 @@ from django.shortcuts import render
 
 from ratelimit.decorators import ratelimit
 from askci.apps.main.models import Article, Question, Tag
-from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
+from askci.settings import (
+    VIEW_RATE_LIMIT as rl_rate,
+    VIEW_RATE_LIMIT_BLOCK as rl_block,
+    HELP_CONTACT_EMAIL,
+)
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -32,19 +36,27 @@ def privacy_view(request):
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def index_view(request):
-    """Show new questions and articles.
+    """Show new questions with their associated articles
     """
-    context = {"articles": Article.objects.all()}
-
-    # Counts go into the bar chart, should be scaled similarity
-    context["counts"] = {
-        "questions": Question.objects.count(),
-        "articles": Article.objects.count(),
-        "tags": Tag.objects.count(),
-    }
+    questions = Question.objects.order_by("-modified")
+    context = {"questions": questions}
     return render(request, "main/index.html", context)
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def contact_view(request):
+    if request.method == "POST":
+        from askci.apps.users.email import send_email
+
+        name = request.POST.get("name")
+        email = request.POST.get("_reply_to")
+        message = request.POST.get("message")
+        message = message.replace("\n", "<br>")
+        send_email(
+            email_to=HELP_CONTACT_EMAIL,
+            from_email=email,
+            message=message,
+            subject="[AskCI] Message",
+        )
+        messages.info(request, "Thank you for your message!")
     return render(request, "main/contact.html")

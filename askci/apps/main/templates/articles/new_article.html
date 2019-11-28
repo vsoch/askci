@@ -1,0 +1,43 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="title">New Article</h3>
+    </div>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+            <form method="POST" action="{% url 'new_article' %}">
+                {% csrf_token %}
+		 <div class="form-group" style='margin-top:10px'>
+		    <input type="text" name="term" class="form-control" id="addArticle" aria-describedby="addHelp" placeholder="Enter term name" required>
+		    <small id="addHelp" class="form-text text-muted">Enter the term or concept name here</small>
+		  </div>
+		 <div class="form-group">
+		    <input type="text" name="summary" class="form-control" id="addSummary" aria-describedby="addSummaryHelp" placeholder="Summarize this concept or term." required>
+		    <small id="addSummaryHelp" class="form-text text-muted">Write a short description of the term or concept</small>
+		  </div>
+		<div class="input-group">
+		  <div class="input-group-prepend">
+		  <select class="custom-select" id="selectNamespace" name='namespace' required>
+		    {% for namespace in namespaces %}<option value="{{ namespace }}" {% if forloop.first %}selected{% endif %}>{{ namespace }}</option>{% endfor %}
+		  </select>
+		  </div>
+		    <input type="text" name="repository" class="form-control" id="addRepo" aria-describedby="repoHelp" placeholder="Enter repository name" required>
+		</div>
+		    <small id="repoHelp" class="form-text text-muted">It's suggested to use a prefix like asckci-term-*</small>
+                   <button class="btn btn-secondary btn-small" style="float:right" type="submit">Add Article</button>
+            </form>
+     </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "messages/notification.html" %}
+<script src="{% static "js/cookie-token.js" %}"></script>
+{% endblock %}

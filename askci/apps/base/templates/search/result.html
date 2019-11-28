@@ -1,0 +1,27 @@
+{% load staticfiles %}
+{% include "style/search.html" %}
+
+                        {% if results|length %}
+                        <p class="alert alert-info"><strong>Found {{ results|length }} results</strong></p>
+                        <table> 
+
+                            <tr class="odd">
+                                <th></th>
+                                <th>Name</th>
+                                <th>Tags</th>
+                            </tr>
+                            {% for result in results %}
+                            <tr class="{% cycle 'odd' 'even' %}">
+                                <td><strong>{{ forloop.counter }}.</strong></td>
+                                <td><a href="{{ result.get_absolute_url }}">{{ result.get_label | title }}: {% if result.name %}{{ result.name }}{% else %}{{ result }}{% endif %}</a>
+                            {% if result.description %}<br>{{ result.description | truncatechars:100 }}{% endif %}
+</td>
+                                <td>{% for tag in result.tags.all %}<a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a> {% endfor %}</td>
+                            </tr>
+                            {% endfor %}
+                            </table>
+                          {% else %}
+                          {% if results.count == 0 %}<div class="note">
+                              Your search yielded no results.
+                          </div>{% endif %}
+                          {% endif %}

@@ -31,6 +31,7 @@ def send_email(
     email_to,
     message,
     subject,
+    from_email=None,
     attachment=None,
     filetype="application/pdf",
     filename=None,
@@ -41,18 +42,20 @@ def send_email(
        Parameters
        ==========
        email_to: the email to send the message to
+       from_email: if not set, use HELP_CONTACT_EMAIL
        message: the html content for the body
        subject: the email subject
        attachment: the attachment file on the server
     """
     if not SENDGRID_API_KEY or not HELP_CONTACT_EMAIL:
+        print("SENDGRID_API_KEY or HELP_CONTACT_EMAIL are missing.")
         return
 
+    if from_email is None:
+        from_email = HELP_CONTACT_EMAIL
+
     message = Mail(
-        from_email=HELP_CONTACT_EMAIL,
-        to_emails=email_to,
-        subject=subject,
-        html_content=message,
+        from_email=from_email, to_emails=email_to, subject=subject, html_content=message
     )
 
     # If the user has provided an attachment, add it

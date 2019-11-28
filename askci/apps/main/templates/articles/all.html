@@ -9,17 +9,16 @@
   <div class="row" style="padding-bottom:50px">
     <div class="col-md-12">
       <a href="{% url 'new_article' %}"><button class="btn btn-primary">New Article</button></a>
-      <a href="{% url 'new_question' %}"><button class="btn btn-primary">New Question</button></a>
       <a href="{% url 'all_articles' %}"><button class="btn btn-primary">Browse</button></a>
     </div>
   </div>
 
-  {% for question in questions %}
+  {% for article in articles %}
   <div class="row">
     <div class="col-md-12">
       <div class="card">
           <div class="card-body">
-                 <strong><a href="{{ question.article.get_absolute_url }}">{{ question.article.name }}</a></strong> {{ question.article.summary | truncatechars:100 }} {% if article.summary|length > 100 %}...{% endif %} <span style="margin-left:30px; font-style:italic; color:darkviolet">{{ question.pretty }}<span><a style="float:right" href="{{ question.article.get_absolute_url }}#{{ question.text }}">Read more...</a>
+                 <strong>{{ article.name }}</strong> {{ article.summary | truncatechars:200 }} {% if article.summary|length > 200 %}...{% endif %}<a style="float:right" href="{{ article.get_absolute_url }}">Read more...</a>
           </div>
        </div>
       </div>

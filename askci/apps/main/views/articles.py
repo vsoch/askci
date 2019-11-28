@@ -11,24 +11,83 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
 
-from askci.apps.main.models import Article, Tag, TemplateRepository
+from askci.apps.main.models import Article, PullRequest, Tag, TemplateRepository
 from askci.apps.main.utils import lowercase_cleaned_name
 from askci.apps.main.tasks import update_article
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
-from askci.apps.main.github import get_namespaces, fork_repository, create_webhook
+from askci.apps.main.github import (
+    get_namespaces,
+    fork_repository,
+    create_webhook,
+    request_review,
+)
 
 import os
 import uuid
 
 ## Article Actions
 
-## TODO: an edit function should trigger the repository_dispatch event to
-# create a new branch and open a PR. https://developer.github.com/v3/repos/#create-a-repository-dispatch-event
-## The page should have some way to display PRs in progress, so a user can see
-## previous submissions.
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+def all_articles(request):
+    """Show all articles.
+    """
+    # Show most recently modified first (will need to limit at some point)
+    articles = Article.objects.order_by("-modified")
+    context = {"articles": articles}
+    return render(request, "articles/all.html", context)
+
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+def article_details(request, name):
+    """view an article details, including the rendered markdown and an edit
+       field if a user is authenciated with GitHub
+    """
+    try:
+        article = Article.objects.get(name=name)
+    except Article.DoesNotExist:
+        raise Http404
+
+    if request.method == "POST":
+        markdown = request.POST.get("markdown")
+
+        if not request.user.is_authenticated:
+            return JsonResponse(
+                {"message": "You must be authenticated to perform this action."}
+            )
+
+        # Is this the case?
+        if not request.user.has_github_create:
+            return JsonResponse(
+                {"message": "You must connect with GitHub to make this request."}
+            )
+
+        if not markdown:
+            return JsonResponse(
+                {"message": "You must submit some markdown content for review"}
+            )
+
+        # Set off a task to parse and submit dispatch request
+        status_code, pr_id = request_review(request.user, article, markdown)
+        if status_code == 204:
+
+            # Create PullRequest object request
+            pr, created = PullRequest.objects.get_or_create(
+                pr_id=pr_id, article=article, owner=request.user
+            )
+
+            return JsonResponse(
+                {
+                    "message": "Your changes have been submit for review to %s"
+                    % article.repo["full_name"]
+                }
+            )
+        return JsonResponse({"message": "There was an issue with requesting changes."})
+
+    return render(request, "articles/article_details.html", {"instance": article})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)

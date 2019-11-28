@@ -9,11 +9,12 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from importlib import import_module
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.sitemaps.views import sitemap, index
+from django.views.generic.base import RedirectView
 from askci.apps.api import urls as api_urls
 from askci.apps.base import urls as base_urls
 from askci.apps.main import urls as main_urls
@@ -37,7 +38,11 @@ schema_view = get_schema_view(title=API_TITLE)
 handler404 = "askci.apps.base.views.handler404"
 handler500 = "askci.apps.base.views.handler500"
 
+# Ensure that favicon is served from root
+favicon_view = RedirectView.as_view(url="/static/img/favicon.ico", permanent=True)
+
 urlpatterns = [
+    re_path(r"^favicon\.ico$", favicon_view),
     url(r"^admin/", admin.site.urls),
     url(r"^", include(base_urls)),
     url(r"^api/", include(api_urls)),

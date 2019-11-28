@@ -104,7 +104,10 @@ class Question(models.Model):
         """pretty print a question, replacing - with spaces and uppercasing
            each letter of a sentence.
         """
-        sentences = self.text.replace("-", "")
+        sentences = self.text.replace("-", " ")
+
+        # Get rid of question prefix
+        sentences = re.sub("^question", "", sentences)
 
         # Pairs of sentences and ending punctuation.
         pairs = [t for t in re.split("(\.|\!|\?)", sentences) if t]
@@ -112,8 +115,7 @@ class Question(models.Model):
             " %s" % p.strip().capitalize() if p not in ["!", ".", "?"] else p
             for p in pairs
         ]
-        print(pairs)
-        return "%s ?" % " ".join(pairs)
+        return "%s?" % " ".join(pairs).strip()
 
     def get_absolute_url(self):
         return reverse("tag_details", args=[self.uuid])

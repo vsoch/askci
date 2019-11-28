@@ -1,0 +1,51 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<style>
+#spinner { display: none; position: relative; }
+</style>
+<div class="container" style='padding-top:200px'>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input type="text" onkeypress="handle_enter(event)" 
+                       id="q" class="form-control" placeholder="Search {{ NODE_NAME }}" required/>
+                 <button type="submit" id="searchSubmit" class="btn btn-primary">
+                 <i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+    <div class="row" style="padding-top:10px">
+      <div class="col-md-12">
+        <div class="margin">
+        <span id="spinner"><img src="http://upload.wikimedia.org/wikipedia/commons/d/de/Ajax-loader.gif"/></span>
+        <div id="results">{% include "search/result.html" %}</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    function handle_enter(e) {
+        if(e.key === "Enter"){
+            $('#searchSubmit').click();
+        }
+    }; 
+$(document).ready( function() {
+    $('#searchSubmit').click(function() {
+        q = $('#q').val();
+        $('#results').html('&nbsp;').load('{% url "running_search" %}?q=' + q);
+    });
+});
+ 
+// Control spinner
+$(document).ajaxStart(function() {
+    $('#spinner').show();
+
+}).ajaxStop( function() {
+    $('#spinner').hide();
+});
+</script>
+{% endblock %}

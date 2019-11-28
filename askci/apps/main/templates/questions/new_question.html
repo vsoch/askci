@@ -1,0 +1,40 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="title">New Question</h3>
+    </div>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+            <form method="POST" action="{% url 'new_question' %}">
+                {% csrf_token %}
+		<div class="input-group">
+		  <select class="custom-select" id="selectArticle" name='article' required>
+                   {% if article %}<option value="{{ article.uuid }}" selected>{{ article.name }}</option>{% endif %}
+                   {% for name in articles %}<option value="{{ name.name }}" {% if forloop.first or not article %}selected{% endif %}>{{ name.name }}</option>{% endfor %}
+		  </select>
+		  </div>
+		 <div class="form-group" style='margin-top:10px'>
+		    <input type="text" name="title" class="form-control" id="addTitle" aria-describedby="addHelp" placeholder="Summarize your question" required>
+		    <small id="addHelp" class="form-text text-muted">This should be a short title for your question.</small>
+		  </div>
+		 <div class="form-group">
+		    <input type="text" name="summary" class="form-control" id="addSummary" aria-describedby="addSummaryHelp" placeholder="Write your question in detail." required>
+		    <small id="addSummaryHelp" class="form-text text-muted">Write more verbose details about your question here.</small>
+		  </div>
+                   <button class="btn btn-secondary btn-small" style="float:right" type="submit">AskCI</button>
+            </form>
+     </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "messages/notification.html" %}
+<script src="{% static "js/cookie-token.js" %}"></script>
+{% endblock %}

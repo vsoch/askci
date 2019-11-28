@@ -23,6 +23,9 @@ import json
 import csv
 
 
+# Export All (repos or articles)
+
+
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def download_repos_csv(request):
     """download a csv for all repositories
@@ -45,9 +48,6 @@ def download_repos_csv(request):
     return response
 
 
-# Json Export
-
-
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def download_articles_json(request):
     """export a json dump of all current articles
@@ -57,3 +57,24 @@ def download_articles_json(request):
     response = HttpResponse(json.dumps(data, indent=4), content_type=content_type)
     response["Content-Disposition"] = 'attachment; filename="%s"' % filename
     return response
+
+
+# Export Single Article
+
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+def download_article_text(request, uuid):
+    """download text for a single article
+    """
+    try:
+        article = Article.objects.get(uuid=uuid)
+        response = HttpResponse(article.text, content_type="text/plain")
+        filename = "%s-article-%s-%s.md" % (
+            NODE_URI,
+            article.name,
+            datetime.now().strftime("%Y-%m-%d"),
+        )
+        response["Content-Disposition"] = 'attachment; filename="%s"' % filename
+        return response
+    except Article.DoesNotExist:
+        pass
