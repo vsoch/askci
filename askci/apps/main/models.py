@@ -209,7 +209,7 @@ class PullRequest(models.Model):
     """
 
     STATUS_OPTIONS = [
-        ("request", "request"),
+        ("pending", "pending"),
         ("closed", "closed"),
         ("reject", "reject"),
         ("open", "open"),
@@ -220,7 +220,7 @@ class PullRequest(models.Model):
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
     url = models.CharField(max_length=500, blank=True, null=True, unique=True)
-    status = models.CharField(max_length=32, choices=STATUS_OPTIONS, default="request")
+    status = models.CharField(max_length=32, choices=STATUS_OPTIONS, default="pending")
     article = models.ForeignKey(
         "main.Article", on_delete=models.CASCADE, blank=False, null=False
     )

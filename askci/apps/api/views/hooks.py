@@ -11,6 +11,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.views.decorators.csrf import csrf_exempt
 from askci.apps.main.github.utils import JsonResponseMessage
 from askci.apps.main.github import receive_github_hook
+from askci.apps.main.github.utils import JsonResponseMessage
+from askci.settings import DISABLE_WEBHOOKS
+from askci.apps.users.models import User
+from askci.apps.main.models import PullRequest, Article
 
 
 @csrf_exempt
@@ -69,18 +73,78 @@ def receive_pr_request(request):
 
         print(request.META)
 
-        # Validate from GitHub
+        if DISABLE_WEBHOOKS:
+            return JsonResponseMessage(message="Webhooks disabled")
 
-        # lookup article based on id
+        if not re.search("AskCI", request.META["HTTP_USER_AGENT"]):
+            return JsonResponseMessage(message="Agent not allowed")
 
-        # retrieve pull request based on requesting user, article, owner
+        # Only allow application/json content type
+        if request.META["CONTENT_TYPE"] != "application/json":
+            return JsonResponseMessage(message="Incorrect content type")
 
-        # change status of PR to be open (should render on page with link)
+        # TODO check that coming from GitHub server
 
-        # update PullRequest with url
+        # Parse the body
+        payload = load_body(request)
+        print(payload)
 
-        # Has to have Github-Hookshot
-        if re.search("GitHub-Hookshot", request.META["HTTP_USER_AGENT"]) is not None:
-            return receive_github_hook(request)
+        article = payload.get("article")
+        branch = payload.get("branch")
+        title = payload.get("title")
+        owner = payload.get("owner")
+        user = payload.get("user")
+        url = payload.get("url")
+
+        for var in [article, branch, title, owner, user, url]:
+            if not var:
+                return JsonResponseMessage(message="Malformed request")
+
+        # Only allow master
+        if branch != "master":
+            return JsonResponseMessage(message="Invalid request")
+
+        # Get the article
+        try:
+            article = Article.objects.get(uuid=article)
+        except Article.DoesNotExist:
+            return JsonResponseMessage(message="Invalid request")
+
+        # Get the user and owner
+        try:
+            user = User.objects.get(username=user)
+            owner = User.objects.get(username=owner)
+        except User.DoesNotExist:
+            return JsonResponseMessage(message="Invalid request")
+
+        # Check header for pr_id
+
+        # Retrieve the article (need to test this)
+        try:
+            article = Article.objects.get(repo__full_name=repo["full_name"])
+        except Article.DoesNotExist:
+            return JsonResponseMessage(message="Article not found", status=404)
+
+        # Get the pull request
+        try:
+            pr = PullRequest.objects.get(article=article, status="pending", owner=user)
+        except PullRequest.DoesNotExist:
+            return JsonResponseMessage(message="Invalid request")
+
+        if pr.pr_id not in request.META["Authorization"]:
+            return JsonResponseMessage(message="Invalid request")
+
+        if pr.article.owner != owner:
+            return JsonResponseMessage(message="Invalid request")
+
+        # Update pull request to be open
+        pr.status = "open"
+        pr.pr_id = None
+        pr.url = url
+        pr.save()
+
+        return JsonResponseMessage(
+            message="Pull Request updated.", status=200, status_message="Received"
+        )
 
     return JsonResponseMessage(message="Invalid request.")
