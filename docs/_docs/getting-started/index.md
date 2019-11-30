@@ -5,7 +5,7 @@ description: A brief overview of the interfaces, and how to get started.
 
 # Getting Started
 
-If you are interested in developing or setting up the server, see the [development docs])({{ site.baseurl }}/docs/development/).
+If you are interested in developing or setting up the server, see the [development docs]({{ site.baseurl }}/docs/development/).
 
 ## Home
 
