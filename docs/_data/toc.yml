@@ -7,13 +7,13 @@
         - title: Background
           url: "about"
         - title: Repository Specification
-          url: "docs/respository-spec"
+          url: "docs/repository-spec/"
     - title: "Getting Started"
-      url: "docs/getting-started"
+      url: "docs/getting-started/"
     - title: "Development"
-      url: "docs/development"
+      url: "docs/development/"
       children:
         - title: Overview
-          url: "docs/development"
+          url: "docs/development/"
     - title: "News"
       url: "news"

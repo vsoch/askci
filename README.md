@@ -1,9 +1,11 @@
 # AskCI
 
+![https://vsoch.github.io/askci/docs/getting-started/img/home.png](https://vsoch.github.io/askci/docs/getting-started/img/home.png)
+
 This application is derived from a [Djacket](https://github.com/Djacket/djacket), and
 aims to provide a help server for version controlled, documentation and support forum.
 
-See the [docs](docs) for getting started.
+See the [docs](https://vsoch.github.io/askci/) for getting started.
 
 **under development**
 
