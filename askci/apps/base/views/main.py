@@ -8,10 +8,12 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 
 from ratelimit.decorators import ratelimit
 from askci.apps.main.models import Article, Question, Tag
+from askci.apps.main.utils import get_paginated
 from askci.settings import (
     VIEW_RATE_LIMIT as rl_rate,
     VIEW_RATE_LIMIT_BLOCK as rl_block,
@@ -36,9 +38,11 @@ def privacy_view(request):
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def index_view(request):
-    """Show new questions with their associated articles
+    """Show new questions with their associated articles. We use
+       a paginator here so the user can scroll indefinitely.
     """
-    questions = Question.objects.order_by("-modified")
+    question_set = Question.objects.order_by("-modified")
+    questions = get_paginated(request, question_set)
     context = {"questions": questions}
     return render(request, "main/index.html", context)
 

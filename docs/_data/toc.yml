@@ -1,14 +1,19 @@
 - title: Documentation
   url: docs
   links:
+    - title: "About"
+      url: "about"
+      children:
+        - title: Background
+          url: "about"
+        - title: Repository Specification
+          url: "docs/respository-spec"
+    - title: "Getting Started"
+      url: "docs/getting-started"
     - title: "Development"
       url: "docs/development"
       children:
         - title: Overview
           url: "docs/development"
-        - title: Thinking
-          url: "docs/thinking"
-    - title: "About"
-      url: "about"
     - title: "News"
       url: "news"

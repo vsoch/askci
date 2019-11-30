@@ -9,6 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.core.management import call_command
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from askci.apps.main.models import TemplateRepository
 from askci.settings import REPO_TEMPLATES
@@ -81,6 +82,30 @@ def generate_sha256(content):
     if isinstance(content, dict):
         content = json.dumps(content, sort_keys=True).encode("utf-8")
     return "sha256:%s" % hashlib.sha256().hexdigest()
+
+
+# Pagination
+
+
+def get_paginated(request, queryset, per_page=20):
+    """for some queryset, return a number of paginated results. If
+       the page number is invalid, return the first page. If the page
+       is greater than the number that exists, return the last page.
+    """
+    page = request.GET.get("page", 1)
+    paginator = Paginator(queryset, per_page)
+
+    try:
+        objects = paginator.page(page)
+
+    # Return the first page if given invalid input
+    except PageNotAnInteger:
+        objects = paginator.page(1)
+
+    # Return the last page if we go over
+    except EmptyPage:
+        objects = paginator.page(paginator.num_pages)
+    return objects
 
 
 # Json

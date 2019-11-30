@@ -73,8 +73,17 @@ class User(AbstractUser):
     # Ensure that we can add staff / superuser and retain on logout
     objects = CustomUserManager()
 
-    class Meta:
-        app_label = "users"
+    def get_pr(self, article, status=["pending", "open"]):
+        """get a pull request for a user for a specific article, if it exists.
+           by default we look for pending or open status.
+        """
+        from askci.apps.main.models import PullRequest
+
+        user_pr = PullRequest.objects.filter(
+            owner=self, status__in=status, article=article
+        )
+        if len(user_pr) > 0:
+            return user_pr[0]
 
     def has_github_create(self):
         """determine if the user is logged in with adequate GitHub permissions
@@ -84,11 +93,14 @@ class User(AbstractUser):
 
         return get_credentials(self, "github") is not None
 
+    def token(self):
+        return get_usertoken(self)
+
     def get_label(self):
         return "users"
 
-    def token(self):
-        return get_usertoken(self)
+    class Meta:
+        app_label = "users"
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

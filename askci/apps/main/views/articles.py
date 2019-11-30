@@ -15,7 +15,7 @@ from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
 
 from askci.apps.main.models import Article, PullRequest, Tag, TemplateRepository
-from askci.apps.main.utils import lowercase_cleaned_name
+from askci.apps.main.utils import lowercase_cleaned_name, get_paginated
 from askci.apps.main.tasks import update_article
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from askci.apps.main.github import (
@@ -36,9 +36,9 @@ def all_articles(request):
     """Show all articles.
     """
     # Show most recently modified first (will need to limit at some point)
-    articles = Article.objects.order_by("-modified")
-    context = {"articles": articles}
-    return render(request, "articles/all.html", context)
+    article_set = Article.objects.order_by("-modified")
+    articles = get_paginated(request, article_set)
+    return render(request, "articles/all.html", {"articles": articles})
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -65,10 +65,25 @@ def article_details(request, name):
                 {"message": "You must connect with GitHub to make this request."}
             )
 
+        # Markdown is missing
         if not markdown:
             return JsonResponse(
                 {"message": "You must submit some markdown content for review"}
             )
+
+        # Markdown is not changed
+        if markdown == article.text:
+            return JsonResponse(
+                {"message": "You must change the content to request review."}
+            )
+
+        # Each user is only allowed one pending/open PR per article
+        user_pr = request.user.get_pr(article)
+        if user_pr is not None:
+            message = "You already have a review pending for this article!"
+            if user_pr.url is not None:
+                message += " See or edit the pull request at %s" % user_pr.url
+            return JsonResponse({"message": message})
 
         # Set off a task to parse and submit dispatch request
         status_code, pr_id = request_review(request.user, article, markdown)

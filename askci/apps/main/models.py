@@ -170,6 +170,10 @@ class Article(models.Model):
     def html(self):
         return markdown.markdown(self.text)
 
+    @property
+    def uri(self):
+        return "%s/%s" % (self.namespace, self.name)
+
     def lines(self):
         """an iterator for yielding each line (without newlines)
         """

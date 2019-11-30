@@ -35,7 +35,9 @@
         </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="TermsDropdown">
             <a class="dropdown-item" href="{% url 'all_articles' %}">Browse</a>
+            <a class="dropdown-item" href="{% url 'new_article' %}">Create</a>
             <a class="dropdown-item" href="{% url 'search' %}">Search</a>
+            <a class="dropdown-item" href="{% url 'export' %}">Export</a>
           </div>
          </li>
         {% if request.user.is_staff or request.user.is_superuser %}<li class="nav-item dropdown">

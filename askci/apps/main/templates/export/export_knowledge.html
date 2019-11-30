@@ -1,0 +1,38 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+.logo-title {
+  color: #074f66;
+}
+</style>
+
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  {% include "style/spinner.html" %}
+  <div class="row">
+    <div class="col-md-12" style="padding-bottom:20px">
+       <h1>Export Knowledge</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <form action="{% url 'download_repos_csv' %}" id="form" enctype="multipart/form-data" method="POST">
+	{% csrf_token %}
+        <button id="submit-button" type="submit" class="btn btn-primary">Download Repository Listing</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <p class="alert alert-info">Select the articles that you would like to download to json</p>
+      <form action="{% url 'download_articles_json' %}" id="form" enctype="multipart/form-data" method="POST">
+	{% csrf_token %}
+        <select name="article_ids" class="custom-select" multiple>{% for article in articles %}<option value="{{ article.uuid }}">{{ article.name }}</option>{% endfor %}</select>
+	<button id="submit-button" type="submit" class="btn btn-primary">Download Articles Json</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block pagescripts %}
+{% endblock %}
