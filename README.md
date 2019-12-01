@@ -4,8 +4,6 @@
 
 See the [documentation](https://vsoch.github.io/askci/) for getting started.
 
-**under development**
-
 ## Background
 
 I invisioned creating a shared documentation server back in 2017, something I called "The Documentation Octopus" since it would span multiple universities. I started to work on a [server](https://www.github.com/researchapps/helpme-server) that users could submit help requests to,
