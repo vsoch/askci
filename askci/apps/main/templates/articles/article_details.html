@@ -64,6 +64,7 @@ body {
                 <a class="nav-item nav-link active" id="nav-details-tab" data-toggle="tab" href="#nav-details" role="tab" aria-controls="nav-details" aria-selected="true">{{ instance.namespace }}/{{ instance.name }}</a>
                 {% if instance.pullrequest_set.count > 0 %}<a class="nav-item nav-link" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">Review</a>{% endif %}
                 {% if instance.question_set.count > 0 %}<a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="true">Questions</a>{% endif %}
+                {% if instance.example_set.count > 0 %}<a class="nav-item nav-link" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-examples" aria-selected="true">Examples</a>{% endif %}
                 {% if request.user.has_github_create %}<a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab" aria-controls="nav-edit" aria-selected="true"><i class="fas fa-edit"></i></a>{% endif %}
                 <a class="nav-item nav-link" id="nav-github-tab" target="_blank" href="https://github.com/{{ instance.repo.full_name }}" role="tab" aria-controls="nav-github" aria-selected="true"><i style="color:black" class="fab fa-github"></i></a>
             </div>
@@ -100,6 +101,7 @@ body {
                    </div>
                  </div>{% endfor %}
             </div>{% endif %}
+
             {% if instance.question_set.count > 0 %}
             <div class="tab-pane fade" id="nav-questions" 
                  style="margin-top:20px"
@@ -108,12 +110,28 @@ body {
                    <div class="col-md-12">
                      <div class="card">
                        <div class="card-body">
-                          <strong><a class="question-link" href="#{{ question.text }}"> {{ question.pretty }}</a>
+                          <strong><a class="question-link" href="#{{ question.text }}"> {{ question.pretty }}</a></strong>
                        </div>
                      </div>
                    </div>
                  </div>{% endfor %}
             </div>{% endif %}
+
+            {% if instance.example_set.count > 0 %}
+            <div class="tab-pane fade" id="nav-examples" 
+                 style="margin-top:20px"
+                 role="tabpanel" aria-labelledby="nav-examples-tab">
+                 {% for example in instance.example_set.all %}<div class="row">
+                   <div class="col-md-12">
+                     <div class="card">
+                       <div class="card-body">
+                          <strong><a class="question-link" href="#{{ example.text }}"> {{ example.pretty }}</a></strong>
+                       </div>
+                     </div>
+                   </div>
+                 </div>{% endfor %}
+            </div>{% endif %}
+
         </div>
      </div>
   </div>

@@ -134,6 +134,21 @@ To remove the images:
 ./askci.sh rm_dev
 ```
 
+You can also easily use docker-compose directly, which will work from any subfolder:
+
+```bash
+docker-compose restart uwsgi
+docker-compose stop
+docker-compose rm
+```
+
+or use the Makefile to run the linted (required [black](https://black.readthedocs.io/en/stable/)). It skips over migration
+folders.
+
+```bash
+make lint
+```
+
 ## Custom Build
 
 The docker-compose will build the container automatically,

@@ -13,6 +13,7 @@ import askci.apps.main.views as views
 
 urlpatterns = [
     url(r"^articles/?$", views.all_articles, name="all_articles"),
+    url(r"^examples/?$", views.all_examples, name="all_examples"),
     url(r"^export/?$", views.export, name="export"),
     url(r"^e/article/(?P<name>.+)/?$", views.article_details, name="article_details"),
     url(r"^e/tag/(?P<tag>.+)/?$", views.tag_details, name="tag_details"),

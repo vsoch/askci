@@ -68,7 +68,7 @@ quickly see an answer.
 
 ### Examples
 
-This same logic will work for an "examples" tab (not yet implemented) that can return snippets
+This same logic works for an "examples" tab that can return snippets
 of code for the user to see an example for.
 
 ## Logging In

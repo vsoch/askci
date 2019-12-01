@@ -33,9 +33,8 @@ import uuid
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def all_articles(request):
-    """Show all articles.
+    """Show all articles, with most recently modified first
     """
-    # Show most recently modified first (will need to limit at some point)
     article_set = Article.objects.order_by("-modified")
     articles = get_paginated(request, article_set)
     return render(request, "articles/all.html", {"articles": articles})

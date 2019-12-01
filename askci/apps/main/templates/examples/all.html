@@ -1,0 +1,62 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<style type="text/css">
+ .loading {
+   background-color: #515ce6;
+ }
+</style>
+
+<div class="container" style='padding-top:100px'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+  {% include "messages/message.html" %}
+
+  <div class="row" style="padding-bottom:50px">
+    <div class="col-md-12">
+      <a href="{% url 'new_article' %}"><button class="btn btn-primary">New Article</button></a>
+      <a href="{% url 'all_articles' %}"><button class="btn btn-primary">Articles</button></a>
+    </div>
+  </div>
+
+  <div class="infinite-container">
+      {% for example in examples %}
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+              <div class="card-body">
+                 <a href="{{ example.article.get_absolute_url }}"><strong>{{ example.article.name }}</strong></a> {{ example.article.summary | truncatechars:200 }} {% if example.article.summary|length > 200 %}...{% endif %}<a style="float:right" href="{{ example.article.get_absolute_url }}">Read more...</a><br><hr>
+                 <code>{{ example.code2html | safe }}</code>
+              </div>
+           </div>
+          </div>
+      </div>{% endfor %}
+  </div>
+
+  {% if examples.has_next %}
+    <a class="infinite-more-link" href="?page={{ questions.next_page_number }}">More</a>
+  {% endif %}
+
+  <div class="loading" style="display: none;">
+    Loading...
+  </div>
+
+</div>
+{% endblock %}
+{% block pagescripts %}
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+ var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        $('.loading').hide();
+      }
+  });
+});
+</script>
+{% endblock %}

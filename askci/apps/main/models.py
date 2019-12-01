@@ -19,8 +19,10 @@ import time
 
 
 class TemplateRepository(models.Model):
-    """a template repository must be a template, and serves to provide a starter
-       template for creating a documentation file to update the server. The
+    """a template repository serves to provide a starter
+       template for creating a documentation file to update the server. 
+       Note that it isn't actually a GitHub template - we fork it to ensure
+       that the child repository can be updated from the upstream. The
        repository should minimally have a README.md and a testing setup
        to validate tags. See https://github.com/hpsee/askci-template-term.
     """
@@ -88,7 +90,7 @@ class Question(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
-    text = models.TextField(blank=False, null=False, unique=True)
+    text = models.TextField(blank=False, null=False)
     article = models.ForeignKey(
         "Article", on_delete=models.CASCADE, blank=True, null=True
     )
@@ -118,13 +120,74 @@ class Question(models.Model):
         return "%s?" % " ".join(pairs).strip()
 
     def get_absolute_url(self):
-        return reverse("tag_details", args=[self.uuid])
+        return "%s#%s" % (
+            reverse("article_details", args=[self.article.name]),
+            self.text,
+        )
 
     def get_label(self):
         return "question"
 
     class Meta:
         app_label = "main"
+        unique_together = ["article", "text"]
+
+
+class Example(models.Model):
+    """An example corresponds to a block of code to illustrate an idea.
+       If a language is provided or detected, we include it. 
+    """
+
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    created = models.DateTimeField("date created", auto_now_add=True)
+    modified = models.DateTimeField("date modified", auto_now=True)
+    text = models.TextField(blank=False, null=False)
+    code = models.TextField(blank=False, null=False)
+    article = models.ForeignKey(
+        "Article", on_delete=models.CASCADE, blank=True, null=True
+    )
+
+    def __str__(self):
+        return "<Example:%s>" % self.text
+
+    def __repr__(self):
+        return self.__str__()
+
+    def code2html(self):
+        """render code to html, usually for a front end view. 
+        """
+        return markdown.markdown(self.code)
+
+    @property
+    def pretty(self):
+        """pretty print a question, replacing - with spaces and uppercasing
+           each letter of a sentence.
+        """
+        sentences = self.text.replace("-", " ")
+
+        # Get rid of question prefix
+        sentences = re.sub("^example", "", sentences)
+
+        # Pairs of sentences and ending punctuation.
+        pairs = [t for t in re.split("(\.|\!|\?)", sentences) if t]
+        pairs = [
+            " %s" % p.strip().capitalize() if p not in ["!", ".", "?"] else p
+            for p in pairs
+        ]
+        return " ".join(pairs).strip()
+
+    def get_absolute_url(self):
+        return "%s#%s" % (
+            reverse("article_details", args=[self.article.name]),
+            self.text,
+        )
+
+    def get_label(self):
+        return "example"
+
+    class Meta:
+        app_label = "main"
+        unique_together = ["article", "text"]
 
 
 class Article(models.Model):
