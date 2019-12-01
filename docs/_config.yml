@@ -48,7 +48,7 @@ feedback: true
 # If commented, will use material hat theme
 logo: "assets/img/logo.png"
 logo_pixels: 34
-color: "#536090"
+color: "#03a9f4"
 # color: "#8c1515" # primary color for header, buttons
 
 # Build settings
