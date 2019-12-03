@@ -8,8 +8,19 @@ body {
   padding: 0;
 }
 
+.modal-dialog {
+    margin: 20vh auto 0px auto
+}
+
 .btn-rounded {
     border-radius: 10em;
+}
+
+.question-button {
+  float: right;
+  line-height:0;
+  padding-top:5px;
+  cursor: pointer
 }
 
 .description {
@@ -140,13 +151,36 @@ body {
           <span style="float:right"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></span>
       </div>
    </div>
+
+<div class="modal fade" id="modalQuestionForm" tabindex="-1" role="dialog" aria-labelledby="questionModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">What is your question?</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-question prefix grey-text"></i>
+          <input type="text" id="question-field" class="form-control" style="margin-bottom:20px">
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button id="ask-question-button" class="btn btn-default">Insert</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}
 {% block pagescripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-Editor-full.js"></script>
     <script class="code-js">
       var content = [{% for line in instance.lines %}
-        '{{ line | safe }}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}
+        '{{ line | escapejs }}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}
       ].join('\n');
 
       var editor = new tui.Editor({
@@ -168,8 +202,59 @@ body {
           'uml',
           'mark',
           'table'
-        ]
+        ],
+        toolbarItems: [
+          'heading',
+          'bold',
+          'italic',
+          'strike',
+          'divider',
+          'hr',
+          'quote',
+          'divider',
+          'ul',
+          'ol',
+          'task',
+          'indent',
+          'outdent',
+          'divider',
+          'table',
+          'image',
+          'link',
+          'divider',
+          'code',
+          'codeblock',
+          'divider',
+          {
+            type: 'button',
+            options: {
+              $el: $('<div data-toggle="modal" data-target="#modalQuestionForm" class="tui-code tui-toolbar-icons question-button"><i class="fas fa-question"></i></div>'),
+              name: 'AskQuestion',
+              className: '',
+              command: 'AskQuestion',
+              tooltip: 'Insert a question'
+            }
+          } 
+       ]
       });
+
+      // Insert question into text when user asks it
+      $("#ask-question-button").click(function(){
+          question = $("#question-field").val();
+          question = question.replace(/[^0-9a-z ]/gi, '');
+          question = question.toLowerCase().replace(/ /g, '-');
+          console.log(question)
+          if (question != "") {
+              const textObj = editor.getTextObject();
+              const range = editor.getRange();
+              textObj.setEndBeforeRange(range);
+              question = "<span id='question-" + question + "'>\n\n"
+              textObj.replaceContent(question);
+              $('#modalQuestionForm').modal('hide');
+              $("#question-field").val("");
+          }
+      })
+
     </script>
 <script>
 $(document).ready(function() {

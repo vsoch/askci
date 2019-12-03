@@ -66,6 +66,7 @@ These questions are indexed in the database and updated with the articles, meani
 a user can easily search to find an answer, or (via an external tool that works with the API)
 quickly see an answer. 
 
+
 ### Examples
 
 This same logic works for an "examples" tab that can return snippets
@@ -84,7 +85,8 @@ Once we are logged in, we can see our profile (with an API token to use the API)
 
 or an accounts page to delete our account.
 
-![img/profile-delete.png](img/profile-delete.png)
+![img/profile-account.png](img/profile-account.png)
+
 
 ## Edit an Article
 
@@ -99,6 +101,18 @@ you can click submit.
  - Each user is only allowed one open request for review per article at a time
  - The user must be authenticated
 
+
+On the right side, there is an "Add a Question" button. This is how you would embed a question
+into the markdown:
+
+![img/question-button.png](img/question-button.png)
+
+Clicking it will open a modal where you can enter your question. It will be inserted 
+in the markdown at the point where the cursor currently is.
+
+![img/question-markdown.png](img/question-markdown.png)
+
+Upon submit, review, and merge, the question would appear in the list rendered alongside the article.
 
 ## Create a New Article
 
