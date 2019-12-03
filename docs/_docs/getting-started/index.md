@@ -113,6 +113,8 @@ in the markdown at the point where the cursor currently is.
 ![img/question-markdown.png](img/question-markdown.png)
 
 Upon submit, review, and merge, the question would appear in the list rendered alongside the article.
+For more information about the editor, you can read about the <a href="https://github.com/nhn/tui.editor" target="_blank">
+Toast UI Editor</a>. Thank you kindly to the authors for this beautiful editor!
 
 ## Create a New Article
 
