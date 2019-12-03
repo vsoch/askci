@@ -119,7 +119,7 @@ Upon submit, review, and merge, the question would appear in the list rendered a
 When you create a new article, it comes down to forking the [template repository]({{ site.baseurl }}/docs/repository-spec/)
 that is ready to go with workflows to maintain content between the server and repository.
 
-![img/new-article.png](img/new-article.png)
+![img/create-article.png](img/create-article.png)
 
 The server determines the namespaces (e.g., GitHub username and organizations) that the
 authenticated user is allowed to fork to. The user also provides a term, repository name, and summary for the page.
