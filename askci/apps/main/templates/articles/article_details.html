@@ -302,10 +302,12 @@ $(document).ready(function() {
       if ("message" in response) {
          $("#response-messages").text(response['message'])
          $("#response-messages").show();
+         $("#submit-button").text("Thank You!")
       } else {
          $("#response-messages").text()
          $("#response-messages").hide();
       }
+
     })
     .catch(function(response) {
        var response = JSON.stringify(response);

@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.http import Http404, JsonResponse
+from django.urls import reverse
 from ratelimit.decorators import ratelimit
 
 from askci.apps.main.models import Article, PullRequest, Tag, TemplateRepository
@@ -168,7 +169,7 @@ def new_article(request):
                 request,
                 "%s has been created! Refresh the page for updated content." % term,
             )
-            return redirect("article_details", args=(article.name,))
+            return redirect(reverse("article_details", args=[self.article.name]))
 
         # if we get here, there was an error
         messages.warning(request, "There was an error creating %s" % repository)
@@ -288,6 +289,6 @@ def import_article(request):
                 request,
                 "%s has been created! Refresh the page for updated content." % term,
             )
-            return redirect("article_details", args=(article.name,))
+            return redirect(reverse("article_details", args=[self.article.name]))
 
     return redirect("index")
