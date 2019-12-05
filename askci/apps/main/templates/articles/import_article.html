@@ -17,7 +17,7 @@
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" name="REPO_{{ repo.owner.login }}/{{ repo.name }}" class="custom-control-input" id="REPO_{{ repo.owner.login }}/{{ repo.name }}">
                 <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
-            </div>{% endfor %}{% else %}<p class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
+            </div>{% endfor %}{% else %}<p style="martin-top:20px" class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
        </div>
    </div>
    <div class="col-md-2">{% if repos %}
