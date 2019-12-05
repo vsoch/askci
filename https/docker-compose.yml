@@ -1,8 +1,10 @@
 db:
   image: postgres
+  container_name: askci_postgres
 
 uwsgi:
   restart: always
+  container_name: askci_base
   build: .
   volumes:
     - .:/code
@@ -11,13 +13,14 @@ uwsgi:
     #- /etc/passwd:/etc/passwd 
     #- /etc/shadow:/etc/shadow
   env_file:
-    - ./.env
+    - ../.env
   links:
     - redis
     - db
 
 nginx:
   restart: always
+  container_name: askci_nginx
   image: nginx
   ports:
     - "80:80"
@@ -39,11 +42,12 @@ redis:
 
 scheduler:
   build: .
+  container_name: askci_scheduler
   command: python /code/manage.py rqscheduler
   volumes:
     - .:/code
   env_file:
-    - ./.env
+    - ../.env
   volumes_from:
     - uwsgi
   links:
@@ -52,9 +56,10 @@ scheduler:
 
 worker:
   build: .
+  container_name: askci_worker
   command: python /code/manage.py rqworker default
   env_file:
-    - ./.env
+    - ../.env
   volumes:
     - .:/code
   volumes_from:

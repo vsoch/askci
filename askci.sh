@@ -77,8 +77,6 @@ function script_help {
     echo "  Restart containers."; echo;
     printf "${IN_RED}logs <prod|dev>${IN_DEF}\n";
     echo "  View logs."; echo;
-    printf "${IN_RED}uninstall${IN_DEF}\n";
-    echo "  Removes all the content and containers related to AskCI."; echo;
 }
 
 # Prompts user to input something with a message and an example
@@ -214,31 +212,6 @@ function compose_command {
     fi
 }
 
-# Removes environment variables, folders and Docker containers.
-function uninstall {
-    printf "${IN_GRY}This will remove all your files:\n";
-    printf "  - Installed environment variables\n";
-    printf "  - Entered folders for database, deposit, medias, etc\n";
-    printf "  - Docker containers and images\n";
-    printf "  - All your log and pid files${IN_DEF}\n";
-    printf "${IN_RED}Do you confirm?";
-
-    if read_yes_no; then
-        source "$SCRIPTDIR/.env";
-        sudo rm -rf "$DB_FOLDER" "$DEPOSIT_FOLDER" "$STATIC_FOLDER" "$MEDIA_FOLDER";
-        stop;
-        rm_dev;
-        rm_dev_image;
-        rm_prod;
-        rm_prod_image;
-        sudo find "$SCRIPTDIR" -name "*.log" -delete;
-        sudo find "$SCRIPTDIR" -name "*.pid" -delete;
-        rm "$SCRIPTDIR/.env";
-        printf "Uninstalled AskCI.\n";
-    else
-        printf "Uninstallation aborted.\n";
-    fi
-}
 
 # Let's see what user wants.
 if [[ "$1" == "dev" ]]; then
@@ -260,8 +233,6 @@ elif [[ "$1" == "restart" || "$1" == "stop" || "$1" == "logs" || "$1" == "rm" ]]
     else
         echo "You should type in 'prod' or 'dev' after the command.";
     fi
-elif [[ "$1" == "uninstall" ]]; then
-    uninstall;
 else
     script_help;
 fi

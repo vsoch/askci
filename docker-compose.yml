@@ -1,10 +1,10 @@
 db:
   image: postgres
-  container_name: askci_postgres
+  container_name: askci-dev_postgres
 
 uwsgi:
   restart: always
-  container_name: askci_base
+  container_name: askci-dev_base
   build: .
   ports:
     - "8000:8000"
@@ -22,7 +22,7 @@ uwsgi:
 
 nginx:
   restart: always
-  container_name: askci_nginx
+  container_name: askci-dev_nginx
   image: nginx
   ports:
     - "80:80"
@@ -37,12 +37,12 @@ nginx:
 
 redis:
   restart: always
-  container_name: askci_redis
+  container_name: askci-dev_redis
   image: redis:latest
 
 scheduler:
-  image: quay.io/vsoch/freegenes
-  container_name: askci_scheduler
+  build: .
+  container_name: askci-dev_scheduler
   command: python /code/manage.py rqscheduler
   volumes:
     - .:/code
@@ -55,8 +55,8 @@ scheduler:
     - db
 
 worker:
-  image: quay.io/vsoch/freegenes
-  container_name: askci_worker
+  build: .
+  container_name: askci-dev_worker
   command: python /code/manage.py rqworker default
   volumes:
     - .:/code

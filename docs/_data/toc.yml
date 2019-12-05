@@ -10,10 +10,19 @@
           url: "docs/repository-spec/"
     - title: "Getting Started"
       url: "docs/getting-started/"
-    - title: "Development"
+    - title: "Local Development"
       url: "docs/development/"
       children:
         - title: Overview
           url: "docs/development/"
+    - title: "Deployment"
+      url: "docs/deployment/"
+      children:
+        - title: Overview
+          url: "docs/deployment/"
+        - title: Setup
+          url: "docs/deployment/setup/"
+        - title: Https
+          url: "docs/deployment/https/"
     - title: "News"
       url: "news"
