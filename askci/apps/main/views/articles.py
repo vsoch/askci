@@ -232,7 +232,7 @@ def import_article(request):
 
     if request.method == "GET":
         repos = list_repos(request.user)
-        articles = [x.repo_id for x in Article.objects.filter(owner=request.user)]
+        articles = [x.repo_id for x in Article.objects.all()]
         repos = [
             repo
             for repo in repos
