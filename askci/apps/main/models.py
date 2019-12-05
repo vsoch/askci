@@ -231,7 +231,8 @@ class Article(models.Model):
 
     @property
     def html(self):
-        return markdown.markdown(self.text)
+        if self.text:
+            return markdown.markdown(self.text)
 
     @property
     def uri(self):
@@ -240,8 +241,9 @@ class Article(models.Model):
     def lines(self):
         """an iterator for yielding each line (without newlines)
         """
-        for line in self.text.split("\n"):
-            yield line
+        if self.text:
+            for line in self.text.split("\n"):
+                yield line
 
     def save(self, *args, **kwargs):
         """names are enforced as all lowercase to avoid duplication, along

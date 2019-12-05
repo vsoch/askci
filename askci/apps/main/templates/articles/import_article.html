@@ -1,0 +1,46 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <form method="POST" action="{% url 'import_article' %}" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col-md-6">
+        <div class="card" style="padding:50px">
+            <h3 class="title">Import Article Repository</h3>
+            <small>The first selected will be imported</small>
+            {% csrf_token %}
+            {% for repo in repos %}
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" name="REPO_{{ repo.owner.login }}/{{ repo.name }}" class="custom-control-input" id="REPO_{{ repo.owner.login }}/{{ repo.name }}">
+                <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
+            </div>
+            {% endfor %}
+       </div>
+   </div>
+   <div class="col-md-2">{% if repos %}
+       <input id='submit-button' style="width:100%" type='submit' name='submit' class="btn btn-primary"/>{% else %}
+       <p class="alert alert-info">You don't have any askci-term-* repos to import!</p>
+       {% endif %}
+    </div>
+   </div>   
+  </div>
+ </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static "js/jquery.sticky.js" %}"></script>
+<script>
+// User can only select one checkbox. If they mess with code,
+// server will only take first
+$(document).ready(function(){
+
+    // Make the submit button sticky to top
+    $("#submit-button").sticky({topSpacing:50,
+                                zIndex:100});
+})
+</script>
+{% endblock %}

@@ -14,14 +14,15 @@
 
   <div class="row" style="padding-bottom:50px">
     <div class="col-md-12">
-      <a href="{% url 'new_article' %}"><button class="btn btn-primary">New Article</button></a>
-      <a href="{% url 'new_question' %}"><button class="btn btn-primary">New Question</button></a>
-      <a href="{% url 'all_articles' %}"><button class="btn btn-primary">Browse</button></a>
+      <a href="{% url 'new_article' %}"><button class="btn btn-indigo">New Article</button></a>
+      <a href="{% url 'import_article' %}"><button class="btn btn-indigo">Import</button></a>
+      <a href="{% url 'new_question' %}"><button class="btn btn-indigo">New Question</button></a>
+      <a href="{% url 'all_articles' %}"><button class="btn btn-indigo">Browse</button></a>
     </div>
   </div>
 
   <div class="infinite-container">
-      {% for question in questions %}
+      {% if questions %}{% for question in questions %}
       <div class="row infinite-item">
          <div class="col-md-12">
           <div class="card">
@@ -30,13 +31,24 @@
               </div>
            </div>
           </div>
+      </div>{% endfor %}{% else %}{% for article in articles %}
+      <div class="row infinite-item">
+         <div class="col-md-12">
+          <div class="card">
+              <div class="card-body">
+                 <strong><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></strong> {{ question.article.summary | truncatechars:100 }} {% if article.summary|length > 100 %}...{% endif %}<a style="float:right" href="{{ article.get_absolute_url }}">Read more...</a>
+              </div>
+           </div>
+          </div>
       </div>{% endfor %}
+     {% endif %}
   </div>
 
-  {% if questions.has_next %}
+  {% if questions %}{% if questions.has_next %}
     <a class="infinite-more-link" href="?page={{ questions.next_page_number }}">More</a>
-  {% endif %}
-
+  {% endif %}{% else %}{% if articles.has_next %}
+    <a class="infinite-more-link" href="?page={{ articles.next_page_number }}">More</a>
+  {% endif %}{% endif %}
   <div class="loading" style="display: none;">
     Loading...
   </div>

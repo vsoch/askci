@@ -179,9 +179,10 @@ body {
 {% block pagescripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-Editor-full.js"></script>
     <script class="code-js">
-      var content = [{% for line in instance.lines %}
+      {% if instance.text %}var content = [{% for line in instance.lines %}
         '{{ line | escapejs }}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}
-      ].join('\n');
+      ].join('\n');{% else %}
+      var content = ['# {{ instance.name }}'];{% endif %}
 
       var editor = new tui.Editor({
         el: document.querySelector('#editSection'),

@@ -274,6 +274,7 @@ def list_repos(user, headers=None):
     """
     if headers is None:
         headers = get_auth(user)
+
     url = "%s/user/repos" % (api_base)
     repos = paginate(url=url, headers=headers)
 

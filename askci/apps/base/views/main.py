@@ -42,8 +42,10 @@ def index_view(request):
        a paginator here so the user can scroll indefinitely.
     """
     question_set = Question.objects.order_by("-modified")
+    article_set = Question.objects.order_by("-modified")
     questions = get_paginated(request, question_set)
-    context = {"questions": questions}
+    articles = get_paginated(request, article_set)
+    context = {"questions": questions, "articles": articles}
     return render(request, "main/index.html", context)
 
 

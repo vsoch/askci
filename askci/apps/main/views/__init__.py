@@ -1,4 +1,4 @@
-from .articles import new_article, article_details, all_articles
+from .articles import new_article, article_details, all_articles, import_article
 from .examples import all_examples
 from .download import (
     download_articles_json,

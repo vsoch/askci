@@ -80,7 +80,9 @@ DATABASES = {
     }
 }
 
-# Rate Limits
+# Limits
+
+USER_ARTICLES_LIMIT = 100
 
 VIEW_RATE_LIMIT = (
     "50/1d"

@@ -28,9 +28,7 @@
 		    {% for namespace in namespaces %}<option value="{{ namespace }}" {% if forloop.first %}selected{% endif %}>{{ namespace }}</option>{% endfor %}
 		  </select>
 		  </div>
-		    <input type="text" name="repository" class="form-control" id="addRepo" aria-describedby="repoHelp" placeholder="Enter repository name" required>
 		</div>
-		    <small id="repoHelp" class="form-text text-muted">It's suggested to use a prefix like asckci-term-*</small>
                    <button class="btn btn-secondary btn-small" style="float:right" type="submit">Add Article</button>
             </form>
      </div>

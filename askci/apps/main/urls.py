@@ -18,6 +18,7 @@ urlpatterns = [
     url(r"^e/article/(?P<name>.+)/?$", views.article_details, name="article_details"),
     url(r"^e/tag/(?P<tag>.+)/?$", views.tag_details, name="tag_details"),
     url(r"article/new/?$", views.new_article, name="new_article"),
+    url(r"article/import/?$", views.import_article, name="import_article"),
     url(r"question/new/?$", views.new_question, name="new_question"),
     url(r"question/new/(?P<name>.+)/?$", views.new_question, name="new_question"),
     url(r"^download/repos/csv/?$", views.download_repos_csv, name="download_repos_csv"),
