@@ -263,9 +263,17 @@ def import_article(request):
             secret = str(uuid.uuid4())
             webhook = create_webhook(request.user, repo, secret)
 
+            # If there are errors, or can't create, don't continue
             if "errors" in webhook:
                 messages.info(request, "Errors: %s" % webhook["errors"])
-                return redirect("index")
+                return redirect("import_article")
+
+            if "message" in webhook:
+                if webhook["message"] == "Not Found":
+                    messages.info(
+                        request, "You must be an admin on the repository to import it."
+                    )
+                    return redirect("import_article")
 
             # The term is the end of the repository name
             term = reponame.replace("askci-term-", "")
