@@ -39,7 +39,14 @@ SENDGRID_API_KEY = None
 ## IMPORTANT: if/when you switch to https, you need to change "DOMAIN_NAME"
 # to have https, otherwise some functionality will not work
 
-DOMAIN_NAME = "http://127.0.0.1"
+DOMAIN_NAME = os.environ.get("DOMAIN_NAME", "127.0.0.1").strip('"')
+
+# Only allow http for local development
+if "127.0.0.1" in DOMAIN_NAME or "localhost" in DOMAIN_NAME:
+    DOMAIN_NAME = "http://%s" % DOMAIN_NAME
+else:
+    DOMAIN_NAME = "https://%s" % DOMAIN_NAME
+
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 
 ADMINS = (("vsochat", "vsochat@gmail.com"),)
