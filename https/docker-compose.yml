@@ -5,7 +5,7 @@ db:
 uwsgi:
   restart: always
   container_name: askci_base
-  build: .
+  build: ../
   volumes:
     - .:/code
     - ./static:/var/www/static
@@ -41,7 +41,7 @@ redis:
   image: redis:latest
 
 scheduler:
-  build: .
+  build: ../
   container_name: askci_scheduler
   command: python /code/manage.py rqscheduler
   volumes:
@@ -55,7 +55,7 @@ scheduler:
     - db
 
 worker:
-  build: .
+  build: ../
   container_name: askci_worker
   command: python /code/manage.py rqworker default
   env_file:
