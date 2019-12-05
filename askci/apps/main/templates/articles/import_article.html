@@ -11,19 +11,18 @@
         <div class="card" style="padding:50px">
             <h3 class="title">Import Article Repository</h3>
             <small>The first selected will be imported</small>
+            {% if repos %}
             {% csrf_token %}
             {% for repo in repos %}
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" name="REPO_{{ repo.owner.login }}/{{ repo.name }}" class="custom-control-input" id="REPO_{{ repo.owner.login }}/{{ repo.name }}">
                 <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
-            </div>
+            </div>{% else %}<p class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
             {% endfor %}
        </div>
    </div>
    <div class="col-md-2">{% if repos %}
-       <input id='submit-button' style="width:100%" type='submit' name='submit' class="btn btn-primary"/>{% else %}
-       <p class="alert alert-info">You don't have any askci-term-* repos to import!</p>
-       {% endif %}
+       <input id='submit-button' style="width:100%" type='submit' name='submit' class="btn btn-primary"/>{% endif %}
     </div>
    </div>   
   </div>
