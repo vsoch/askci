@@ -9,12 +9,13 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.views.decorators.csrf import csrf_exempt
-from askci.apps.main.github.utils import JsonResponseMessage
+from askci.apps.main.github.utils import JsonResponseMessage, load_body
 from askci.apps.main.github import receive_github_hook
 from askci.apps.main.github.utils import JsonResponseMessage
 from askci.settings import DISABLE_WEBHOOKS
 from askci.apps.users.models import User
 from askci.apps.main.models import PullRequest, Article
+
 import re
 
 
