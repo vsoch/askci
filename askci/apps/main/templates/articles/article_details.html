@@ -302,9 +302,10 @@ $(document).ready(function() {
       if ("message" in response) {
          $("#response-messages").text(response['message'])
          $("#response-messages").show();
-         if (response['message']) == "success" {
-             document.location = "{{ article.get_absolute_url }}";
-         }
+         //if (response['message']) == "success" {
+         //    console.log(
+         //    document.location = "{{ article.get_absolute_url }}";
+         //}
       } else {
          $("#response-messages").text()
          $("#response-messages").hide();
