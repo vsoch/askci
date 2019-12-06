@@ -6,16 +6,23 @@ description: Structure and content of a knowledge repository
 ## Overview
 
 Much of the interaction from the site here is dependent on actions that
-interact with the server defined in the [AskCI repository template](https://github.com/hpsee/askci-template-term).
+interact with the server defined in the [AskCI repository template](https://github.com/hpsee/askci-template-term). **Important**: the organization that serves the template _must_ be
+autheticated with the application, meaning that someone that is an owner
+must give the permission when connecting. If the permission isn't granted,
+using the repository as a template will not work, and creating new articles
+will not work.
 
 ## What is a template?
 
-A template is a GitHub repository that is forked when a new knowledge repository
+A template is a GitHub repository that is used as a template when a new knowledge repository
 is created. It contains examples, and GitHub workflows that ensure that events are
 triggered to update and interact with the repository. We currently
 just have one GitHub template, and this could either be extended, or
 the server could allow for different templates that serve different
-purposes.
+purposes. Although forks would maintain commits, they aren't appropriate to
+use because an organization or user couldn't fork the same repository to his
+or her namespace (with a different name). In practice, the template repository
+just gets renamed.
  
 ## How Does this work?
 

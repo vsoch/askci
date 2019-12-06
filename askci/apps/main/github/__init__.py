@@ -394,11 +394,7 @@ def receive_github_hook(request):
         payload = load_body(request)
         repo = payload.get("repository")
 
-        import pickle
-
-        pickle.dump(payload, open("payload.pkl", "wb"))
-
-        # Retrieve the article (need to test this)
+        # Retrieve the article
         try:
             article = Article.objects.get(repo__full_name=repo["full_name"])
         except Article.DoesNotExist:
@@ -421,9 +417,8 @@ def receive_github_hook(request):
 
         # Update repo metadata that might change
         article.repo = repo
+        article.commit = payload['after']
         article.save()
-
-        # TODO figure out what need from payload to update article
 
         # Submit job with django_rq to update article
         res = django_rq.enqueue(update_article, article_uuid=article.uuid)
