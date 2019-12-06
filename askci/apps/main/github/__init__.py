@@ -387,7 +387,9 @@ def receive_github_hook(request):
 
         # Ping happens on setup
         if event == "ping":
-            return JsonResponseMessage(message="Ping received, no action taken.")
+            return JsonResponseMessage(
+                message="Ping received, no action taken.", status=200
+            )
 
         # But don't allow types beyond push, deploy, pr
         if event not in ["push", "deployment", "pull_request"]:

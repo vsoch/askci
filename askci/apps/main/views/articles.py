@@ -290,10 +290,7 @@ def import_article(request):
 
             webhook = create_webhook(request.user, repo, secret)
             webhook_pr = create_webhook(
-                request.user,
-                repo,
-                secret,
-                events=["pull_request"],
+                request.user, repo, secret, events=["pull_request"]
             )
 
             # Save both to webhooks json object
