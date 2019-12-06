@@ -406,7 +406,9 @@ def receive_github_hook(request):
 
         # Validate the payload with the collection secret
         status = validate_payload(
-            secret=article.secret, payload=request.body, request_signature=signature
+            secret=str(article.secret),
+            payload=request.body,
+            request_signature=signature,
         )
 
         if not status:

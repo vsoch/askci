@@ -136,7 +136,10 @@ def new_article(request):
 
         # Generate the template repository
         repo = copy_repository_template(
-            user=request.user, template=template.repo, repository=repository, description=summary
+            user=request.user,
+            template=template.repo,
+            repository=repository,
+            description=summary,
         )
 
         # The article repo was created!
