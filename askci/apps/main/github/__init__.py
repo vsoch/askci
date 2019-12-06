@@ -259,7 +259,7 @@ def fork_repository(user, template, repository=None):
     return repo
 
 
-def copy_repository_template(user, template, repository):
+def copy_repository_template(user, template, repository, description=None):
     """create a repository from a template, and return content to connect
        to an article. Returns None if not possible. The organization
        for which the template belongs must be authenticated with the repo.
@@ -274,7 +274,7 @@ def copy_repository_template(user, template, repository):
         data = {
             "owner": owner,
             "name": repo,
-            "description": "Documentation repository for AskCI",
+            "description": description or "Documentation repository for AskCI",
         }
         url = "%s/repos/%s/%s/generate" % (api_base, template_owner, template_repo)
         response = requests.post(url, headers=headers, json=data)
