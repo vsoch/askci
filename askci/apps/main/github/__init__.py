@@ -433,10 +433,8 @@ def receive_github_hook(request):
         if not status:
             return JsonResponseMessage(message="Invalid credentials.")
 
-        # Branch must be master
+        # Branch must be master or update/term for pull_request
         branch = payload.get("ref", "refs/heads/master").replace("refs/heads/", "")
-        if branch != "master":
-            return JsonResponseMessage(message="Branch must be master.")
 
         # Update repo metadata that might change
         article.repo = repo
@@ -444,6 +442,10 @@ def receive_github_hook(request):
 
         # Submit job with django_rq to update article
         if event == "pull_request":
+
+            if not branch.startswith("update/term"):
+                return JsonResponseMessage(message="Ignoring branch.", status=200)
+
             res = django_rq.enqueue(
                 update_pullrequest,
                 article_uuid=article.uuid,
@@ -453,6 +455,9 @@ def receive_github_hook(request):
             )
 
         else:
+            if branch != "master":
+                return JsonResponseMessage(message="Ignoring branch.", status=200)
+
             article.commit = payload["after"]
             article.save()
             res = django_rq.enqueue(update_article, article_uuid=article.uuid)

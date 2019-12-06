@@ -67,7 +67,7 @@ def receive_pr_request(request):
                 return JsonResponseMessage(message="Malformed request")
 
         # Only allow master
-        if not branch.startswith('update/term'):
+        if not branch.startswith("update/term"):
             return JsonResponseMessage(message="Invalid request")
 
         # Get the article
