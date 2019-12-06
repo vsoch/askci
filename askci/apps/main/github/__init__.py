@@ -387,6 +387,10 @@ def receive_github_hook(request):
         if event not in ["push", "deployment", "pull_request"]:
             return JsonResponseMessage(message="Incorrect delivery method.")
 
+        # Ping happens on setup
+        if event == "ping":
+            return JsonResponseMessage(message="Ping received, no action taken.")
+
         # A signature is also required
         signature = request.META.get("HTTP_X_HUB_SIGNATURE")
         if not signature:
