@@ -302,7 +302,8 @@ $(document).ready(function() {
       if ("message" in response) {
          $("#response-messages").text(response['message'])
          $("#response-messages").show();
-         $("#submit-button").text("Thank You!")
+         $("#submit-button").text("Thank You!");
+         document.location = "{{ article.get_absolute_url }}";
       } else {
          $("#response-messages").text()
          $("#response-messages").hide();

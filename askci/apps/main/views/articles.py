@@ -102,12 +102,12 @@ def article_details(request, name):
                 pr_id=pr_id, article=article, owner=request.user
             )
 
-            return JsonResponse(
-                {
-                    "message": "Your changes have been submit for review to %s"
-                    % article.repo["full_name"]
-                }
+            message = (
+                "Your changes have been submit for review to %s"
+                % article.repo["full_name"]
             )
+            messages.info(request, message)
+            return JsonResponse({"message": message})
         return JsonResponse({"message": "There was an issue with requesting changes."})
 
     return render(request, "articles/article_details.html", {"instance": article})

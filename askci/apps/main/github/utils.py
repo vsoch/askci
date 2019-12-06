@@ -10,6 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.http import JsonResponse
 import hashlib
+import hmac
 import json
 import requests
 import shutil
