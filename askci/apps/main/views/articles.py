@@ -24,7 +24,7 @@ from askci.settings import (
     USER_ARTICLES_LIMIT,
 )
 from askci.apps.main.github import (
-    get_namespaces,
+    get_admin_namespaces,
     get_repo,
     list_repos,
     fork_repository,
@@ -174,8 +174,8 @@ def new_article(request):
         # if we get here, there was an error
         messages.warning(request, "There was an error creating %s" % repository)
 
-    # username/orgs that the user has permission to create
-    namespaces = get_namespaces(request.user)
+    # username/orgs that the user has admin for (to create webhook)
+    namespaces = get_admin_namespaces(request.user)
 
     context = {"templates": TemplateRepository.objects.all(), "namespaces": namespaces}
     return render(request, "articles/new_article.html", context)
@@ -232,6 +232,10 @@ def import_article(request):
 
     if request.method == "GET":
         repos = list_repos(request.user)
+
+        # Filter down to those with admin permission (webhook create)
+        repos = [r for r in repos if r["permissions"]["admin"]]
+
         articles = [x.repo["id"] for x in Article.objects.all()]
         repos = [
             repo
@@ -259,6 +263,13 @@ def import_article(request):
             # Retrieve the repo fully
             repo = get_repo(request.user, reponame=reponame, username=username)
 
+            # Check again for webhook permission
+            if not repo["permissions"]["admin"]:
+                messages.info(
+                    request, "You must be an admin on the repository to import it."
+                )
+                return redirect("import_article")
+
             # Generate the webhook
             secret = str(uuid.uuid4())
             webhook = create_webhook(request.user, repo, secret)
@@ -267,13 +278,6 @@ def import_article(request):
             if "errors" in webhook:
                 messages.info(request, "Errors: %s" % webhook["errors"])
                 return redirect("import_article")
-
-            if "message" in webhook:
-                if webhook["message"] == "Not Found":
-                    messages.info(
-                        request, "You must be an admin on the repository to import it."
-                    )
-                    return redirect("import_article")
 
             # The term is the end of the repository name
             term = reponame.replace("askci-term-", "")

@@ -114,6 +114,22 @@ def get_repo(user, reponame, username, headers=None):
     return response
 
 
+def get_admin_namespaces(user):
+    """get user namespaces, and then look up which the user has admin access 
+       (to create webhooks)
+    """
+    namespaces = [user.username]
+    headers = get_auth(user)
+
+    url = "%s/user/memberships/orgs" % api_base
+    response = requests.get(url, headers=headers)
+
+    for org in response.json():
+        if org["role"] == "admin":
+            namespaces.append(org["organization"]["login"])
+    return namespaces
+
+
 def get_namespaces(user):
     """for a given user, list the organizations and username (namespaces)
        they have create access to.
@@ -277,11 +293,6 @@ def list_repos(user, headers=None):
 
     url = "%s/user/repos" % (api_base)
     repos = paginate(url=url, headers=headers)
-
-    if not repos:
-        auth_headers = get_auth(user, idx=1)
-        headers.update(auth_headers)
-        repos = paginate(url=url, headers=headers)
     return repos
 
 
