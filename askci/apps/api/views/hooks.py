@@ -15,6 +15,7 @@ from askci.apps.main.github.utils import JsonResponseMessage
 from askci.settings import DISABLE_WEBHOOKS
 from askci.apps.users.models import User
 from askci.apps.main.models import PullRequest, Article
+import re
 
 
 @csrf_exempt

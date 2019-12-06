@@ -24,10 +24,10 @@ from askci.settings import (
     USER_ARTICLES_LIMIT,
 )
 from askci.apps.main.github import (
+    copy_repository_template,
     get_admin_namespaces,
     get_repo,
     list_repos,
-    fork_repository,
     create_webhook,
     request_review,
 )
@@ -135,7 +135,7 @@ def new_article(request):
         template = TemplateRepository.objects.last()
 
         # Generate the template repository
-        repo = fork_repository(
+        repo = copy_repository_template(
             user=request.user, template=template.repo, repository=repository
         )
 
@@ -172,7 +172,12 @@ def new_article(request):
             return redirect(reverse("article_details", args=[self.article.name]))
 
         # if we get here, there was an error
-        messages.warning(request, "There was an error creating %s" % repository)
+        messages.warning(
+            request,
+            "There was an error creating %s. " % repository,
+            "Make sure that the template %s organization " % template.repo,
+            "is authenticated with the application here.",
+        )
 
     # username/orgs that the user has admin for (to create webhook)
     namespaces = get_admin_namespaces(request.user)

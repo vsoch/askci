@@ -261,8 +261,8 @@ def fork_repository(user, template, repository=None):
 
 def copy_repository_template(user, template, repository):
     """create a repository from a template, and return content to connect
-       to an article. Returns None if not possible. NOTE: this is not
-       currently working - the API returns 404 when it should not.
+       to an article. Returns None if not possible. The organization
+       for which the template belongs must be authenticated with the repo.
     """
     if user.has_github_create():
         headers = get_auth(user)
@@ -277,7 +277,9 @@ def copy_repository_template(user, template, repository):
             "description": "Documentation repository for AskCI",
         }
         url = "%s/repos/%s/%s/generate" % (api_base, template_owner, template_repo)
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, json=data)
+        if response.status_code in [200, 201]:
+            return response.json()
 
 
 def list_repos(user, headers=None):
