@@ -294,7 +294,6 @@ def import_article(request):
                 repo,
                 secret,
                 events=["pull_request"],
-                reverse_url="receive_pr_hook",
             )
 
             # Save both to webhooks json object
