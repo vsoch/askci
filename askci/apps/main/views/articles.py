@@ -145,9 +145,16 @@ def new_article(request):
         # The article repo was created!
         if repo:
 
-            # Generate the webhook
+            # Generate the webhooks (push/deployment and pull request)
             secret = str(uuid.uuid4())
+
             webhook = create_webhook(request.user, repo, secret)
+            webhook_pr = create_webhook(
+                request.user, repo, secret, events=["pull_request"]
+            )
+
+            # Save both to webhooks json object
+            webhooks = {"push-deploy": webhook, "pull_request": webhook_pr}
 
             if "errors" in webhook:
                 messages.info(request, "Errors: %s" % webhook["errors"])
@@ -158,7 +165,7 @@ def new_article(request):
                 name=term,
                 owner=request.user,
                 secret=secret,
-                webhook=webhook,
+                webhook=webhooks,
                 repo=repo,
                 summary=summary,
             )
@@ -280,7 +287,18 @@ def import_article(request):
 
             # Generate the webhook
             secret = str(uuid.uuid4())
+
             webhook = create_webhook(request.user, repo, secret)
+            webhook_pr = create_webhook(
+                request.user,
+                repo,
+                secret,
+                events=["pull_request"],
+                reverse_url="receive_pr_hook",
+            )
+
+            # Save both to webhooks json object
+            webhooks = {"push-deploy": webhook, "pull_request": webhook_pr}
 
             # If there are errors, or can't create, don't continue
             if "errors" in webhook:
@@ -295,7 +313,7 @@ def import_article(request):
                 name=term,
                 owner=request.user,
                 secret=secret,
-                webhook=webhook,
+                webhook=webhooks,
                 repo=repo,
                 summary=repo["description"],
             )

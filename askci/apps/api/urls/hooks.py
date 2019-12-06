@@ -12,7 +12,8 @@ from django.conf.urls import url
 import askci.apps.api.views as views
 
 urlpatterns = [
-    url(r"^hook/push/?$", views.receive_hook, name="receive_hook"),
+    # Receives push, deploy, pull_request
+    url(r"^hook/push/?$", views.receive_push_hook, name="receive_hook"),
     url(
         r"^hook/receive_pr_request/?$",
         views.receive_pr_request,

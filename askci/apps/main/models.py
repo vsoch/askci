@@ -284,7 +284,9 @@ class PullRequest(models.Model):
         ("open", "open"),
     ]
 
+    # PR ID is originally given on the review request, and number is the official number
     pr_id = models.UUIDField(default=uuid.uuid4)
+    number = models.PositiveIntegerField(default=None, blank=True, null=True)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)

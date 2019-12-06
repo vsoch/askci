@@ -28,9 +28,6 @@ def receive_hook(request):
         if re.search("GitHub-Hookshot", request.META["HTTP_USER_AGENT"]) is not None:
             return receive_github_hook(request)
 
-        # TODO: this function also needs an indicator if it came from a closed PR
-        # If so, get the pull request object, delete.
-
     return JsonResponseMessage(message="Invalid request.")
 
 
@@ -77,6 +74,14 @@ def receive_pr_request(request):
         if DISABLE_WEBHOOKS:
             return JsonResponseMessage(message="Webhooks disabled")
 
+        # Parse the body
+        payload = load_body(request)
+        import pickle
+
+        pickle.dump(payload, open("receive_pr_request.pkl", "wb"))
+        print(payload)
+        print(request.META)
+
         if not re.search("AskCI", request.META["HTTP_USER_AGENT"]):
             return JsonResponseMessage(message="Agent not allowed")
 
@@ -86,16 +91,15 @@ def receive_pr_request(request):
 
         # TODO check that coming from GitHub server
 
-        # Parse the body
-        payload = load_body(request)
-        print(payload)
-
         article = payload.get("article")
         branch = payload.get("branch")
         title = payload.get("title")
         owner = payload.get("owner")
         user = payload.get("user")
         url = payload.get("url")
+
+        # The number is the last part of the url
+        number = int(url.split("/")[-1])
 
         for var in [article, branch, title, owner, user, url]:
             if not var:
@@ -140,6 +144,7 @@ def receive_pr_request(request):
 
         # Update pull request to be open
         pr.status = "open"
+        pr.number = number
         pr.pr_id = None
         pr.url = url
         pr.save()

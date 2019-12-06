@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.conf import settings
-from askci.apps.main.models import Article, Question, Example
+from askci.apps.main.models import Article, Question, Example, PullRequest
 
 from bs4 import BeautifulSoup
 from itertools import chain
@@ -35,6 +35,38 @@ def remove_language(code):
     return code
 
 
+def update_pullrequest(article_uuid, number, action, merged_at):
+    """Given a PR action, url, and an article uuid, update a Pull Request object for it.
+       https://developer.github.com/v3/activity/events/types/#pullrequestevent
+    """
+    try:
+        article = Article.objects.get(uuid=article_uuid)
+    except Article.DoesNotExist:
+        return
+
+    # Get associated pull request - at this point we have replaced the uuid with a number
+    try:
+        pull_request = article.pullrequest_set.get(number=number)
+    except PullRequest.DoesNotExist:
+        return
+
+    # Case 1: no change of PR status required
+    # ["assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled"]:
+    if action in ["opened", "edited", "ready_for_review", "reopened"]:
+        pull_request.status = "open"
+
+    elif action in ["closed"]:
+
+        # The repository wasn't merged
+        if not merged_at:
+            pull_request.status = "reject"
+        else:
+            pull_request.status = "closed"
+
+    print(pull_request.status)
+    pull_request.save()
+
+
 def update_article(article_uuid):
     """take a request and an associated article, and grab
        the latest README to update content on the site.
@@ -42,7 +74,7 @@ def update_article(article_uuid):
     try:
         article = Article.objects.get(uuid=article_uuid)
     except Article.DoesNotExist:
-        pass
+        return
 
     # Formulate the url for raw github content
     url = (

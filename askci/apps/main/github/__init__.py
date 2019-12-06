@@ -13,7 +13,7 @@ from django.urls import reverse
 
 import django_rq
 
-from askci.apps.main.tasks import update_article
+from askci.apps.main.tasks import update_article, update_pullrequest
 from askci.apps.users.models import User
 from askci.apps.main.models import Article
 from askci.settings import DISABLE_WEBHOOKS, DOMAIN_NAME
@@ -301,7 +301,9 @@ def list_repos(user, headers=None):
 # Webhooks
 
 
-def create_webhook(user, repo, secret):
+def create_webhook(
+    user, repo, secret, events=["push", "deployment"], reverse_url="receive_hook"
+):
     """create_webhook will create a webhook for a repo to send back
        to askci on push.
 
@@ -315,15 +317,10 @@ def create_webhook(user, repo, secret):
     if user.has_github_create():
         headers = get_auth(user)
         url = "%s/repos/%s/hooks" % (api_base, repo["full_name"])
-        callback_url = "%s%s/" % (DOMAIN_NAME.strip("/"), reverse("receive_hook"))
+        callback_url = "%s%s/" % (DOMAIN_NAME.strip("/"), reverse(reverse_url))
         config = {"url": callback_url, "content_type": "json", "secret": secret}
 
-        params = {
-            "name": "web",
-            "active": True,
-            "events": ["push", "deployment"],
-            "config": config,
-        }
+        params = {"name": "web", "active": True, "events": events, "config": config}
 
         # Create webhook
         response = POST(url, headers=headers, data=params)
@@ -359,9 +356,13 @@ def delete_webhook(user, repo, hook_id):
 
 @csrf_exempt
 def receive_github_hook(request):
-    """a hook is sent on each push event, meaning that the content for
-       the repository has been updated (and has passed tests). When this
-       happens, we 
+    """a hook is sent on some set of events, specifically:
+
+          push/deploy: indicates that the content for the repository changed
+          pull_request: there is an update to a pull request.
+
+         This function checks that (globally) the event is valid, and if
+         so, runs a function depending on the event.
     """
     # We do these checks again for sanity
     if request.method == "POST":
@@ -381,8 +382,9 @@ def receive_github_hook(request):
         if not check_headers(request, required_headers):
             return JsonResponseMessage(message="Agent not allowed")
 
-        # Has to be a push or deployment
-        if request.META["HTTP_X_GITHUB_EVENT"] not in ["push", "deployment"]:
+        # Has to be a push, deployment, or pull_request
+        event = request.META["HTTP_X_GITHUB_EVENT"]
+        if event not in ["push", "deployment", "pull_request"]:
             return JsonResponseMessage(message="Incorrect delivery method.")
 
         # A signature is also required
@@ -417,11 +419,22 @@ def receive_github_hook(request):
 
         # Update repo metadata that might change
         article.repo = repo
-        article.commit = payload['after']
         article.save()
 
         # Submit job with django_rq to update article
-        res = django_rq.enqueue(update_article, article_uuid=article.uuid)
+        if event == "pull_request":
+            res = django_rq.enqueue(
+                update_pullrequest,
+                article_uuid=article.uuid,
+                action=payload["action"],
+                number=payload["number"],
+                merged_at=payload["pull_request"]["merged_at"],
+            )
+
+        else:
+            article.commit = payload["after"]
+            article.save()
+            res = django_rq.enqueue(update_article, article_uuid=article.uuid)
 
         return JsonResponseMessage(
             message="Hook received and parsing.", status=200, status_message="Received"
