@@ -30,7 +30,7 @@
       {% for article in articles %}
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
+          <div class="card" style="margin-bottom: 5px">
               <div class="card-body">
                  <a href="{{ article.get_absolute_url }}"><strong>{{ article.name }}</strong></a> {{ article.summary | truncatechars:200 }} {% if article.summary|length > 200 %}...{% endif %}<a style="float:right" href="{{ article.get_absolute_url }}">Read more...</a>
               </div>

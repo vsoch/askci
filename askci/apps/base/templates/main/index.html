@@ -36,7 +36,7 @@
       {% if questions %}{% for question in questions %}
       <div class="row infinite-item">
          <div class="col-md-12">
-          <div class="card">
+          <div class="card" style="margin-bottom: 5px">
               <div class="card-body">
                  <strong><a href="{{ question.article.get_absolute_url }}">{{ question.article.name }}</a></strong> {{ question.article.summary | truncatechars:100 }} {% if article.summary|length > 100 %}...{% endif %} <span style="margin-left:30px; font-style:italic; color:darkviolet">{{ question.pretty }}<span><a style="float:right" href="{{ question.article.get_absolute_url }}#{{ question.text }}">Read more...</a>
               </div>
@@ -46,7 +46,7 @@
      {% for article in articles %}
       <div class="row infinite-item">
          <div class="col-md-12">
-          <div class="card">
+          <div class="card" style="margin-bottom: 5px">
               <div class="card-body">
                  <strong><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></strong> {{ question.article.summary | truncatechars:100 }} {% if article.summary|length > 100 %}...{% endif %}<a style="float:right" href="{{ article.get_absolute_url }}">Read more...</a>
               </div>
