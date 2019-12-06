@@ -203,9 +203,7 @@ class Article(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
-    namespace = models.CharField(
-        max_length=250, blank=False, unique=True, default="library"
-    )
+    namespace = models.CharField(max_length=250, blank=False, default="library")
     name = models.CharField(max_length=250, blank=False, unique=True)
     commit = models.CharField(max_length=250, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)

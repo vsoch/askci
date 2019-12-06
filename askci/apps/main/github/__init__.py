@@ -240,7 +240,7 @@ def fork_repository(user, template, repository=None):
                 data = {"organization": owner}
 
         url = "%s/repos/%s/%s/forks" % (api_base, repo_owner, repo_name)
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, json=data)
 
         # Success?
         if response.status_code in [200, 202, 201]:
