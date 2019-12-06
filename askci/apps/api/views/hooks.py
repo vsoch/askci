@@ -10,7 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.views.decorators.csrf import csrf_exempt
 from askci.apps.main.github.utils import JsonResponseMessage, load_body
-from askci.apps.main.github import receive_github_hook
+from askci.apps.main.github import receive_github_hook, get_meta
 from askci.apps.main.github.utils import JsonResponseMessage
 from askci.settings import DISABLE_WEBHOOKS
 from askci.apps.users.models import User
@@ -75,6 +75,10 @@ def receive_pr_request(request):
         if DISABLE_WEBHOOKS:
             return JsonResponseMessage(message="Webhooks disabled")
 
+        # Ensure that coming from a GitHub server
+        meta = get_meta()
+        github_ip = meta.get
+
         # Parse the body
         payload = load_body(request)
         import pickle
@@ -86,11 +90,11 @@ def receive_pr_request(request):
         if not re.search("AskCI", request.META["HTTP_USER_AGENT"]):
             return JsonResponseMessage(message="Agent not allowed")
 
-        # Only allow application/json content type
-        if request.META["CONTENT_TYPE"] != "application/json":
+        if request.META["CONTENT_TYPE"] not in [
+            "application/json",
+            "application/x-www-form-urlencoded",
+        ]:
             return JsonResponseMessage(message="Incorrect content type")
-
-        # TODO check that coming from GitHub server
 
         article = payload.get("article")
         branch = payload.get("branch")
@@ -137,6 +141,7 @@ def receive_pr_request(request):
         except PullRequest.DoesNotExist:
             return JsonResponseMessage(message="Invalid request")
 
+        # Ensure that the pr_id is provided in the header, can only be used once
         if pr.pr_id not in request.META["Authorization"]:
             return JsonResponseMessage(message="Invalid request")
 

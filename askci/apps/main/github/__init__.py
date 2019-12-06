@@ -85,6 +85,19 @@ def get_auth_token(user):
         return auth[0].access_token
 
 
+# Meta
+
+
+def get_meta():
+    """return meta endpoint, allowing to ensure requests are from GitHub
+       servers. See https://developer.github.com/v3/meta/
+    """
+    url = "%s/meta" % api_base
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+
+
 # Repositories
 
 

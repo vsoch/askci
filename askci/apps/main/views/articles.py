@@ -102,9 +102,10 @@ def article_details(request, name):
                 pr_id=pr_id, article=article, owner=request.user
             )
 
-            messages.info(request, 
+            messages.info(
+                request,
                 "Your changes have been submit for review to %s"
-                % article.repo["full_name"]
+                % article.repo["full_name"],
             )
             return JsonResponse({"message": "success"})
         return JsonResponse({"message": "There was an issue with requesting changes."})
