@@ -56,7 +56,7 @@ def update_pullrequest(article_uuid, number, url, user, action, merged_at):
         pull_request = article.pullrequest_set.get(number=number)
     except PullRequest.DoesNotExist:
         if action == "opened":
-            pr = PullRequest.objects.create(
+            pull_request, created = PullRequest.objects.get_or_create(
                 article=article, owner=user, number=number, url=url
             )
         else:
