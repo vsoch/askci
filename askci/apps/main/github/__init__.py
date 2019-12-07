@@ -13,7 +13,7 @@ from django.urls import reverse
 
 import django_rq
 
-from askci.apps.main.tasks import update_article, update_pullrequest
+from askci.apps.main.tasks import repository_change, update_article, update_pullrequest
 from askci.apps.users.models import User
 from askci.apps.main.models import Article
 from askci.settings import DISABLE_WEBHOOKS, DOMAIN_NAME
@@ -420,6 +420,10 @@ def receive_github_hook(request):
         except Article.DoesNotExist:
             return JsonResponseMessage(message="Article not found", status=404)
 
+        # Don't continue if the repository is archived (this shouldn't happen)
+        if article.archived:
+            return JsonResponseMessage(message="Repository is archived.")
+
         # Validate the payload with the collection secret
         status = validate_payload(
             secret=str(article.secret),
@@ -459,13 +463,17 @@ def receive_github_hook(request):
                 merged_at=payload["pull_request"]["merged_at"],
             )
 
-        else:
+        elif event in ["push", "deployment"]:
             if branch != "master":
                 return JsonResponseMessage(message="Ignoring branch.", status=200)
 
             article.commit = payload["after"]
             article.save()
             res = django_rq.enqueue(update_article, article_uuid=article.uuid)
+
+        elif event == "repository":
+            # what do we need here?
+            res = django_rq.enqueue(repository_change, article_uuid=article.uuid)
 
         return JsonResponseMessage(
             message="Hook received and parsing.", status=200, status_message="Received"

@@ -200,6 +200,7 @@ class Article(models.Model):
     """
 
     secret = models.UUIDField(default=uuid.uuid4)
+    archived = models.BooleanField(default=False)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
@@ -238,7 +239,7 @@ class Article(models.Model):
     @property
     def pull_requests(self):
         """order pull requests by date their were modified"""
-        return self.pullrequest_set.order_by('-modified')
+        return self.pullrequest_set.order_by("-modified")
 
     @property
     def uri(self):

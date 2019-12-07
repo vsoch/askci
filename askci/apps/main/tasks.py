@@ -36,6 +36,37 @@ def remove_language(code):
     return code
 
 
+def repository_change(article_uuid, action, repo):
+    """triggered when a user renames a repository. When a rename happens,
+       previous webhooks / other tests are maintained, but we need to 
+       update the metadata here. See:
+
+       https://developer.github.com/v3/activity/events/types/#repositoryevent
+    """
+    try:
+        article = Article.objects.get(uuid=article_uuid)
+    except Article.DoesNotExist:
+        return
+
+    article.repo = repo
+
+    # Not archived
+    if action in ["created", "unarchived", "publicized"]:
+        article.archived = False
+
+    # Reason for archive
+    elif action in ["deleted", "archived", "privatized"]:
+        article.archived = True
+
+    # If repository is renamed, must begin with "askci-term" or is archived
+    elif action in ["renamed"]:
+        if not repo["name"].startswith("askci-term-"):
+            article.archived = True
+
+    # We ignore edited and transferred, the previous owner still collaborator
+    article.save()
+
+
 def update_pullrequest(article_uuid, number, url, user, action, merged_at):
     """Given a PR action, url, and an article uuid, update a Pull Request object for it.
        https://developer.github.com/v3/activity/events/types/#pullrequestevent

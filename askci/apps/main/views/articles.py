@@ -152,8 +152,17 @@ def new_article(request):
                 request.user, repo, secret, events=["pull_request"]
             )
 
+            # repository event triggered when renamed, etc.
+            webhook_repo = create_webhook(
+                request.user, repo, secret, events=["repository"]
+            )
+
             # Save both to webhooks json object
-            webhooks = {"push-deploy": webhook, "pull_request": webhook_pr}
+            webhooks = {
+                "push-deploy": webhook,
+                "pull_request": webhook_pr,
+                "repository": webhook_repo,
+            }
 
             if "errors" in webhook:
                 messages.info(request, "Errors: %s" % webhook["errors"])
@@ -294,8 +303,17 @@ def import_article(request):
                 request.user, repo, secret, events=["pull_request"]
             )
 
+            # repository event triggered when renamed, etc.
+            webhook_repo = create_webhook(
+                request.user, repo, secret, events=["repository"]
+            )
+
             # Save both to webhooks json object
-            webhooks = {"push-deploy": webhook, "pull_request": webhook_pr}
+            webhooks = {
+                "push-deploy": webhook,
+                "pull_request": webhook_pr,
+                "repository": webhook_repo,
+            }
 
             # If there are errors, or can't create, don't continue
             if "errors" in webhook:
