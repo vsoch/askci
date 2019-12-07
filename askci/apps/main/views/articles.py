@@ -17,7 +17,7 @@ from ratelimit.decorators import ratelimit
 
 from askci.apps.main.models import Article, PullRequest, Tag, TemplateRepository
 from askci.apps.main.utils import lowercase_cleaned_name, get_paginated
-from askci.apps.main.tasks import update_article
+from askci.apps.main.tasks import update_article, test_markdown
 from askci.settings import (
     VIEW_RATE_LIMIT as rl_rate,
     VIEW_RATE_LIMIT_BLOCK as rl_block,
@@ -84,6 +84,11 @@ def article_details(request, name):
             return JsonResponse(
                 {"message": "You must change the content to request review."}
             )
+
+        # Markdown is invalid
+        valid, message = test_markdown(markdown)
+        if not valid:
+            return JsonResponse({"message": message})
 
         # Each user is only allowed one pending/open PR per article
         user_pr = request.user.get_pr(article)

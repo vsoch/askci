@@ -89,6 +89,9 @@ def update_pullrequest(article_uuid, number, url, user, action, merged_at):
 def update_article(article_uuid):
     """take a request and an associated article, and grab
        the latest README to update content on the site.
+       If the content isn't valid, we don't update. The same test
+       is done when the user submits **and** with a GitHub workflow,
+       so this case is unlikely (but maybe possible).
     """
     try:
         article = Article.objects.get(uuid=article_uuid)
@@ -101,9 +104,15 @@ def update_article(article_uuid):
         % article.repo["full_name"]
     )
     content = requests.get(url).text
-    html = markdown.markdown(content)
+
+    # Test markdown first - don't continue if not valid
+    valid, message = test_markdown(content)
+    if not valid:
+        print("Markdown is invalid: %s" % message)
+        return
 
     # Parse the content for questions
+    html = markdown.markdown(content)
     soup = BeautifulSoup(html, "lxml")
 
     # Supported span prefixes
@@ -150,3 +159,38 @@ def update_article(article_uuid):
 
     article.text = content
     article.save()
+
+
+def test_markdown(text):
+    """Given markdown text from a post, ensure that the spans are correct.
+       If not, return to user with an error message.
+    """
+    html = markdown.markdown(text)
+
+    # Convert to beautiful soup
+    soup = BeautifulSoup(html, "lxml")
+
+    # Supported span prefixes
+    prefixes = ["question", "example"]
+    prefix_regex = "^(%s)" % "|".join(prefixes)
+
+    # Ensure that each span is all lowercase, with no extra characters
+    for span in soup.find_all("span"):
+
+        # The span is required to have an id
+        identifier = span.attrs.get("id")
+        if not identifier:
+            return False, "Span %s is missing an identifier." % span
+
+        # The span id must start with a valid prefix
+        if not re.search(prefix_regex, identifier):
+            return False, "Span %s does not start with %s" % (identifier, prefix_regex)
+
+        # The span id must have all lowercase, no special characters or spaces
+        if re.search("[^A-Za-z0-9-]+", identifier):
+            return (
+                False,
+                "Span %s is invalid: can only have lowercase and '-'" % identifier,
+            )
+
+    return True, "Valid"

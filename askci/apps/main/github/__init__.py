@@ -447,7 +447,7 @@ def receive_github_hook(request):
                 return JsonResponseMessage(message="Ignoring branch.", status=200)
 
             # Requesting user is derived from branch
-            user = branch.replace("update/term-", "").split('-')[0]
+            user = branch.replace("update/term-", "").split("-")[0]
 
             res = django_rq.enqueue(
                 update_pullrequest,
