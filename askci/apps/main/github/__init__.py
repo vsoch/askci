@@ -403,7 +403,7 @@ def receive_github_hook(request):
             )
 
         # But don't allow types beyond push, deploy, pr
-        if event not in ["push", "deployment", "pull_request"]:
+        if event not in ["push", "deployment", "pull_request", "repository"]:
             return JsonResponseMessage(message="Incorrect delivery method.")
 
         # A signature is also required
