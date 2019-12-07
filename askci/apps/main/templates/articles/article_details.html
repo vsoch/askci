@@ -88,7 +88,7 @@ body {
             <div class="tab-pane fade show active tui-editor-contents article"
                  style="padding: 30px;"
                  id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
-              <div id="textarea">{{ instance.text }}</div>
+              <div id="textarea" hidden>{{ instance.text }}</div>
             </div>
             {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
                                                         style="margin-top:20px"
@@ -300,6 +300,7 @@ $(document).ready(function() {
   textarea = document.getElementById("textarea");
   html = tui.Editor.markdownitHighlight.render(textarea.textContent);
   $("#textarea").html(html);
+  $("#textarea").attr("hidden", false);
 
   {% if articles.count > 1 %}$("#insert-article-button").click(function(event) {
      event.preventDefault();
