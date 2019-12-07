@@ -98,7 +98,7 @@ body {
             {% if instance.pullrequest_set.count > 0 %}<div class="tab-pane fade" id="nav-review" 
                                                         style="margin-top:20px"
                                                         role="tabpanel" aria-labelledby="nav-review-tab">
-                 {% for pr in instance.pullrequest_set.all %}<div class="row">
+                 {% for pr in instance.pull_requests %}<div class="row">
                    <div class="col-md-12">
                      <div class="card">
                        <div class="card-body">

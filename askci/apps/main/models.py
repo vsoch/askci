@@ -236,6 +236,11 @@ class Article(models.Model):
             return markdown.markdown(self.text)
 
     @property
+    def pull_requests(self):
+        """order pull requests by date their were modified"""
+        return self.pullrequest_set.order_by('-modified')
+
+    @property
     def uri(self):
         return "%s/%s" % (self.namespace, self.name)
 
