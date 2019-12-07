@@ -102,7 +102,7 @@ body {
                    <div class="col-md-12">
                      <div class="card">
                        <div class="card-body">
-                          {% if pr.url %}<a href="{{ pr.url }}">{% endif %}<strong><span style="margin-right:30px" class="badge badge-{% if pr.status == 'pending' %}primary{% elif pr.status == 'closed' %}danger{% elif pr.status == 'reject' %}danger{% else %}success{% endif %}">{{ pr.status }}</span></strong>{% if pr.url %}</a>{% endif %} submit by {{ pr.owner.username }} on {{ pr.created }} {% if pr.url %}<a style="float:right" href="{{ pr.url }}">View on GitHub</a>{% endif %}
+                          {% if pr.url %}<a href="{{ pr.url }}" target="_blank">{% endif %}<strong><span style="margin-right:30px" class="badge badge-{% if pr.status == 'pending' %}primary{% elif pr.status == 'closed' %}danger{% elif pr.status == 'reject' %}danger{% else %}success{% endif %}">{{ pr.status }}</span></strong>{% if pr.url %}</a>{% endif %} submit by {{ pr.owner.username }} on {{ pr.created }} {% if pr.url %}<a style="float:right" href="{{ pr.url }}">View on GitHub</a>{% endif %}
                        </div>
                      </div>
                    </div>
