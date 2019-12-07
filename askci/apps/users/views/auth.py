@@ -91,7 +91,6 @@ def redirect_if_no_refresh_token(backend, response, social, *args, **kwargs):
 class GithubReadOnlyOAuth2(GithubOAuth2):
     name = "github-readonly"
 
-
 def get_credentials(user, provider):
     """return one or more credentials, or None"""
     credential = None

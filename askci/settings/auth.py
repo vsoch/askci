@@ -15,6 +15,7 @@ AUTHENTICATION_BACKENDS = (
     "social_core.backends.bitbucket.BitbucketOAuth2",
     "social_core.backends.facebook.FacebookOAuth2",
     "social_core.backends.github.GithubOAuth2",
+    "askci.apps.users.views.auth.GithubReadOnlyOAuth2",
     "social_core.backends.gitlab.GitLabOAuth2",
     "social_core.backends.globus.GlobusOpenIdConnect",
     "social_core.backends.google.GoogleOAuth2",

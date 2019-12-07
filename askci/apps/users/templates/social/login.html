@@ -33,7 +33,7 @@
 
         <a class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Login with Github</a>
 
-        <a class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}">Github (viewer only)</a>
+        <a class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (viewer only)</a>
 
         {% if ENABLE_GITLAB_AUTH %}<a class="social-button" id="gitlab-connect" href="{% url 'social:begin' 'gitlab' %}?next={{ domain }}{{ request.path }}">Login with Gitlab</a>{% endif %}
 
