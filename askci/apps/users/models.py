@@ -90,7 +90,6 @@ class User(AbstractUser):
            to create repositories (not github-readonly)
         """
         from askci.apps.users.views import get_credentials
-
         return get_credentials(self, "github") is not None
 
     def token(self):

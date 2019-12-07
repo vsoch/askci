@@ -13,9 +13,9 @@
   {% include "messages/message.html" %}
 
   <div class="row" style="padding-bottom:50px">
-    <div class="col-md-12">
+    <div class="col-md-12">{% if request.user.has_github_create %}
       <a href="{% url 'new_article' %}"><button class="btn btn-primary">New Article</button></a>
-      <a href="{% url 'import_article' %}"><button class="btn btn-primary">Import Article</button></a>
+      <a href="{% url 'import_article' %}"><button class="btn btn-primary">Import Article</button></a>{% endif %}
     </div>
   </div>
 

@@ -13,9 +13,9 @@
   {% include "messages/message.html" %}
 
   <div class="row" style="padding-bottom:50px">
-    <div class="col-md-12">
+    <div class="col-md-12">{% if request.user.has_github_create %}
       <a href="{% url 'new_article' %}"><button class="btn btn-indigo">New Article</button></a>
-      <a href="{% url 'new_question' %}"><button class="btn btn-indigo">New Question</button></a>
+      <a href="{% url 'new_question' %}"><button class="btn btn-indigo">New Question</button></a>{% endif %}
       <a href="{% url 'all_articles' %}"><button class="btn btn-indigo">Browse</button></a>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
   {% if not articles and not questions %}<div class="row">
     <div class="col-md-12">
-      <p class="alert alert-info">There aren't any articles. How about <a href="{% url 'new_article' %}">creating</a> a new one or <a href="{% url 'import_article' %}">importing</a> an existing one?</p>    
+      <p class="alert alert-info">There aren't any questions. How about <a href="{% url 'new_article' %}">creating</a> a new one or <a href="{% url 'import_article' %}">importing</a> an existing one?</p>    
     </div>
   </div>{% endif %}
 
