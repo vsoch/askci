@@ -23,7 +23,7 @@ urlpatterns = [
     url(r"question/new/(?P<name>.+)/?$", views.new_question, name="new_question"),
     url(r"^download/repos/csv/?$", views.download_repos_csv, name="download_repos_csv"),
     url(
-        r"^download/article/txt/(?P<uuid>.+)/?$",
+        r"^download/article/txt/(?P<name>.+)/?$",
         views.download_article_text,
         name="download_article_text",
     ),
@@ -33,7 +33,7 @@ urlpatterns = [
         name="download_articles_json",
     ),
     url(
-        r"^download/articles/json/(?P<uuid>.+)/?$",
+        r"^download/articles/json/(?P<name>.+)/?$",
         views.download_articles_json,
         name="download_articles_json",
     ),

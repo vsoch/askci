@@ -90,11 +90,11 @@ def download_articles_json(request, name=None):
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
-def download_article_text(request, uuid):
+def download_article_text(request, name):
     """download text for a single article
     """
     try:
-        article = Article.objects.get(uuid=uuid)
+        article = Article.objects.get(name=name)
         response = HttpResponse(article.text, content_type="text/plain")
         filename = "%s-article-%s-%s.md" % (
             NODE_URI,
