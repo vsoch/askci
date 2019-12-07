@@ -446,10 +446,13 @@ def receive_github_hook(request):
             if not branch.startswith("update/term") or against_branch != "master":
                 return JsonResponseMessage(message="Ignoring branch.", status=200)
 
+            # Requesting user is derived from branch
+            user = branch.replace("update/term-", "").split('-')[0]
+
             res = django_rq.enqueue(
                 update_pullrequest,
                 article_uuid=article.uuid,
-                user=payload["pull_request"]["user"]["login"],
+                user=user,
                 action=payload["action"],
                 url=payload["pull_request"]["html_url"],
                 number=payload["number"],
