@@ -16,6 +16,7 @@ from bs4 import BeautifulSoup
 from itertools import chain
 
 import markdown
+import json
 import os
 import re
 import requests
@@ -48,7 +49,7 @@ def repository_change(article_uuid, action, repo):
     except Article.DoesNotExist:
         return
 
-    article.repo = repo
+    article.repo = json.loads(repo)
 
     # Not archived
     if action in ["created", "unarchived", "publicized"]:

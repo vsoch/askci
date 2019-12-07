@@ -34,6 +34,7 @@ from datetime import datetime
 import re
 import requests
 import uuid
+import json
 
 api_base = "https://api.github.com"
 
@@ -472,8 +473,12 @@ def receive_github_hook(request):
             res = django_rq.enqueue(update_article, article_uuid=article.uuid)
 
         elif event == "repository":
-            # what do we need here?
-            res = django_rq.enqueue(repository_change, article_uuid=article.uuid)
+            res = django_rq.enqueue(
+                repository_change,
+                article_uuid=article.uuid,
+                action=payload["action"],
+                repo=json.dumps(payload["repository"]),
+            )
 
         return JsonResponseMessage(
             message="Hook received and parsing.", status=200, status_message="Received"
