@@ -208,6 +208,9 @@ class Article(models.Model):
     commit = models.CharField(max_length=250, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
     text = models.TextField(blank=True, null=True)
+    template = models.ForeignKey(
+        "TemplateRepository", on_delete=models.SET_NULL, blank=True, null=True
+    )
 
     # Don't delete article if owner deletes account, set null
     owner = models.ForeignKey(
@@ -284,8 +287,6 @@ class PullRequest(models.Model):
         ("open", "open"),
     ]
 
-    # PR ID is originally given on the review request, and number is the official number
-    pr_id = models.UUIDField(default=uuid.uuid4)
     number = models.PositiveIntegerField(default=None, blank=True, null=True)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)

@@ -94,14 +94,8 @@ def article_details(request, name):
             return JsonResponse({"message": message})
 
         # Set off a task to parse and submit dispatch request
-        status_code, pr_id = request_review(request.user, article, markdown)
+        status_code = request_review(request.user, article, markdown)
         if status_code == 204:
-
-            # Create PullRequest object request
-            pr, created = PullRequest.objects.get_or_create(
-                pr_id=pr_id, article=article, owner=request.user
-            )
-
             messages.info(
                 request,
                 "Your changes have been submit for review to %s"
@@ -163,6 +157,7 @@ def new_article(request):
             # namespace defaults to library
             article = Article.objects.create(
                 name=term,
+                template=template,
                 owner=request.user,
                 secret=secret,
                 webhook=webhooks,
@@ -192,6 +187,7 @@ def new_article(request):
     # username/orgs that the user has admin for (to create webhook)
     namespaces = get_admin_namespaces(request.user)
 
+    # In the future the user might select from one or more templates
     context = {"templates": TemplateRepository.objects.all(), "namespaces": namespaces}
     return render(request, "articles/new_article.html", context)
 

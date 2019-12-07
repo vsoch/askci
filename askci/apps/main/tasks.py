@@ -10,6 +10,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.conf import settings
 from askci.apps.main.models import Article, Question, Example, PullRequest
+from askci.apps.users.models import User
 
 from bs4 import BeautifulSoup
 from itertools import chain
@@ -35,7 +36,7 @@ def remove_language(code):
     return code
 
 
-def update_pullrequest(article_uuid, number, action, merged_at):
+def update_pullrequest(article_uuid, number, url, user, action, merged_at):
     """Given a PR action, url, and an article uuid, update a Pull Request object for it.
        https://developer.github.com/v3/activity/events/types/#pullrequestevent
     """
@@ -44,14 +45,23 @@ def update_pullrequest(article_uuid, number, action, merged_at):
     except Article.DoesNotExist:
         return
 
-    # Get associated pull request - at this point we have replaced the uuid with a number
+    # Get the associated user
+    try:
+        user = User.objects.get(username=user)
+    except User.DoesNotExist:
+        return
+
+    # Get associated pull request, create object only if newly opened
     try:
         pull_request = article.pullrequest_set.get(number=number)
     except PullRequest.DoesNotExist:
-        return
+        if action == "opened":
+            pr = PullRequest.objects.create(
+                article=article, owner=user, number=number, url=url
+            )
+        else:
+            return
 
-    # Case 1: no change of PR status required
-    # ["assigned", "unassigned", "review_requested", "review_request_removed", "labeled", "unlabeled"]:
     if action in ["opened", "edited", "ready_for_review", "reopened"]:
         pull_request.status = "open"
 
@@ -63,7 +73,16 @@ def update_pullrequest(article_uuid, number, action, merged_at):
         else:
             pull_request.status = "closed"
 
-    print(pull_request.status)
+    elif action in [
+        "assigned",
+        "unassigned",
+        "review_requested",
+        "review_request_removed",
+        "labeled",
+        "unlabeled",
+    ]:
+        print("No action taken for %s" % action)
+
     pull_request.save()
 
 

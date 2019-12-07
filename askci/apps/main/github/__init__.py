@@ -205,23 +205,20 @@ def request_review(user, article, markdown):
     headers = get_auth(article.owner)
     headers["Accept"] = "application/vnd.github.everest-preview+json"
 
-    pr_id = str(uuid.uuid4())
-    callback_url = "%s%s/" % (DOMAIN_NAME.strip("/"), reverse("receive_pr_request"))
     data = {
         "event_type": "request_review_by_%s" % user.username,
         "client_payload": {
             "markdown": markdown,
             "username": user.username,
-            "url": callback_url,
             "article": str(article.uuid),
-            "id": pr_id,
+            "event_name": "request-review",
         },
     }
 
     # Data should include updated markdown (for README)
     url = "%s/repos/%s/dispatches" % (api_base, article.repo["full_name"])
     response = requests.post(url, headers=headers, json=data)
-    return response.status_code, pr_id
+    return response.status_code
 
 
 def fork_repository(user, template, repository=None):
@@ -449,7 +446,9 @@ def receive_github_hook(request):
             res = django_rq.enqueue(
                 update_pullrequest,
                 article_uuid=article.uuid,
+                user=payload["user"]["login"],
                 action=payload["action"],
+                url=payload["pull_request"]["html_url"],
                 number=payload["number"],
                 merged_at=payload["pull_request"]["merged_at"],
             )
