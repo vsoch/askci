@@ -138,11 +138,7 @@ body {
                  role="tabpanel" aria-labelledby="nav-questions-tab">
                  {% for question in instance.question_set.all %}<div class="row">
                    <div class="col-md-12">
-                     <div class="card">
-                       <div class="card-body">
-                          <strong><a class="question-link" href="#{{ question.text }}"> {{ question.pretty }}</a></strong>
-                       </div>
-                     </div>
+                          <strong><a class="question-link" href="#{{ question.text }}"> {{ question.pretty }}</a></strong><hr>
                    </div>
                  </div>{% endfor %}
             </div>{% endif %}
