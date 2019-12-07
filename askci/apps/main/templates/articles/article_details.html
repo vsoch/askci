@@ -80,7 +80,7 @@ body {
             <div class="tab-pane fade show active tui-editor-contents article"
                  style="padding: 30px; background-color:#F8F8F8;"
                  id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
-              {{ instance.html | safe }}
+              <div id="textarea">{{ instance.html | safe }}</div>
             </div>
             {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
                                                         style="margin-top:20px"
@@ -278,6 +278,12 @@ $(document).ready(function() {
   $(".question-link").click(function(event) {
      navigate()
   });
+
+  // Render code mirror
+  textarea = document.getElementById("textarea");
+  //var editor = CodeMirror.fromTextArea(article, {
+  //  lineNumbers: true
+  //});
 
   $("#submit-button").click(function(event) {
      event.preventDefault();
