@@ -55,7 +55,7 @@ body {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-contents.css">
 
-<div class="container" style='padding-top:150px'>
+<div class="container-fluid" style="padding-top:150px;">
   {% include "messages/message.html" %}
   <div class="row" style="margin-bottom:20px">
       <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-info btn-rounded">Edit</button></a>{% endif %}
