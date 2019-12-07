@@ -78,9 +78,9 @@ body {
         </nav>
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane fade show active tui-editor-contents article"
-                 style="padding: 30px; background-color:#F8F8F8;"
+                 style="padding: 30px;"
                  id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
-              <div id="textarea">{{ instance.html | safe }}</div>
+              <div id="textarea">{{ instance.text }}</div>
             </div>
             {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
                                                         style="margin-top:20px"
@@ -174,7 +174,7 @@ body {
 {% endblock %}
 {% block pagescripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tui-editor/1.4.6/tui-editor-Editor-full.js"></script>
-    <script class="code-js">
+    {% if request.user.is_authenticated %}<script class="code-js">
       {% if instance.text %}var content = [{% for line in instance.lines %}
         '{{ line | escapejs }}'{% if forloop.last %}{% else %},{% endif %}{% endfor %}
       ].join('\n');{% else %}
@@ -251,8 +251,7 @@ body {
               $("#question-field").val("");
           }
       })
-
-    </script>
+    </script>{% endif %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
 <script>
 $(document).ready(function() {
@@ -281,9 +280,8 @@ $(document).ready(function() {
 
   // Render code mirror
   textarea = document.getElementById("textarea");
-  //var editor = CodeMirror.fromTextArea(article, {
-  //  lineNumbers: true
-  //});
+  html = tui.Editor.markdownitHighlight.render(textarea.textContent);
+  $("#textarea").html(html);
 
   $("#submit-button").click(function(event) {
      event.preventDefault();
