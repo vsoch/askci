@@ -100,7 +100,22 @@ body {
                     <div class="code-html">
                         <div id="editSection"></div>
                     </div>
-                    <button class="btn btn-info" id="submit-button"><i class="save icon"></i> Submit</button>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-info btn-sm" id="submit-button"><i class="save icon"></i> Submit</button>
+                            <button class="btn btn-indigo btn-sm" data-toggle="modal" 
+                            type="button" data-target="#modalQuestionForm"><i class="fas fa-question"></i> Insert Question</button>
+                        </div>{% if articles.count > 1 %}
+                        <div class="col-md-4 input-group">
+                            <select style="margin-top:5px" class="custom-select" id="selectArticle" required>
+		    {% for article in articles %}{% if article.name != instance.name %}<option value="{{ article.name }}">{{ article.name }}</option>{% endif %}{% endfor %}
+     		            </select>
+                          <span class="input-group-btn">
+                             <button id="insert-article-button" style="margin-top:8px" class="btn btn-indigo btn-sm" type="button" tabindex="-1"><i class="fas fa-question"></i> Insert Article Link</button>
+</span>
+                          </div>{% endif %}
+		        </div>
                 </form>  
             </div>{% endif %}{% endif %}
             {% if instance.pullrequest_set.count > 0 %}<div class="tab-pane fade" id="nav-review" 
@@ -286,10 +301,19 @@ $(document).ready(function() {
      navigate()
   });
 
-  // Render code mirror
   textarea = document.getElementById("textarea");
   html = tui.Editor.markdownitHighlight.render(textarea.textContent);
   $("#textarea").html(html);
+
+  {% if articles.count > 1 %}$("#insert-article-button").click(function(event) {
+     event.preventDefault();
+     var article = $("#selectArticle").val();
+     const textObj = editor.getTextObject();
+     const range = editor.getRange();
+     textObj.setEndBeforeRange(range);
+     link = "[" + article +"]({{ domain }}/e/article/" + article + ")";
+     textObj.replaceContent(link);
+  });{% endif %}
 
   $("#submit-button").click(function(event) {
      event.preventDefault();

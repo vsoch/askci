@@ -109,7 +109,9 @@ def article_details(request, name):
             return JsonResponse({"message": "success"})
         return JsonResponse({"message": "There was an issue with requesting changes."})
 
-    return render(request, "articles/article_details.html", {"instance": article})
+    articles = Article.objects.order_by("-modified")
+    context = {"instance": article, 'articles': articles}
+    return render(request, "articles/article_details.html", context)
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
