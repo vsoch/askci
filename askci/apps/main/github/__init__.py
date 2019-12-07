@@ -414,13 +414,13 @@ def receive_github_hook(request):
         # Parse the body
         payload = load_body(request)
         repo = payload.get("repository")
-        repo_name = repo['full_name']
+        repo_name = repo["full_name"]
 
         # If it's a repository event, might be transferred or renamed
         if event == "repository":
             if payload.get("action") == "transferred":
                 owner = payload["changes"]["owner"]["from"]["user"]["login"]
-                repo_name = "%s/%s" %(owner, repo.get("name"))
+                repo_name = "%s/%s" % (owner, repo.get("name"))
 
         # Retrieve the article
         try:
