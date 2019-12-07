@@ -449,7 +449,7 @@ def receive_github_hook(request):
             res = django_rq.enqueue(
                 update_pullrequest,
                 article_uuid=article.uuid,
-                user=payload["user"]["login"],
+                user=payload["pull_request"]["user"]["login"],
                 action=payload["action"],
                 url=payload["pull_request"]["html_url"],
                 number=payload["number"],
