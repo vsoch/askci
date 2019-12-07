@@ -431,7 +431,7 @@ def receive_github_hook(request):
             return JsonResponseMessage(message="Invalid credentials.")
 
         # Branch must be master
-        branch = payload.get("ref", "refs/heads/master").replace("refs/head", "")
+        branch = payload.get("ref", "refs/heads/master").replace("refs/heads/", "")
 
         # Update repo metadata that might change
         article.repo = repo
