@@ -15,7 +15,7 @@ from django.http import Http404, JsonResponse
 from ratelimit.decorators import ratelimit
 
 from askci.settings import DOMAIN_NAME
-from askci.apps.main.models import Article, Question
+from askci.apps.main.models import Article, Question, TemplateRepository
 from askci.apps.main.tasks import update_article
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from askci.apps.main.github import open_issue
@@ -53,7 +53,11 @@ def new_question(request, name=None):
         if not article:
             messages.info(request, "We couldn't find article '%s'" % name)
 
-    context = {"article": article, "articles": Article.objects.order_by("-name")}
+    context = {
+        "article": article,
+        "articles": Article.objects.order_by("-name"),
+        "templates": TemplateRepository.objects.all(),
+    }
 
     if request.method == "POST":
 

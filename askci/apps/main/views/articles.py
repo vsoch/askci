@@ -132,10 +132,10 @@ def delete_article(request, name):
 
     # First delete webhooks, only works for owner
     for webhook_name, webhook in article.webhook.items():
-        delete_webhook(request.user, article.repo, webhook['id'])
+        delete_webhook(request.user, article.repo, webhook["id"])
     article.delete()
     messages.info(request, "%s has been deleted." % article.name)
-    return redirect('index')
+    return redirect("index")
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
@@ -292,9 +292,10 @@ def import_article(request):
         repos = [
             repo
             for repo in repos
-            if repo["id"] not in articles and repo["name"].startswith("askci-term")
+            if repo["id"] not in articles
+            and repo["name"].startswith("askci-term")
             and repo["name"] not in template_names
-        ]        
+        ]
         context = {"repos": repos}
         return render(request, "articles/import_article.html", context)
 
@@ -306,7 +307,14 @@ def import_article(request):
             for x in request.POST.keys()
             if re.search("^REPO_", x)
         ]
+        template_uuid = request.POST.get("template")
         secret = uuid.uuid4().__str__()
+
+        try:
+            template = TemplateRepository.objects.get(uuid=template_uuid)
+        except Template.DoesNotExist:
+            messages.error(request, "That template doesn't exist")
+            return redirect("import_article")
 
         if len(repos) > 0:
 

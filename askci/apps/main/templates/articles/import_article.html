@@ -17,7 +17,15 @@
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" name="REPO_{{ repo.owner.login }}/{{ repo.name }}" class="custom-control-input" id="REPO_{{ repo.owner.login }}/{{ repo.name }}">
                 <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
-            </div>{% endfor %}{% else %}<p style="martin-top:20px" class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
+            </div>{% endfor %}
+		<div class="input-group">
+		  <div class="input-group-prepend">
+		  <select class="custom-select" id="selectTemplate" name='template' required>
+		    {% for template in templates %}<option value="{{ template.uuid }}" {% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
+		  </select>
+		</div>
+             </div>
+            {% else %}<p style="martin-top:20px" class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
        </div>
    </div>
    <div class="col-md-2">{% if repos %}
