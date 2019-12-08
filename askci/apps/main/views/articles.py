@@ -284,6 +284,7 @@ def import_article(request):
     template_names = [t.name for t in TemplateRepository.objects.all()]
     if request.method == "GET":
         repos = list_repos(request.user)
+        templates = TemplateRepository.objects.all()
 
         # Filter down to those with admin permission (webhook create)
         repos = [r for r in repos if r["permissions"]["admin"]]
@@ -296,7 +297,7 @@ def import_article(request):
             and repo["name"].startswith("askci-term")
             and repo["name"] not in template_names
         ]
-        context = {"repos": repos}
+        context = {"repos": repos, "templates": templates}
         return render(request, "articles/import_article.html", context)
 
     elif request.method == "POST":
