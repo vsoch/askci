@@ -131,7 +131,9 @@ def update_article(article_uuid):
     # For now just use the first file, we know to feed that into content
     # If there are other templates with multiple files, they could
     # be looped over here.
-    filename = article.template.files.split(" ")[0]
+    filename = "README.md"
+    if article.template.files:
+        filename = article.template.files.split(" ")[0]
 
     # Formulate the url for raw github content
     url = "https://raw.githubusercontent.com/%s/master/%s" % (
