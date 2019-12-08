@@ -24,8 +24,8 @@
        </div>
    </div>
    <div class="col-md-6">{% if repos %}
+        <h4>Select Template</h4>
         <div class="input-group">
-              <h4>Select Template</h4>
 	      <select class="custom-select" id="selectTemplate" name='template' required>{% for template in templates %}<option value="{{ template.uuid }}"{% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
 	      </select>
        </div>
