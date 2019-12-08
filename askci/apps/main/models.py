@@ -40,6 +40,12 @@ class TemplateRepository(models.Model):
     def __repr__(self):
         return self.__str__()
 
+    @property
+    def name(self):
+        """Return just the repository name <username>/<reponame>
+        """
+        return  "/".join(self.repo.split("/")[-2:]).replace('.git', '')
+
     def get_label(self):
         return "templaterepository"
 

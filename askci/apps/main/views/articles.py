@@ -281,6 +281,7 @@ def import_article(request):
     if not has_articles_opening(request):
         return redirect("index")
 
+    template_names = [t.name for t in TemplateRepository.objects.all()]
     if request.method == "GET":
         repos = list_repos(request.user)
 
@@ -292,7 +293,8 @@ def import_article(request):
             repo
             for repo in repos
             if repo["id"] not in articles and repo["name"].startswith("askci-term")
-        ]
+            and repo["name"] not in template_names
+        ]        
         context = {"repos": repos}
         return render(request, "articles/import_article.html", context)
 
