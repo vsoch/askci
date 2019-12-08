@@ -65,6 +65,8 @@ def repository_change(article_uuid, action, repo):
         if not repo["name"].startswith("askci-term-"):
             article.archive("the repository name needs to start with askci-term-. ")
 
+    article.update_tags()
+
 
 def update_pullrequest(article_uuid, number, url, user, action, merged_at):
     """Given a PR action, url, and an article uuid, update a Pull Request object for it.
@@ -118,7 +120,9 @@ def update_pullrequest(article_uuid, number, url, user, action, merged_at):
 
 def update_tag(article_uuid, tag, event):
     """update tag will obtain an article, and add or delete the tag association.
-       If the tag doesn't exist for other repos, it is deleted from the server
+       If the tag doesn't exist for other repos, it is deleted from the server.
+       This function is currently not used because there doesn't appear to
+       be an endpoint to receive notification on tags changes.
     """
     try:
         article = Article.objects.get(uuid=article_uuid)
@@ -225,6 +229,7 @@ def update_article(article_uuid):
 
     article.text = content
     article.save()
+    article.update_tags()
 
 
 def test_markdown(text):

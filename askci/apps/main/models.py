@@ -261,6 +261,22 @@ class Article(models.Model):
     def uri(self):
         return "%s/%s" % (self.namespace, self.name)
 
+    def update_tags(self):
+        """a function to update article tags.
+        """
+        from askci.apps.main.github import get_repository_topics
+
+        previous_tags = self.tags.all()
+        for tag in get_repository_topics(self.owner, self.repo):
+            tag, created = Tag.objects.get_or_create(tag=tag)
+            self.tags.add(tag)
+        self.save()
+
+        # For any previous tag no longer used, delete
+        for tag in previous_tags:
+            if tag.article_tags.count() == 0:
+                tag.delete()
+
     def archive(self, reason):
         """At any point when we cannot perform an action, either the repository
            has been archived or otherwise deleted, and we need to send an email
