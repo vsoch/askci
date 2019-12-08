@@ -89,7 +89,7 @@ body {
             <div class="tab-pane fade show active tui-editor-contents article"
                  style="padding: 30px;"
                  id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
-              <div id="textarea" hidden>{% if instance.text %}{{ instance.text }}# {{ instance.name }}{% else %}{% endif %}</div>
+              <div id="textarea" hidden>{% if instance.text %}{{ instance.text }}{% else %}# {{ instance.name }}{% endif %}</div>
             </div>
             {% if request.user.has_github_edit %}<div class="tab-pane fade" id="nav-edit" 
                                                         style="margin-top:20px"
