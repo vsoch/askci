@@ -47,9 +47,11 @@ def new_question(request, name=None):
     """
 
     # If a name is given the user has already chosen an article
-    article = get_article(name)
-    if not article:
-        messages.info(request, "We couldn't find article '%s'" % name)
+    article = None
+    if name is not None:
+        article = get_article(name)
+        if not article:
+            messages.info(request, "We couldn't find article '%s'" % name)
 
     context = {"article": article, "articles": Article.objects.order_by("-name")}
 
