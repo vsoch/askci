@@ -135,7 +135,7 @@ def delete_article(request, name):
         delete_webhook(request.user, article.repo, webhook['id'])
     article.delete()
     messages.info(request, "%s has been deleted." % article.name)
-    redirect('index')
+    return redirect('index')
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
