@@ -90,7 +90,7 @@ body {
                  id="nav-details" role="tabpanel" style="padding-top:20px" aria-labelledby="nav-details-tab">
               <div id="textarea" hidden>{{ instance.text }}</div>
             </div>
-            {% if request.user.has_github_create %}<div class="tab-pane fade" id="nav-edit" 
+            {% if request.user.has_github_edit %}<div class="tab-pane fade" id="nav-edit" 
                                                         style="margin-top:20px"
                                                         role="tabpanel" aria-labelledby="nav-edit-tab">{% if instance.archived %}<p class="alert alert-info">This repository has been archived, deleted, or is otherwise indicated as inactive. If you want to re-instate the repository, please <a href="{% url 'contact' %}">contact an administrator</a>.</p>{% else %}
                 <form id="form" method="post">{% csrf_token %}
