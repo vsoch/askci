@@ -34,7 +34,7 @@
 
         <a title="An editor can request review for existing terms, but cannot create new terms." class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (editor)</a>
 
-        <a title="an owner can create new terms and request review for existing terms." class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Login with Github (owner)</a>
+        <a title="an owner can create new terms and request review for existing terms." class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Github (owner)</a>
 
         {% if ENABLE_GITLAB_AUTH %}<a class="social-button" id="gitlab-connect" href="{% url 'social:begin' 'gitlab' %}?next={{ domain }}{{ request.path }}">Login with Gitlab</a>{% endif %}
 

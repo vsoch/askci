@@ -54,18 +54,16 @@ def repository_change(article_uuid, action, repo):
     # Not archived
     if action in ["created", "unarchived", "publicized"]:
         article.archived = False
+        article.save()
 
     # Reason for archive
     elif action in ["deleted", "archived", "privatized"]:
-        article.archived = True
+        article.archive("the repository was %s. " % action)
 
     # If repository is renamed, must begin with "askci-term" or is archived
     elif action in ["renamed"]:
         if not repo["name"].startswith("askci-term-"):
-            article.archived = True
-
-    # We ignore edited and transferred, the previous owner still collaborator
-    article.save()
+            article.archive("the repository name needs to start with askci-term-. ")
 
 
 def update_pullrequest(article_uuid, number, url, user, action, merged_at):
@@ -130,10 +128,15 @@ def update_article(article_uuid):
     except Article.DoesNotExist:
         return
 
+    # For now just use the first file, we know to feed that into content
+    # If there are other templates with multiple files, they could
+    # be looped over here.
+    filename = article.template.files.split(" ")[0]
+
     # Formulate the url for raw github content
-    url = (
-        "https://raw.githubusercontent.com/%s/master/README.md"
-        % article.repo["full_name"]
+    url = "https://raw.githubusercontent.com/%s/master/%s" % (
+        article.repo["full_name"],
+        filename,
     )
     content = requests.get(url).text
 

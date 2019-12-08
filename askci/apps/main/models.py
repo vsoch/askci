@@ -25,10 +25,14 @@ class TemplateRepository(models.Model):
        that the child repository can be updated from the upstream. The
        repository should minimally have a README.md and a testing setup
        to validate tags. See https://github.com/hpsee/askci-template-term.
+       Files should be a string of files necessary for the template to
+       render, that are added with git add ${FILES}, and are split based on
+       spaces to update the article.
     """
 
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     repo = models.CharField(max_length=250, blank=False, null=False, unique=True)
+    files = models.TextField(blank=False, null=False, default="README.md")
 
     def __str__(self):
         return "<TemplateRepository:%s>" % self.repo
@@ -244,6 +248,31 @@ class Article(models.Model):
     @property
     def uri(self):
         return "%s/%s" % (self.namespace, self.name)
+
+    def archive(self, reason):
+        """At any point when we cannot perform an action, either the repository
+           has been archived or otherwise deleted, and we need to send an email
+           to the owner after archiving the repository here to let them know.
+        """
+        from askci.apps.users.email import send_email
+
+        if not self.archived:
+            self.archived = True
+            self.save()
+
+            # Only send email if respository not archived yet
+            if article.owner.email:
+                subject = "[AskCI] Term %s Archived" % self.name.capitalize()
+                message = """Your term %s has been archived on AskCI because %s
+                    If this has been done in error, please respond to
+                    this message. <br> Thank you!""" % (
+                    self.name,
+                    reason,
+                )
+
+                send_email(
+                    email_to=article.owner.email, message=message, subject=subject
+                )
 
     def lines(self):
         """an iterator for yielding each line (without newlines)

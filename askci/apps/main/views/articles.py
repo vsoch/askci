@@ -110,7 +110,7 @@ def article_details(request, name):
         return JsonResponse({"message": "There was an issue with requesting changes."})
 
     articles = Article.objects.order_by("-modified")
-    context = {"instance": article, 'articles': articles}
+    context = {"instance": article, "articles": articles}
     return render(request, "articles/article_details.html", context)
 
 

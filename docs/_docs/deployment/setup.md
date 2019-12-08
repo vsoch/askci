@@ -116,7 +116,7 @@ ENABLE_GITLAB_AUTH = False
 ENABLE_BITBUCKET_AUTH = False
 ```
 
-GitHub (with and without private) is the default login method, so you cannot enable or disable it.
+GitHub (with and without private) is the default login method, so you cannot enable or disable it, but you will need to provide credentials for it (see below).
 You will still be required to export credentials in secrets.py for it.
 The other methods are provided to allow for login without pull request or issue contribution.
 You will need at least one to log in. I've found that Github works the fastest and easiest, and then Google. Twitter now requires an actual server name and won't work with localost, but if you are deploying on a server with a proper domain go ahead and use it. All avenues are extremely specific with regard to callback urls, so you should be very careful in setting them up. 
@@ -197,17 +197,39 @@ Google is great in letting you specify multiple acceptable callback urls, so you
 
 ### Setting up Github OAuth
 
-For users to connect to Github, you need to [register a new application](https://github.com/settings/applications/new), and add the key and secret to your `secrets.py` file like this: 
+For users to connect to Github, you need to [register two new applications](https://github.com/settings/applications/new), and add the keys and secrets to your `secrets.py` file. The scopes are defined under `settings/auth.py`, and as you can see below,
+the READONLY scope only allows read access to the account:
+
+```python
+# Read Only means we only see their email - the user cannot create repos
+SOCIAL_AUTH_GITHUB_READONLY_SCOPE = ["user:email"]
+SOCIAL_AUTH_GITHUB_SCOPE = [
+    "admin:repo_hook",
+    "repo",
+    "user:email",
+    "read:org",
+    "admin:org_hook",
+    "deployment_status",
+]
+```
+
+ - *read only* or *editor* coincides with being an editor. This means that you are able to contribute to already existing terms, but cannot create new terms, which coincides with generating webhooks and creating new repositories from a template.
+ - *owner* or the second (longer) list coincide with having full functionality on the site to create new term repositories, and still contribute to existing.
+
+For each scope above, you'll need to create a separate key and secret to put into your
+secrets.py.
 
 ```python
 # http://psa.matiasaguirre.net/docs/backends/github.html?highlight=github
 SOCIAL_AUTH_GITHUB_KEY = ''
 SOCIAL_AUTH_GITHUB_SECRET = ''
 
-SOCIAL_AUTH_GITHUB_SCOPE = ["user:email"]
+SOCIAL_AUTH_GITHUB_READONLY_KEY = ''
+SOCIAL_AUTH_GITHUB_READONLY_SECRET = ''
 ```
 
-The callback url should be in the format `http://127.0.0.1/complete/github`, and replace the localhost address with your domain. See the [Github Developers](https://github.com/settings/developers) pages to browse more information on the Github APIs.
+The callback urls should be in the format `http://127.0.0.1/complete/github/` and `http://127.0.0.1/complete/github-readonly/`, respectively, and replace the `http://127.0.0.1` address with your domain. See the [Github Developers](https://github.com/settings/developers) pages to browse more information on the Github APIs.
+
 
 ### Gitlab OAuth2
 

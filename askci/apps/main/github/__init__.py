@@ -29,7 +29,6 @@ from .utils import (
     POST,
 )
 
-from dateutil.parser import parse
 from datetime import datetime
 import re
 import requests
@@ -211,8 +210,38 @@ def request_review(user, article, markdown):
         "client_payload": {
             "markdown": markdown,
             "username": user.username,
+            "files": article.template.files or "README.md",
             "article": str(article.uuid),
             "event_name": "request-review",
+        },
+    }
+
+    # Data should include updated markdown (for README)
+    url = "%s/repos/%s/dispatches" % (api_base, article.repo["full_name"])
+    response = requests.post(url, headers=headers, json=data)
+    return response.status_code
+
+
+def update_template(article):
+    """Each article has an upstream template, and to update it we need to
+       trigger a dispatch event that will obtain updated files from the
+       template, and then open a pull request to the repository owner.
+    """
+    # Must be authenticated with GitHub create? (need to check this)
+    if not article.owner.has_github_create():
+        article.archive("we could not trigger a dispatch event. ")
+        return
+
+    # Replace all "\r\n" with just \n
+    headers = get_auth(article.owner)
+    headers["Accept"] = "application/vnd.github.everest-preview+json"
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    data = {
+        "event_type": "update_template_%s" % today,
+        "client_payload": {
+            "template_repo": article.template.repo,
+            "event_name": "update-template",
         },
     }
 
