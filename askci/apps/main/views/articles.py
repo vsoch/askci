@@ -270,6 +270,7 @@ def add_article_tags(article):
             article.save()
     else:
         for tag in get_repository_topics(article.owner, article.repo):
+            tag, created = Tag.objects.get_or_create(tag=tag)
             article.tags.add(tag)
         article.save()
 
