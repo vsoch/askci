@@ -29,6 +29,7 @@ from askci.apps.main.github import (
     delete_webhook,
     get_admin_namespaces,
     get_repo,
+    get_repository_topics,
     list_repos,
     request_review,
 )
@@ -264,10 +265,13 @@ def add_article_tags(article):
     """
     if "topics" in article.webhook:
         if len(article.webhook["topics"]) > 0:
-            for topic in webhook["topics"]:
-                article.tags.add(topic)
-                article.save()
-
+            for tag in webhook["topics"]:
+                article.tags.add(tag)
+            article.save()
+    else:
+        for tag in get_repository_topics(article.owner, article.repo):
+            article.tags.add(tag)
+        article.save()
 
 # Import an existing article repository
 

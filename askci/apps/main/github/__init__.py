@@ -258,6 +258,24 @@ def update_template(article):
     return response.status_code
 
 
+def get_repository_topics(user, repo):
+    """get the topics for a repository. The intended use case is to use
+       topics to update an article's tags.
+    """
+    topics = []
+    if user.has_github_create():
+        headers = get_auth(user)
+        headers["Accept"] = "application/vnd.github.mercy-preview+json"
+
+        # GET /repos/:owner/:repo/topics
+        url = "%s/repos/%s/topics" % (api_base, repo['full_name'])
+        response = requests.get(url, headers=headers) 
+        if response.status_code == 200:
+            return response.json().get("names", [])
+
+    return topics
+
+
 def fork_repository(user, template, repository=None):
     """Fork a repository. If repository is defined, rename to this
 
