@@ -227,6 +227,13 @@ def update_template(article):
        trigger a dispatch event that will obtain updated files from the
        template, and then open a pull request to the repository owner.
     """
+    # If it's run as a task, we get a string
+    if isinstance(article, str):
+        try:
+            article = Article.objects.get(name=article)
+        except Article.DoesNotExist:
+            return
+
     # Must be authenticated with GitHub create? (need to check this)
     if not article.owner.has_github_create():
         article.archive("we could not trigger a dispatch event. ")

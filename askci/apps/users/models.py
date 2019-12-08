@@ -97,9 +97,9 @@ class User(AbstractUser):
         """determine if the user is logged in minimally with github-readonly
         """
         from askci.apps.users.views import get_credentials
-        readonly = get_credentials(self, "github-readonly") is not None 
-        return readonly or self.has_github_create()
 
+        readonly = get_credentials(self, "github-readonly") is not None
+        return readonly or self.has_github_create()
 
     def token(self):
         return get_usertoken(self)

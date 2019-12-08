@@ -347,3 +347,42 @@ def import_article(request):
             return redirect(reverse("article_details", args=[self.article.name]))
 
     return redirect("index")
+
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
+def update_templates(request):
+    """An admin view to trigger dispatch events to update term templates. This
+       would be triggered manually by a staff or admin in the case that
+       a template repository is changed
+    """
+    from askci.apps.main.github import update_template
+
+    if not request.user.is_staff or not request.user.is_superuser:
+        messages.info(request, "You don't have permission to perform this action.")
+
+    if request.method == "POST":
+        template_uuids = request.POST.getlist("templates")
+        article_names = request.POST.getlist("articles")
+
+        print(template_uuids)
+        print(article_names)
+
+        # Look up templates and articles
+        templates = TemplateRepository.objects.filter(uuid__in=template_uuids)
+        articles = Article.objects.filter(name__in=article_names)
+
+        count = 0
+        for article in articles:
+            if article.template in templates:
+                res = django_rq.enqueue(update_template, article=article.uuid)
+                count += 1
+        messages.info(request, "%s terms requested for update." % count)
+
+    # GET is down here
+    articles = Article.objects.order_by("-name")
+    templates = TemplateRepository.objects.all()
+
+    # In the future the user might select from one or more templates
+    context = {"templates": templates, "articles": articles}
+    return render(request, "articles/admin_update_templates.html", context)

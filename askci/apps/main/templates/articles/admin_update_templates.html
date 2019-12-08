@@ -1,0 +1,45 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block content %}
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <div class="row">
+    <div class="col-md-12">
+      <p class="alert alert-info">Select articles and templates that you want to update. The view will loop through the articles, and update those that use one of your selected templates.</p>.
+    </div>
+  </div>  
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="title">Update Templates</h3>
+    </div>
+  </div>
+  <div class="row">
+     <div class="col-md-12">
+            <form method="POST" action="{% url 'update_templates' %}">
+                {% csrf_token %}
+		<div class="input-group">
+		  <div class="input-group-prepend">
+		  <select class="custom-select" id="selectTemplates" name='templates' required multiple>
+		    {% for template in templates %}<option value="{{ template.uuid }}">{{ template.repo }}</option>{% endfor %}
+		  </select>
+		  </div>
+		</div>
+		<div class="input-group">
+		  <div class="input-group-prepend">
+		  <select class="custom-select" id="selectArticles" name='articles' required multiple>
+		    {% for article in articles %}<option value="{{ article.name }}">{{ article.name }}</option>{% endfor %}
+		  </select>
+		  </div>
+		</div>
+                   <button class="btn btn-secondary btn-small" style="float:right" type="submit">Update</button>
+            </form>
+     </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% include "messages/notification.html" %}
+<script src="{% static "js/cookie-token.js" %}"></script>
+{% endblock %}

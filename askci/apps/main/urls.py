@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^articles/?$", views.all_articles, name="all_articles"),
     url(r"^examples/?$", views.all_examples, name="all_examples"),
     url(r"^export/?$", views.export, name="export"),
+    url(r"^update/templates/?$", views.update_templates, name="update_templates"),
     url(r"^e/article/(?P<name>.+)/?$", views.article_details, name="article_details"),
     url(r"^e/tag/(?P<tag>.+)/?$", views.tag_details, name="tag_details"),
     url(r"article/new/?$", views.new_article, name="new_article"),
