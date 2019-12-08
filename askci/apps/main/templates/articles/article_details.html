@@ -277,6 +277,11 @@ $(document).ready(function() {
 
   // Ensure that we switch to the content tab when a question is provided
   let url = location.href.replace(/\/$/, "");
+
+  textarea = document.getElementById("textarea");
+  html = tui.Editor.markdownitHighlight.render(textarea.textContent);
+  $("#textarea").html(html);
+  $("#textarea").attr("hidden", false);
  
   function navigate() {
     const hash = url.split("#");
@@ -296,11 +301,6 @@ $(document).ready(function() {
   $(".question-link").click(function(event) {
      navigate()
   });
-
-  textarea = document.getElementById("textarea");
-  html = tui.Editor.markdownitHighlight.render(textarea.textContent);
-  $("#textarea").html(html);
-  $("#textarea").attr("hidden", false);
 
   {% if articles.count > 1 %}$("#insert-article-button").click(function(event) {
      event.preventDefault();
