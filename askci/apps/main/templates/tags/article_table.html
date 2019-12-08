@@ -1,0 +1,20 @@
+                <table class="table table-bordered" id="{{ table_id }}" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Summary</th>
+                            <th>Repository</th>
+                            <th>Tags</th>
+                            <th>Commit</th>
+                        </tr>
+                    </thead>
+                    <tbody>{% for article in articles %}
+                        <tr>
+                            <td><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></td>
+                            <td>{{ article.summary }}</td>
+                            <td><a href="https://github.com/{{ article.repo.full_name }}">{{ article.repo.full_name }}</a></td>
+                            <td>{% for tag in article.tags.all %}<a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a> {% endfor %}</td>
+                            <td>{% if article.commit %}<a href="https://github.com/{{ article.repo.full_name }}/blob/{{ article.commit }}/README.md">{{ article.commit }}{% endif %}</td>
+                        </tr>{% endfor %}
+                    </tbody>
+                </table>

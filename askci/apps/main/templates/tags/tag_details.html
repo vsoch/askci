@@ -1,0 +1,52 @@
+{% extends "base/page.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<style>
+.tab-pane {
+  padding-top:30px;
+}
+</style>
+<div class="container" style='padding-top:200px'>
+  {% include "messages/message.html" %}
+  <div class="row">
+    <div class="col-md-12" style="padding-bottom:20px">
+      <h1>Tag: {{ instance.tag }}</h1>
+      <h4>
+    </div>
+  </div>{% if request.user.is_superuser or request.user.is_staff %}
+  <div class="row" style="margin-bottom:20px">
+      <div class="col-md-12"><a href="{% url 'admin:main_tag_change' instance.uuid %}">
+          <button class="btn btn-primary">Edit</button></a>
+      </div>
+  </div>{% endif %}
+
+  <div class="row" style="margin-bottom:20px">{% if instance.article_tags.count == 0 %}<p class="alert alert-warning">This tag doesn't have any associated articles.</p>{% else %}<p>This tag has {{ instance.article_tags.count }} associated entities</p>{% endif %}
+      <div class="col-md-12">
+      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+        <nav>
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">{% if instance.article_tags.count > 0 %}
+                <a class="nav-item nav-link" id="nav-articles-tab" data-toggle="tab" href="#nav-articles" role="tab" aria-controls="nav-articles" aria-selected="true">Articles</a>{% endif %}
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">{% if instance.article_tags.count > 0 %}
+            <div class="tab-pane fade active" id="nav-articles" role="tabpanel" aria-labelledby="nav-articles-tab">
+               {% include "tags/article_table.html" with articles=instance.article_tags.all table_id="articles_table" %}
+            </div>{% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block pagescripts %}
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(document).ready(function() {
+  {% if instance.article_tags.count > 0 %}$('#articles_table').DataTable();{% endif %}
+});
+</script>
+{% endblock %}
