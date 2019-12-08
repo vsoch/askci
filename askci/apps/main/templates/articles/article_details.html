@@ -272,7 +272,7 @@ body {
               const textObj = editor.getTextObject();
               const range = editor.getRange();
               textObj.setEndBeforeRange(range);
-              question = "<span id='question-" + question + "'>\n\n"
+              question = "<span id='question-" + question + "'></span>\n\n"
               textObj.replaceContent(question);
               $('#modalQuestionForm').modal('hide');
               $("#question-field").val("");
