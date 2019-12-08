@@ -20,16 +20,17 @@
                     <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
                 </div>{% endfor %}
             </div>
-            <div class="input-group">
-	        <div class="input-group-prepend">
-		  <select class="custom-select" id="selectTemplate" name='template' required>{% for template in templates %}<option value="{{ template.uuid }}"{% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
-		  </select>
-		</div>
-             </div>
             {% else %}<p style="martin-top:20px" class="alert alert-info">You don't have any askci-term-* repos to import!</p>{% endif %}
        </div>
    </div>
    <div class="col-md-2">{% if repos %}
+        <div class="input-group">
+           <div class="input-group-prepend">
+              <h4>Select Template</h4>
+	      <select class="custom-select" id="selectTemplate" name='template' required>{% for template in templates %}<option value="{{ template.uuid }}"{% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
+	      </select>
+           </div>
+       </div>
        <input id='submit-button' style="width:100%" type='submit' name='submit' class="btn btn-primary"/>{% endif %}
     </div>
    </div>   
