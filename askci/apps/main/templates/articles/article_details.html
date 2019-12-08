@@ -295,12 +295,15 @@ $(document).ready(function() {
   $("#textarea").html(html);
   $("#textarea").attr("hidden", false);
  
-  function navigate() {   
-    const hash = url.split("#");
+  function navigate(hash) {   
+    var hash = hash || url.split("#");
     $('#nav-details a[href="#'+hash[1]+'"]').tab("show");
     $(".highlighted").remove();
+    // Derive the question
+    var question = hash.replace("question-", "").replace(/-/g, " ") + "?"
+    question = question.charAt(0).toUpperCase() + question.slice(1)
     // Highlight in yellow
-    $("#"+hash[1]).after("<span class='highlighted'> ANSWER! </span>")
+    $("#"+hash[1]).after("<span class='highlighted'> " + question + " </span>")
     $('#nav-details-tab').addClass('active');
     $('#nav-details').addClass('show active');
     $('#nav-questions-tab').removeClass('active');
@@ -308,14 +311,13 @@ $(document).ready(function() {
   }
 
   if (location.hash) {
-    navigate();
+    navigate(location.hash.replace("#", ""));
     url = location.href.replace(/\/#/, "#");
     history.replaceState(null, null, url);
   } 
    
   $(".question-link").click(function(event) {
-     console.log(event);
-     navigate()
+     navigate(event.target.hash.replace("#", ""));
   });
 
   {% if articles.count > 1 %}$("#insert-article-button").click(function(event) {
