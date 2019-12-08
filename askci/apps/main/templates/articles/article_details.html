@@ -70,7 +70,7 @@ body {
              <a href="{% url 'download_articles_json' instance.name %}" style="float:right"><button class="btn btn-sm btn-indigo btn-rounded">(json)</button></a>
              <a href="{% url 'download_article_text' instance.name %}" style="float:right"><button class="btn btn-sm btn-indigo btn-rounded">Download (txt)</button></a>
  <i style="cursor:help" title="Share the term or download in multiple formats."></i>
-{% if request.user == instance.owner %}<a onclick="verifyDelete()"><button class="btn btn-danger btn-rounded btn-sm"><i class="delete icon"></i> Delete Article</button></a>{% endif %}
+{% if request.user == instance.owner %}<a style="float:right" onclick="verifyDelete()"><button class="btn btn-danger btn-rounded btn-sm"><i class="delete icon"></i> Delete Article</button></a>{% endif %}
       </div>
   </div>
   <div class="row">
