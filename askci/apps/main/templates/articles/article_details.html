@@ -296,15 +296,15 @@ $(document).ready(function() {
   $("#textarea").attr("hidden", false);
  
   function navigate(hash) {   
-    var hash = hash || url.split("#");
+    var hash = hash || url.split("#")[1];
     console.log(hash);
-    $('#nav-details a[href="#'+hash[1]+'"]').tab("show");
+    $('#nav-details a[href="#'+hash+'"]').tab("show");
     $(".highlighted").remove();
     // Derive the question
     var question = hash.replace("question-", "").replace(/-/g, " ") + "?";
     question = question.charAt(0).toUpperCase() + question.slice(1);
     // Highlight in yellow
-    $("#"+hash[1]).after("<span class='highlighted'> " + question + " </span>");
+    $("#"+hash).after("<span class='highlighted'> " + question + " </span>");
     $('#nav-details-tab').addClass('active');
     $('#nav-details').addClass('show active');
     $('#nav-questions-tab').removeClass('active');
