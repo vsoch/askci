@@ -274,6 +274,10 @@ body {
     </script>{% endif %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.js"></script>
 <script>
+{% if request.user == instance.owner %}function verifyDelete() {
+    if (confirm("Are you sure you want to delete this term? This will remove the term from AskCI, along with associated webhooks. The repository will remain. This action cannot be undone.")) {document.location = "{% url 'delete_article' instance.name %}"}
+}{% endif %}
+
 $(document).ready(function() {
 
   // Ensure that we switch to the content tab when a question is provided
@@ -312,10 +316,6 @@ $(document).ready(function() {
      link = "[" + article +"]({{ domain }}/e/article/" + article + ")";
      textObj.replaceContent(link);
   });{% endif %}
-
-  {% if request.user == instance.owner %}function verifyDelete() {
-    if (confirm("Are you sure you want to delete this term? This will remove the term from AskCI, along with associated webhooks. The repository will remain. This action cannot be undone.")) {document.location = "{% url 'delete_article' instance.name %}"}
-  }{% endif %}
 
 $("#submit-button").click(function(event) {
   event.preventDefault();
