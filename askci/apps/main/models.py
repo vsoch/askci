@@ -42,7 +42,13 @@ class TemplateRepository(models.Model):
 
     @property
     def name(self):
-        """Return just the repository name <username>/<reponame>
+        """Return just the repository name <reponame>
+        """
+        return  "/".join(self.repo.split("/")[-1:]).replace('.git', '')
+
+    @property
+    def full_name(self):
+        """Return the repository full name <username>/<reponame>
         """
         return  "/".join(self.repo.split("/")[-2:]).replace('.git', '')
 
