@@ -367,6 +367,7 @@ def import_article(request):
                 secret=secret,
                 webhook=webhooks,
                 repo=repo,
+                template=template,
                 summary=repo["description"],
             )
 
