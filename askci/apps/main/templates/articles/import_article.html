@@ -13,8 +13,8 @@
             <small>The first selected will be imported</small>
             {% if repos %}
             {% csrf_token %}
-            {% for repo in repos %}
             <div class="input-group">
+            {% for repo in repos %}
                 <div class="custom-control custom-checkbox">
                     <input type="checkbox" name="REPO_{{ repo.owner.login }}/{{ repo.name }}" class="custom-control-input" id="REPO_{{ repo.owner.login }}/{{ repo.name }}">
                     <label class="custom-control-label" for="REPO_{{ repo.owner.login }}/{{ repo.name }}">{{ repo.owner.login }}/{{ repo.name }}</label>
@@ -22,8 +22,7 @@
             </div>
             <div class="input-group">
 	        <div class="input-group-prepend">
-		  <select class="custom-select" id="selectTemplate" name='template' required>
-		    {% for template in templates %}<option value="{{ template.uuid }}" {% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
+		  <select class="custom-select" id="selectTemplate" name='template' required>{% for template in templates %}<option value="{{ template.uuid }}"{% if forloop.first %}selected{% endif %}>{{ template.repo }}</option>{% endfor %}
 		  </select>
 		</div>
              </div>
