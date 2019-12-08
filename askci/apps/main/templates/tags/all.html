@@ -19,15 +19,9 @@
         </div>
       </div>
       {% endif %}
-      {% for tag in tags %}
       <div class="row">
-        <div class="col-md-1">
-          <div class="card" style="margin-bottom: 5px">
-              <div class="card-body">
-                 <a href="{{ tag.get_absolute_url }}"><strong>{{ tag.tag }}</strong></a>
-              </div>
-           </div>
-          </div>
+        <div class="col-md-12">{% for tag in tags %}
+          <a href="{{ tag.get_absolute_url }}"><button class="btn btn-default btn-sm" style="float:left">{{ tag.tag }}</button></a>
       </div>{% endfor %}
   </div>
 
