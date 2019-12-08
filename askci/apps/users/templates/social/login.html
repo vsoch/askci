@@ -32,7 +32,7 @@
 
         {% if ENABLE_GLOBUS_AUTH %}<a class="social-button" id="globus-login" style="color:black !important" href="{% url 'social:begin' 'globus' %}?next={{ domain }}{{ request.path }}">Login with Globus</a>{% endif %}
 
-        <a title="An editor can request review for existing terms, but cannot create new terms." class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (reviewer)</a>
+        <a title="An editor can request review for existing terms, but cannot create new terms." class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (editor)</a>
 
         <a title="an owner can create new terms and request review for existing terms." class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Github (owner)</a>
 
