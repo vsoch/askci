@@ -1,8 +1,9 @@
 from .articles import (
-    new_article,
-    article_details,
     all_articles,
+    article_details,
+    delete_article,
     import_article,
+    new_article,
     update_templates,
 )
 from .examples import all_examples

@@ -25,10 +25,11 @@ from askci.settings import (
 )
 from askci.apps.main.github import (
     copy_repository_template,
+    create_webhook,
+    delete_webhook,
     get_admin_namespaces,
     get_repo,
     list_repos,
-    create_webhook,
     request_review,
 )
 
@@ -116,6 +117,29 @@ def article_details(request, name):
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 @login_required
+def delete_article(request, name):
+    """request to delete an article, including deleting webhooks and 
+       removing associated examples and questions.
+    """
+    try:
+        article = Article.objects.get(name=name)
+    except Article.DoesNotExist:
+        raise Http404
+
+    if article.owner != request.user:
+        messages.info(request, "You are not allowed to perform that action.")
+        return redirect(reverse("article_details", args=[article.name]))
+
+    # First delete webhooks, only works for owner
+    for webhook_name, webhook in article.webhook.items():
+        delete_webhook(request.user, article.repo, webhook['id'])
+    article.delete()
+    messages.info(request, "%s has been deleted." % article.name)
+    redirect('index')
+
+
+@ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
 def new_article(request):
     """create a new article, only if the user has the appropriate GitHub 
        credentials. This means forking the template repository,
@@ -190,7 +214,7 @@ def new_article(request):
                 request,
                 "%s has been created! Refresh the page for updated content." % term,
             )
-            return redirect(reverse("article_details", args=[self.article.name]))
+            return redirect(reverse("article_details", args=[article.name]))
 
         # if we get here, there was an error
         messages.warning(
@@ -344,7 +368,7 @@ def import_article(request):
                 request,
                 "%s has been created! Refresh the page for updated content." % term,
             )
-            return redirect(reverse("article_details", args=[self.article.name]))
+            return redirect(reverse("article_details", args=[article.name]))
 
     return redirect("index")
 
