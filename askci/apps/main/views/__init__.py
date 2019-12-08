@@ -14,4 +14,4 @@ from .download import (
     export,
 )
 from .questions import new_question
-from .tags import tag_details
+from .tags import all_tags, tag_details
