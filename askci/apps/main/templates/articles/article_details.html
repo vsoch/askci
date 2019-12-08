@@ -114,9 +114,11 @@ body {
                             <button class="btn btn-info btn-sm" id="submit-button"><i class="save icon"></i> Submit</button>
                             <button class="btn btn-indigo btn-sm" data-toggle="modal" 
                             type="button" data-target="#modalQuestionForm"><i class="fas fa-question"></i> Insert Question</button>
+                            <button class="btn btn-indigo btn-sm" data-toggle="modal" 
+                            type="button" data-target="#modalExampleForm"><i class="fas fa-paper-plane"></i> Insert Example</button>
                         </div>{% if articles.count > 1 %}
-                        <div class="col-md-4 input-group">
-                            <select style="margin-top:5px" class="custom-select" id="selectArticle" required>
+                        <div class="col-md-4 input-group">    
+                        <select style="margin-top:5px" class="custom-select" id="selectArticle" required>
 		    {% for article in articles %}{% if article.name != instance.name %}<option value="{{ article.name }}">{{ article.name }}</option>{% endif %}{% endfor %}
      		            </select>
                           <span class="input-group-btn">
@@ -197,6 +199,30 @@ body {
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="modalExampleForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Title for your example?</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <p class="alert alert-info">Make sure you insert this directly before a code block.</p>
+          <i class="prefix grey-text"></i>
+          <input type="text" id="example-field" class="form-control" style="margin-bottom:20px">
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button id="add-example-button" class="btn btn-default">Insert</button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 {% endblock %}
 {% block pagescripts %}
@@ -261,6 +287,23 @@ body {
           } 
        ]
       });
+
+      // Insert example into text when user asks
+      $("#add-example-button").click(function(){
+          example = $("#example-field").val();
+          example = example.replace(/[^0-9a-z ]/gi, '');
+          example = example.toLowerCase().replace(/ /g, '-');
+          console.log(example)
+          if (example != "") {
+              const textObj = editor.getTextObject();
+              const range = editor.getRange();
+              textObj.setEndBeforeRange(range);
+              example = "<span id='example-" + example + "'></span>\n\n"
+              textObj.replaceContent(example);
+              $('#modalExampleForm').modal('hide');
+              $("#example-field").val("");
+          }
+      })
 
       // Insert question into text when user asks it
       $("#ask-question-button").click(function(){
