@@ -53,10 +53,7 @@ def new_question(request, name=None):
         if not article:
             messages.info(request, "We couldn't find article '%s'" % name)
 
-    context = {
-        "article": article,
-        "articles": Article.objects.order_by("-name")
-    }
+    context = {"article": article, "articles": Article.objects.order_by("-name")}
 
     if request.method == "POST":
 

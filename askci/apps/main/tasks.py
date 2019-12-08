@@ -9,7 +9,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from django.conf import settings
-from askci.apps.main.models import Article, Question, Example, PullRequest
+from askci.apps.main.models import Article, Question, Example, PullRequest, Tag
 from askci.apps.users.models import User
 
 from bs4 import BeautifulSoup
@@ -114,6 +114,35 @@ def update_pullrequest(article_uuid, number, url, user, action, merged_at):
         print("No action taken for %s" % action)
 
     pull_request.save()
+
+
+def update_tag(article_uuid, tag, event):
+    """update tag will obtain an article, and add or delete the tag association.
+       If the tag doesn't exist for other repos, it is deleted from the server
+    """
+    try:
+        article = Article.objects.get(uuid=article_uuid)
+    except Article.DoesNotExist:
+        return
+
+    try:
+        tag = Tag.objects.get(tag=tag)
+    except Tag.DoesNotExist:
+        return
+
+    # Create a new tag, add to repository if doesn't exist
+    if event == "create":
+        if tag not in article.tags.all():
+            article.tags.add(tag)
+            article.save()
+
+    # Delete a tag (and permanently from AskCI) if removed
+    elif event == "delete":
+        if tag in article.tags.all():
+            article.tags.remove(tag)
+            article.save()
+        if tag.article_tags.count() == 0:
+            tag.delete()
 
 
 def update_article(article_uuid):

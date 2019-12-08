@@ -184,11 +184,17 @@ def new_article(request):
                 request.user, repo, secret, events=["repository"]
             )
 
+            # Tag create or delete
+            webhook_tag = create_webhook(
+                request.user, repo, secret, events=["create", "delete"]
+            )
+
             # Save both to webhooks json object
             webhooks = {
                 "push-deploy": webhook,
                 "pull_request": webhook_pr,
                 "repository": webhook_repo,
+                "create-delete": webhook_tag,
             }
 
             if "errors" in webhook:
@@ -274,6 +280,7 @@ def add_article_tags(article):
             article.tags.add(tag)
         article.save()
 
+
 # Import an existing article repository
 
 
@@ -350,11 +357,17 @@ def import_article(request):
                 request.user, repo, secret, events=["repository"]
             )
 
+            # Tag create or delete
+            webhook_tag = create_webhook(
+                request.user, repo, secret, events=["create", "delete"]
+            )
+
             # Save both to webhooks json object
             webhooks = {
                 "push-deploy": webhook,
                 "pull_request": webhook_pr,
                 "repository": webhook_repo,
+                "create-delete": webhook_tag,
             }
 
             # If there are errors, or can't create, don't continue

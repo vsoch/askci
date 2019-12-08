@@ -13,7 +13,12 @@ from django.urls import reverse
 
 import django_rq
 
-from askci.apps.main.tasks import repository_change, update_article, update_pullrequest
+from askci.apps.main.tasks import (
+    repository_change,
+    update_article,
+    update_pullrequest,
+    update_tag,
+)
 from askci.apps.users.models import User
 from askci.apps.main.models import Article
 from askci.settings import DISABLE_WEBHOOKS, DOMAIN_NAME
@@ -268,8 +273,8 @@ def get_repository_topics(user, repo):
         headers["Accept"] = "application/vnd.github.mercy-preview+json"
 
         # GET /repos/:owner/:repo/topics
-        url = "%s/repos/%s/topics" % (api_base, repo['full_name'])
-        response = requests.get(url, headers=headers) 
+        url = "%s/repos/%s/topics" % (api_base, repo["full_name"])
+        response = requests.get(url, headers=headers)
         if response.status_code == 200:
             return response.json().get("names", [])
 
@@ -524,6 +529,14 @@ def receive_github_hook(request):
                 number=payload["number"],
                 merged_at=payload["pull_request"]["merged_at"],
             )
+
+        # Possibly an update to a tag
+        elif event in ["create", "delete"]:
+            if payload["ref_type"] == "tag":
+                tag = payload["ref"]
+                res = django_rq.enqueue(
+                    update_tag, article_uuid=article.uuid, tag=tag, event=event
+                )
 
         elif event in ["push", "deployment"]:
             if branch != "master":
