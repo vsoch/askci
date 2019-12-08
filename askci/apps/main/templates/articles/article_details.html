@@ -12,6 +12,13 @@ body {
     margin: 20vh auto 0px auto
 }
 
+.highlighted {
+    background: #F1C40F;
+    display: inline-block;
+    font-weight: bold;
+    padding: 0 6px;
+}
+
 .btn-rounded {
     border-radius: 10em;
 }
@@ -288,9 +295,11 @@ $(document).ready(function() {
   $("#textarea").html(html);
   $("#textarea").attr("hidden", false);
  
-  function navigate() {
+  function navigate() {   
     const hash = url.split("#");
     $('#nav-details a[href="#'+hash[1]+'"]').tab("show");
+    // Highlight in yellow
+    $(hash).after("<span class='highligted'> ANSWER! </span>")
     $('#nav-details-tab').addClass('active');
     $('#nav-details').addClass('show active');
     $('#nav-questions-tab').removeClass('active');
