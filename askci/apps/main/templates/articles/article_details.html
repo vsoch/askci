@@ -80,7 +80,7 @@ body {
                 {% if instance.pullrequest_set.count > 0 %}<a class="nav-item nav-link" id="nav-review-tab" data-toggle="tab" href="#nav-review" role="tab" aria-controls="nav-review" aria-selected="true">Review</a>{% endif %}
                 {% if instance.question_set.count > 0 %}<a class="nav-item nav-link" id="nav-questions-tab" data-toggle="tab" href="#nav-questions" role="tab" aria-controls="nav-questions" aria-selected="true">Questions</a>{% endif %}
                 {% if instance.example_set.count > 0 %}<a class="nav-item nav-link" id="nav-examples-tab" data-toggle="tab" href="#nav-examples" role="tab" aria-controls="nav-examples" aria-selected="true">Examples</a>{% endif %}
-                {% if request.user.has_github_create %}<a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab" aria-controls="nav-edit" aria-selected="true"><i class="fas fa-edit"></i></a>{% endif %}
+                {% if request.user.has_github_edit %}<a class="nav-item nav-link" id="nav-edit-tab" data-toggle="tab" href="#nav-edit" role="tab" aria-controls="nav-edit" aria-selected="true"><i class="fas fa-edit"></i></a>{% endif %}
                 <a class="nav-item nav-link" id="nav-github-tab" target="_blank" href="https://github.com/{{ instance.repo.full_name }}" role="tab" aria-controls="nav-github" aria-selected="true"><i style="color:black" class="fab fa-github"></i></a>
             </div>
         </nav>

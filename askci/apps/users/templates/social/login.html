@@ -23,7 +23,7 @@
     <!-- User isn't logged in yet! -->
     <div class="login-box">
 
-        <p class="alert alert-info">An <strong>owner</strong> can create new terms and request review of existing. An <strong>editor</strong> can contribute to existing terms, but cannot create new terms (and their associated repositories).</p>
+        <p class="alert alert-info">An <strong>owner</strong> can create new terms, edit and request review of existing. An <strong>editor</strong> can contribute to existing terms, but cannot create new terms (and their associated repositories).</p>
         {% if ENABLE_TWITTER_AUTH %}<a class="social-button" style="color: black !important" id="twitter-connect" href="{% url 'social:begin' 'twitter' %}?next={{ domain }}{{ request.path }}">Login with Twitter</a>{% endif %}
 
         {% if ENABLE_ORCID_AUTH_SANDBOX %}<a class="social-button" id="orcid-connect" href="{% url 'social:begin' 'orcid-sandbox' %}?next={{ domain }}{{ request.path }}">Login with Orcid Sandbox</a>{% endif %}
@@ -32,7 +32,7 @@
 
         {% if ENABLE_GLOBUS_AUTH %}<a class="social-button" id="globus-login" style="color:black !important" href="{% url 'social:begin' 'globus' %}?next={{ domain }}{{ request.path }}">Login with Globus</a>{% endif %}
 
-        <a title="An editor can request review for existing terms, but cannot create new terms." class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (editor)</a>
+        <a title="An editor can request review for existing terms, but cannot create new terms." class="social-button github-connect" id="github-connect" href="{{ domain }}{% url 'social:begin' 'github-readonly' %}?next={{ domain }}{{ request.path }}">Github (reviewer)</a>
 
         <a title="an owner can create new terms and request review for existing terms." class="social-button github-connect" id="github-connect" href="{% url 'social:begin' 'github' %}?next={{ domain }}{{ request.path }}">Github (owner)</a>
 
