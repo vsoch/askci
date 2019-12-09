@@ -73,7 +73,7 @@ body {
 <div class="container-fluid" style="padding-top:150px; padding-left:50px; padding-right:50px">
   {% include "messages/message.html" %}
   <div class="row" style="margin-bottom:20px">
-      <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-info btn-rounded">Edit</button></a>{% endif %}
+      <div class="col-md-12">{% if request.user.is_superuser or request.user.is_staff %}<a style="float:right" href="{% url 'admin:main_article_change' instance.uuid %}"><button class="btn btn-info btn-rounded btn-sm">Edit</button></a>{% endif %}
              <a href="{% url 'download_articles_json' instance.name %}" style="float:right"><button class="btn btn-sm btn-indigo btn-rounded">(json)</button></a>
              <a href="{% url 'download_article_text' instance.name %}" style="float:right"><button class="btn btn-sm btn-indigo btn-rounded">Download (txt)</button></a>
  <i style="cursor:help" title="Share the term or download in multiple formats."></i>
