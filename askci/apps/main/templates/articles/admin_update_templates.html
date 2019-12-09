@@ -16,16 +16,18 @@
     </div>
   </div>
   <div class="row">
-     <div class="col-md-12">
-            <form method="POST" action="{% url 'update_templates' %}">
-                {% csrf_token %}
-		<div class="input-group">
+   <form method="POST" action="{% url 'update_templates' %}">
+     <div class="col-md-6">
+         {% csrf_token %}
+	        <div class="input-group">
 		  <div class="input-group-prepend">
 		  <select class="custom-select" id="selectTemplates" name='templates' required multiple>
 		    {% for template in templates %}<option value="{{ template.uuid }}">{{ template.repo }}</option>{% endfor %}
 		  </select>
 		  </div>
 		</div>
+      </div>
+     <div class="col-md-6">
 		<div class="input-group">
 		  <div class="input-group-prepend">
 		  <select class="custom-select" id="selectArticles" name='articles' required multiple>
