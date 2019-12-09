@@ -157,7 +157,7 @@ function ask_for_hostname {
     prompt_user "your host IP address" "(e.g. 173.194.122.231)" ASKCIHIPADDR;
     prompt_user "your host domain name" "(e.g. google.com)" ASKCIHDOMNN;
     echo "DOMAIN_NAME=\"$ASKCIHDOMNN\"" >> "$SCRIPTDIR/.env";
-    echo "ASKCI_HOSTS=['$ASKCIHIPADDR','$ASKCIHDOMNN']" >> "$SCRIPTDIR/.env";
+    echo "ASKCI_HOSTS=['$ASKCIHIPADDR','$ASKCIHDOMNN', 'www.$ASKCIHDOMNN']" >> "$SCRIPTDIR/.env";
 }
 
 # As user for variables that are put in configuration
