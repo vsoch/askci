@@ -13,28 +13,22 @@
   {% include "messages/message.html" %}
 
   <div class="infinite-container">
-      {% if not examples %}
       <div class="row">
         <div class="col-md-12">
-          <p class="alert alert-info">There aren't any examples. How about <a href="{% url 'new_article' %}">creating</a> or <a href="{% url 'import_article' %}">importing</a> an article and adding one or more examples?</p>    
+          {% if not prs %}
+          <p class="alert alert-info">There aren't any open reviews. How about looking at <a href="{% url 'all_articles' %}">articles</a> and suggesting changes?</p>    
+         {% else %}<p class="alert alert-info">You can contribute to AskCI simply as a review! Click on any open pull request to help review changes to an article.</p>{% endif %}
         </div>
       </div>
-      {% endif %}
-      {% for example in examples %}
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card">
-              <div class="card-body">
-                 <a href="{{ example.article.get_absolute_url }}"><strong>{{ example.article.name }}</strong></a> {{ example.article.summary | truncatechars:200 }} {% if example.article.summary|length > 200 %}...{% endif %}<a style="float:right" href="{{ example.article.get_absolute_url }}">Read more...</a><br><hr>
-                 <code>{{ example.code2html | safe }}</code>
-              </div>
-           </div>
+      {% for pr in prs %}{% if pr.url %}<div class="row">
+      <div class="col-md-12">
+          <a href="{{ pr.url }}" target="_blank"><strong><span style="margin-right:30px" class="badge badge-{% if pr.status == 'pending' %}primary{% elif pr.status == 'closed' %}danger{% elif pr.status == 'reject' %}danger{% else %}success{% endif %}">{{ pr.status }}</span></strong></a> submit by {{ pr.owner.username }} on {{ pr.created }}<hr>
           </div>
-      </div>{% endfor %}
+      </div>{% endif %}{% endfor %}
   </div>
 
-  {% if examples.has_next %}
-    <a class="infinite-more-link" href="?page={{ questions.next_page_number }}">More</a>
+  {% if prs.has_next %}
+    <a class="infinite-more-link" href="?page={{ prs.next_page_number }}">More</a>
   {% endif %}
 
   <div class="loading" style="display: none;">

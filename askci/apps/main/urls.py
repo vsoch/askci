@@ -14,6 +14,7 @@ import askci.apps.main.views as views
 urlpatterns = [
     url(r"^articles/?$", views.all_articles, name="all_articles"),
     url(r"^tags/?$", views.all_tags, name="all_tags"),
+    url(r"^reviews/?$", views.all_reviews, name="all_reviews"),
     url(r"^examples/?$", views.all_examples, name="all_examples"),
     url(r"^export/?$", views.export, name="export"),
     url(r"^update/templates/?$", views.update_templates, name="update_templates"),
