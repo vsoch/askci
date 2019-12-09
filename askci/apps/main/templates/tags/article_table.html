@@ -12,7 +12,7 @@
                         <tr>
                             <td><a href="{{ article.get_absolute_url }}">{{ article.name }}</a></td>
                             <td>{{ article.summary }}</td>
-                            <td><a href="https://github.com/{{ article.repo.full_name }}">{{ article.repo.full_name }}</a></td>
+                            <td><a target="_blank" href="https://github.com/{{ article.repo.full_name }}">{{ article.repo.full_name }}</a></td>
                             <td>{% for tag in article.tags.all %}<a href="{{ tag.get_absolute_url }}">{{ tag.tag }}</a> {% endfor %}</td>
                             <td>{% if article.commit %}<a href="https://github.com/{{ article.repo.full_name }}/blob/{{ article.commit }}/README.md">{{ article.commit }}{% endif %}</td>
                         </tr>{% endfor %}
