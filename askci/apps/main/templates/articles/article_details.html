@@ -173,13 +173,13 @@ body {
   </div>
   <div class="row" style="padding-top:20px">
       <div class="col-md-12">
-        <span style="float:left"><strong>{{ instance.name }}</strong> {% if instance.summary %}{{ instance.summary }}{% endif %}</span>
+          {% if instance.tags.count > 0 %}<span style="float:left">{% for tag in instance.tags.all %}<a href="{{ tag.get_absolute_url }}"><button class="btn btn-sm btn-rounded btn-default">{{ tag.tag }}</button></a>{% endfor %}</span>{% endif %}
+          <span style="float:right"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></span>
       </div>
   </div>
   <div class="row">
       <div class="col-md-12">
-          {% if instance.tags.count > 0 %}<span style="float:left">{% for tag in instance.tags.all %}<a href="{{ tag.get_absolute_url }}"><button class="btn btn-sm btn-rounded btn-default">{{ tag.tag }}</button></a>{% endfor %}</span>{% endif %}
-          <span style="float:right"><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></span>
+        <span style="float:left; margin-left:35px"><strong>{{ instance.name }}</strong> {% if instance.summary %}{{ instance.summary }}{% endif %}</span>
       </div>
    </div>
 
