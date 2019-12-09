@@ -364,6 +364,26 @@ $(document).ready(function() {
   html = tui.Editor.markdownitHighlight.render(textarea.textContent);
   $("#textarea").html(html);
   $("#textarea").attr("hidden", false);
+
+  var headers = ["h1", "h2", "h3", "h4"]
+  var colors = ["red", "orange", "green", "blue"]
+
+  function slugify(text) {
+    return text
+        .toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'');
+  }
+
+  $.each(headers, function(i, header){
+    var color = colors[i];
+    $("#textarea " + header).each(function () {
+        var text = "wiki-" + slugify($(this).text());
+        $(this).attr("id", text);
+        $(this).addClass("wiki-link");
+        $(this).append('<a class="headerlink" style="color:' + color + '" href="#' + text + '" title="Permanent link">¶</a>');
+    });
+  });
  
   function navigate(hash) {   
     var hash = hash || url.split("#")[1];
@@ -371,8 +391,13 @@ $(document).ready(function() {
     $('#nav-details a[href="#'+hash+'"]').tab("show");
     $(".highlighted").remove();
     // Derive the question
-    var question = hash.replace("question-", "").replace(/-/g, " ") + "?";
-    question = question.charAt(0).toUpperCase() + question.slice(1);
+    if (hash.startsWith("question-")) {
+        var question = hash.replace("question-", "").replace(/-/g, " ") + "?";
+        question = question.charAt(0).toUpperCase() + question.slice(1);
+    } else if (hash.startsWith("wiki")) {
+        var question = "Section " + hash.replace("wiki-", "").replace(/-/g, " ");
+        question = question.charAt(0).toUpperCase() + question.slice(1);
+    }
     // Highlight in yellow
     $("#"+hash).after("<span class='highlighted'> " + question + " </span>");
     $('#nav-details-tab').addClass('active');
@@ -434,25 +459,6 @@ $("#submit-button").click(function(event) {
        console.log("Error", response)
        event.preventDefault();
     })
-  });
-
-  var headers = ["h1", "h2", "h3", "h4"]
-  var colors = ["red", "orange", "green", "blue"]
-
-  function slugify(text) {
-    return text
-        .toLowerCase()
-        .replace(/ /g,'-')
-        .replace(/[^\w-]+/g,'');
-  }
-
-  $.each(headers, function(i, header){
-    var color = colors[i];
-    $("#textarea " + header).each(function () {
-        var text = "wiki-" + slugify($(this).text());
-        $(this).attr("id", text);
-        $(this).append('<a class="headerlink" style="color:' + color + '" href="#' + text + '" title="Permanent link">¶</a>');
-    });
   });
 });
 </script>
