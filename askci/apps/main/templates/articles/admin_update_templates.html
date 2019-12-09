@@ -15,30 +15,26 @@
       <h3 class="title">Update Templates</h3>
     </div>
   </div>
+ <form method="POST" action="{% url 'update_templates' %}">
   <div class="row">
-   <form method="POST" action="{% url 'update_templates' %}">
      <div class="col-md-6">
          {% csrf_token %}
-	        <div class="input-group">
-		  <div class="input-group-prepend">
-		  <select class="custom-select" id="selectTemplates" name='templates' required multiple>
-		    {% for template in templates %}<option value="{{ template.uuid }}">{{ template.repo }}</option>{% endfor %}
-		  </select>
-		  </div>
-		</div>
-      </div>
+	 <div class="input-group">
+	     <select id="selectTemplates" name='templates' required multiple>
+	     {% for template in templates %}<option value="{{ template.uuid }}">{{ template.repo }}</option>{% endfor %}
+             </select>
+	</div>
+     </div>
      <div class="col-md-6">
-		<div class="input-group">
-		  <div class="input-group-prepend">
-		  <select class="custom-select" id="selectArticles" name='articles' required multiple>
-		    {% for article in articles %}<option value="{{ article.name }}">{{ article.name }}</option>{% endfor %}
-		  </select>
-		  </div>
-		</div>
-                   <button class="btn btn-secondary btn-small" style="float:right" type="submit">Update</button>
-            </form>
+         <div class="input-group">
+	     <select id="selectArticles" name='articles' required multiple>
+             {% for article in articles %}<option value="{{ article.name }}">{{ article.name }}</option>{% endfor %}
+	     </select>
+	 </div>
+         <button class="btn btn-secondary btn-small" style="float:right" type="submit">Update</button>
      </div>
   </div>
+  </form>
 </div>
 {% endblock %}
 {% block scripts %}
