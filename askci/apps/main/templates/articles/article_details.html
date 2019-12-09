@@ -8,6 +8,32 @@ body {
   padding: 0;
 }
 
+.headerlink {
+    display: inline-block;
+    margin-left: 2px;
+    -webkit-transform: translateY(.5rem);
+    transform: translateY(.5rem);
+    transition: color .25s, opacity .125s .25s, -webkit-transform .25s .25s;
+    transition: transform .25s .25s, color .25s, opacity .125s .25s;
+    transition: transform .25s .25s, color .25s, opacity .125s .25s, -webkit-transform .25s .25s;
+    opacity: 0;
+}
+
+.headerlink {
+    color: rgba(0, 0, 0, .26);
+}
+
+.headerlink {
+  opacity: 0;
+}
+
+.headerlink:focus, .headerlink:hover {
+    -webkit-transform: translate(0);
+    transform: translate(0);
+    opacity: 1;
+}
+
+
 .modal-dialog {
     margin: 20vh auto 0px auto
 }
@@ -408,6 +434,25 @@ $("#submit-button").click(function(event) {
        console.log("Error", response)
        event.preventDefault();
     })
+  });
+
+  var headers = ["h1", "h2", "h3", "h4"]
+  var colors = ["red", "orange", "green", "blue"]
+
+  function slugify(text) {
+    return text
+        .toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'');
+  }
+
+  $.each(headers, function(i, header){
+    var color = colors[i];
+    $("#textarea " + header).each(function () {
+        var text = "wiki-" + slugify($(this).text());
+        $(this).attr("id", text);
+        $(this).append('<a class="headerlink" style="color:' + color + '" href="#' + text + '" title="Permanent link">¶</a>');
+    });
   });
 });
 </script>
