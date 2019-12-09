@@ -418,7 +418,7 @@ def update_templates(request):
         count = 0
         for article in articles:
             if article.template in templates:
-                res = django_rq.enqueue(update_template, article=article.uuid)
+                res = django_rq.enqueue(update_template, article=str(article.uuid))
                 count += 1
         messages.info(request, "%s terms requested for update." % count)
 
