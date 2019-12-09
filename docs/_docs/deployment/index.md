@@ -158,6 +158,19 @@ folders.
 make lint
 ```
 
+## Using Docker Compose
+
+Since the docker-compose file is in the https folder, we need to use the client
+as above to interact with it. However if you want to have a docker-compose.yml
+file to interact with directly for production, you can copy https/docker-compose-https.yml
+into the root folder (over writing the development docker-compose.yml, which
+you might want to rename) and then interact directly.
+
+```bash
+mv docker-compose.yml docker-compose-http.yml
+mv https/docker-compose-https.yml docker-compose.yml
+```
+
 ## Custom Build
 
 The docker-compose will build the container automatically,
