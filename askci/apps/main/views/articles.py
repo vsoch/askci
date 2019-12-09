@@ -32,6 +32,7 @@ from askci.apps.main.github import (
     get_repository_topics,
     list_repos,
     request_review,
+    subscribe_to,
 )
 
 import django_rq
@@ -103,6 +104,9 @@ def article_details(request, name):
         # Set off a task to parse and submit dispatch request
         status_code = request_review(request.user, article, markdown)
         if status_code == 204:
+
+            # Subscribe the user to updates
+            subscribe_to(request.user, article.repo)
             messages.info(
                 request,
                 "Your changes have been submit for review to %s"

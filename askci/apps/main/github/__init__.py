@@ -363,6 +363,64 @@ def list_repos(user, headers=None):
     return repos
 
 
+# Subscriptions
+
+
+def is_subscribed(user, repo):
+    """determine if a user is subscribed to a repository. Returns True or False,
+       or None in the case that the API endpoint fails.
+    """
+    if not user.has_github_edit() or not user.has_github_create():
+        return
+
+    headers = get_auth(user)
+    url = "%s/repos/%s/subscription" % (api_base, repo["full_name"])
+    response = POST(url, headers=headers)
+    if response.status_code == 404:
+        return False
+
+    return True
+
+
+def subscribe_to(user, repo):
+    """subscribe to a repository, given that the user is not subscribed.
+       returns True if the user is sucessfully subscribed (or already subscribed)
+       or False if an attempt is made and fails. None indicates that the user
+       doesn't have permission to subscribe.
+    """
+    if not user.has_github_edit() or not user.has_github_create():
+        return
+
+    subscribed = is_subscribed(user, repo)
+    if subscribed == False:
+        headers = get_auth(user)
+        url = "%s/repos/%s/subscription" % (api_base, repo["full_name"])
+        response = requests.put(url, headers=headers)
+        if response.status_code == 200:
+            subscribed = True
+
+    return subscribed
+
+
+def unsubscribe_from(user, repo):
+    """given being subscribed to a repository, unsubscribe from it.
+       We return the status of the subscription - True is still subscribed,
+       False is not, None indicates no permission.
+    """
+    if not user.has_github_edit() or not user.has_github_create():
+        return
+
+    subscribed = is_subscribed(user, repo)
+    if subscribed == True:
+        headers = get_auth(user)
+        url = "%s/repos/%s/subscription" % (api_base, repo["full_name"])
+        response = requests.delete(url, headers=headers)
+        if response.status_code == 204:
+            subscribed = False
+
+    return subscribed
+
+
 # Webhooks
 
 
