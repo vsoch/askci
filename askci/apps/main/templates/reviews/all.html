@@ -13,11 +13,11 @@
   {% include "messages/message.html" %}
 
   <div class="infinite-container">
-      <div class="row">
+      <div class="row" style="margin-bottom:20px">
         <div class="col-md-12">
           {% if not prs %}
           <p class="alert alert-info">There aren't any open reviews. How about looking at <a href="{% url 'all_articles' %}">articles</a> and suggesting changes?</p>    
-         {% else %}<p class="alert alert-info">You can contribute to AskCI simply as a review! Click on any open pull request to help review changes to an article.</p>{% endif %}
+         {% else %}<p class="alert alert-info">You can contribute to AskCI simply as a reviewer! Click on any open pull request to help review changes to an article.</p>{% endif %}
         </div>
       </div>
       {% for pr in prs %}{% if pr.url %}<div class="row">
