@@ -29,11 +29,11 @@
     <div class="col-md-12">
         <nav>
             <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">{% if instance.article_tags.count > 0 %}
-                <a class="nav-item nav-link active" id="nav-articles-tab" data-toggle="tab" href="#nav-articles" role="tab" aria-controls="nav-articles" aria-selected="true">Articles</a>{% endif %}
+                <a class="nav-item nav-link" id="nav-articles-tab" data-toggle="tab" href="#nav-articles" role="tab" aria-controls="nav-articles" aria-selected="true">Articles</a>{% endif %}
             </div>
         </nav>
         <div class="tab-content" id="nav-tabContent">{% if instance.article_tags.count > 0 %}
-            <div class="tab-pane fade show" id="nav-articles" role="tabpanel" aria-labelledby="nav-articles-tab">
+            <div class="tab-pane fade show active" id="nav-articles" role="tabpanel" aria-labelledby="nav-articles-tab">
                {% include "tags/article_table.html" with articles=instance.article_tags.all table_id="articles_table" %}
             </div>{% endif %}
         </div>
