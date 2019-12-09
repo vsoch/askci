@@ -36,8 +36,8 @@
             <a class="dropdown-item" href="{% url 'all_articles' %}">Articles</a>
             <a class="dropdown-item" href="{% url 'index' %}">Questions</a>
             <a class="dropdown-item" href="{% url 'all_tags' %}">Tags</a>
-            <a class="dropdown-item" href="{% url 'all_reviews' %}">Reviews</a>
-            <a class="dropdown-item" href="{% url 'all_examples' %}">Examples</a>
+            {% if OPEN_REVIEWS > 0 %}<a class="dropdown-item" href="{% url 'all_reviews' %}">Reviews</a>{% endif %}
+            {% if TOTAL_EXAMPLES > 0 %}<a class="dropdown-item" href="{% url 'all_examples' %}">Examples</a>{% endif %}
             <a class="dropdown-item" href="{% url 'export' %}">Export</a>
           </div>
          </li>

@@ -20,7 +20,6 @@ from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as 
 import os
 
 
-
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def all_reviews(request):
     """Show all open reviews, with recently created first
