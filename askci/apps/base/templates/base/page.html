@@ -47,7 +47,7 @@
         </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="supportDropdown">
             <a class="dropdown-item" href="{% url 'contact' %}">Contact Us</a>
-            <a class="dropdown-item" href="https://vsoch.github.io/askci/docs">User Guide</a>
+            <a class="dropdown-item" target="_blank" href="https://vsoch.github.io/askci/docs">User Guide</a>
             <a class="dropdown-item" href="{{ domain }}/api/docs">API</a>
           </div>
          </li>
@@ -106,17 +106,17 @@
         <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
           <ul class="list-inline mb-0">
             <li class="list-inline-item mr-3">
-              <a href="https://www.github.com/hpsee/askci">
+              <a href="https://www.github.com/hpsee/askci" target="_blank">
                 <i class="fab fa-github fa-fw"></i>
               </a>
             </li>
             <li class="list-inline-item mr-3">
-              <a href="https://www.twitter.com/{{ NODE_TWITTER }}">
+              <a href="https://www.twitter.com/{{ NODE_TWITTER }}" target="_blank">
                 <i class="fab fa-twitter-square fa-fw"></i>
               </a>
             </li>
             <li class="list-inline-item">
-              <a href="{{ HELP_INSTITUTION_SITE }}">
+              <a href="{{ HELP_INSTITUTION_SITE }}" target="_blank">
                 <i class="fas fa-home fa-fw"></i>
               </a>
             </li>
