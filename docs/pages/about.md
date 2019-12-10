@@ -11,7 +11,7 @@ AskCI Server is a version controlled, documentation and knowledge support server
  - **documentation and knowledge**: each article (repository) corresponds to a single concept or idea, akin to Wikipedia
  - **support**: questions are embedded in articles, and then indexed by the server. A user can ask a question via the interface or a connected tool to easily find an answer, whether it be in the text, or a code snippet example.
 
-See the [respository]({{ site.repo }}) for more details, or continue reading below.
+See the [repository]({{ site.repo }}) for more details, or continue reading below.
 
 ## Background
 
