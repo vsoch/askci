@@ -35,7 +35,7 @@ Those are the basic units of the site. What we can we do with them?
  - **create an article** a new article (and repository) can be created for a new concept or erm
  - **application programming interface (api)**: can be used to support external tools.
 
-For more details about how these actions work, see the [repository technical specification]({{ site.baseurl }}/docs/respository-spec), or the [getting started walkthrough]({{ site.baseurl }}/docs/getting-started)
+For more details about how these actions work, see the [repository technical specification]({{ site.baseurl }}/docs/repository-spec), or the [getting started walkthrough]({{ site.baseurl }}/docs/getting-started)
 
 ## History
  
