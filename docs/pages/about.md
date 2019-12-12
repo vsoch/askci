@@ -11,7 +11,7 @@ AskCI Server is a version controlled, documentation and knowledge support server
  - **documentation and knowledge**: each article (repository) corresponds to a single concept or idea, akin to Wikipedia
  - **support**: questions are embedded in articles, and then indexed by the server. A user can ask a question via the interface or a connected tool to easily find an answer, whether it be in the text, or a code snippet example.
 
-See the [respository]({{ site.repo }}) for more details, or continue reading below.
+See the [repository]({{ site.repo }}) for more details, or continue reading below.
 
 ## Background
 
@@ -35,7 +35,7 @@ Those are the basic units of the site. What we can we do with them?
  - **create an article** a new article (and repository) can be created for a new concept or erm
  - **application programming interface (api)**: can be used to support external tools.
 
-For more details about how these actions work, see the [repository technical specification]({{ site.baseurl }}/docs/respository-spec), or the [getting started walkthrough]({{ site.baseurl }}/docs/getting-started)
+For more details about how these actions work, see the [repository technical specification]({{ site.baseurl }}/docs/repository-spec), or the [getting started walkthrough]({{ site.baseurl }}/docs/getting-started)
 
 ## History
  
