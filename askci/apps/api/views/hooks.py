@@ -118,7 +118,7 @@ def receive_webhook(request, provider="discourse"):
             # Parse some text to search for articles, send issue with links
             django_rq.enqueue(
                 create_webhooks_issues,
-                text=body["post"]["topic_title"],
+                text="%s %s" % (body["post"]["cooked"], body["post"]["topic_title"]),
                 message=message,
                 provider=provider,
             )
