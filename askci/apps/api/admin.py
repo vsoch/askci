@@ -13,6 +13,7 @@ from askci.apps.api.models import Webhook
 
 
 class WebhookAdmin(admin.ModelAdmin):
-    list_display = ("name", "secret", "app_from", "created", "modified",)
+    list_display = ("name", "secret", "app_from", "created", "modified")
+
 
 admin.site.register(Webhook, WebhookAdmin)
