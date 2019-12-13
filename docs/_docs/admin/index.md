@@ -57,10 +57,12 @@ and name that you will fill in. Under the name, put XXXXXXXXX, and click save.
 Under discourse, you'll need to be an admin, and navigate to Admin -> API -> Webhooks and click to add a new webhook.
 Fill in the following fields as follows:
 
- - Payload URL: https://askci.dev/webhooks/receive (or replace with your server name)
+ - Payload URL: https://askci.dev/webhook/receive (or replace with your server name)
  - Content Type: application/json
  - Secret: Copy paste the secret from the add webhook view on your server
  - Events: Post Event is the default (leave it checked)
  - Trigger Categories: It's suggested to just put Q&A
  - Check TLS Certificate: keep this checked
  - Active: check after you've saved the webhook on your server.
+
+If you need more detail about webhooks, [see this post](https://meta.discourse.org/t/setting-up-webhooks/49045).
