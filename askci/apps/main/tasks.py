@@ -11,7 +11,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.conf import settings
 from askci.apps.main.models import Article, Question, Example, PullRequest, Tag
 from askci.apps.users.models import User
-from askci.apps.main.github import open_issue
 from askci.apps.main.utils import lowercase_cleaned_name, get_stopwords
 
 from bs4 import BeautifulSoup
@@ -52,6 +51,8 @@ def create_webhooks_issues(text, message, provider):
                 from the provider
        provider: the provider that sent the webhook, will be added to the title
     """
+    from askci.apps.main.github import open_issue
+
     # Words to always skip
     skip = get_stopwords()
 
