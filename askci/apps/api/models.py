@@ -31,6 +31,12 @@ class Webhook(models.Model):
         default="discourse",
     )
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.__str__()
+
     def get_label(self):
         return "webhook"
 

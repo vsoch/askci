@@ -59,11 +59,11 @@ and name that you will fill in. Under the name, put the full name of the discour
 https://ask.cyberinfrastructure.org
 ```
 
-and click save.
+and click save. The name must match exactly, including the https protocol.
 Under discourse, you'll need to be an admin, and navigate to Admin -> API -> Webhooks and click to add a new webhook.
 Fill in the following fields as follows:
 
- - Payload URL: https://askci.dev/api/webhook/receive (or replace with your server name)
+ - Payload URL: https://askci.dev/api/webhook/receive/discourse (or replace with your server name)
  - Content Type: application/json
  - Secret: Copy paste the secret from the add webhook view on your server
  - Events: Post Event is the default (leave it checked)

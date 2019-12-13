@@ -11,6 +11,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 from django.conf import settings
 from askci.apps.main.models import Article, Question, Example, PullRequest, Tag
 from askci.apps.users.models import User
+from askci.apps.main.github import open_issue
+from askci.apps.main.utils import lowercase_cleaned_name, get_stopwords
 
 from bs4 import BeautifulSoup
 from itertools import chain
@@ -35,6 +37,38 @@ def remove_language(code):
             lines = lines[1:]
             code = "\n".join(lines)
     return code
+
+
+def create_webhooks_issues(text, message, provider):
+    """given a validated webhook, take some text (topics) and parse for
+       unique terms or concepts. If found, and the article exists, open
+       a corresponding issue
+
+       Parameters
+       ==========
+       text: should be a raw string of text to parse for topics. Illegal
+               characters (other than -) will be removed, and lowercased
+       message: a message to post in the issue. Should be prepared with a url
+                from the provider
+       provider: the provider that sent the webhook, will be added to the title
+    """
+    # Words to always skip
+    skip = get_stopwords()
+
+    # Parse text and look for terms
+    cleaned = [
+        lowercase_cleaned_name(x) for x in text.split(" ") if lowercase_cleaned_name(x)
+    ]
+    cleaned = set([x for x in cleaned if x not in skip])
+
+    for term in cleaned:
+        try:
+            article = Article.objects.get(name=term)
+            if article.webhook_issues:
+                title = "Updated content from %s for term %s" % (provider, article.name)
+                open_issue(article.owner, article, title, summary=message)
+        except Article.DoesNotExist:
+            pass
 
 
 def repository_change(article_uuid, action, repo):

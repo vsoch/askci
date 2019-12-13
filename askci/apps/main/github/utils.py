@@ -93,7 +93,7 @@ def paginate(url, headers, min_count=30, start_page=1, params=None, limit=None):
     return result
 
 
-def validate_payload(secret, payload, request_signature):
+def validate_payload(secret, payload, request_signature, algorithm="sha1"):
     """validate_payload will retrieve an article secret, use it
        to create a hexdigest of the payload (request.body) and ensure
        that it matches the signature in the header).
@@ -103,10 +103,18 @@ def validate_payload(secret, payload, request_signature):
        secret: the article secret
        payload: the request body sent by the service
        request_signature: the signature to compare against
+       algorithm: one of sha1 or sha256 (no validation for others)
     """
+    # Only need sha1 and sha256
+    if algorithm == "sha1":
+        digestmod = hashlib.sha1
+    elif algorithm == "sha256":
+        digestmod = hashlib.sha256
+    else:
+        return False
     secret = secret.encode("utf-8")  # converts to bytes
-    digest = hmac.new(secret, digestmod=hashlib.sha1, msg=payload).hexdigest()
-    signature = "sha1=%s" % (digest)
+    digest = hmac.new(secret, digestmod=digestmod, msg=payload).hexdigest()
+    signature = "%s=%s" % (algorithm, digest)
     return hmac.compare_digest(signature, request_signature)
 
 

@@ -14,5 +14,9 @@ import askci.apps.api.views as views
 urlpatterns = [
     # Receives push, deploy, pull_request
     url(r"^hook/push/?$", views.receive_hook, name="receive_hook"),
-    url(r"^webhook/receive/?$", views.receive_webhook, name="receive_webhook"),
+    url(
+        r"^webhook/receive/(?P<provider>.+)/?$",
+        views.receive_webhook,
+        name="receive_webhook",
+    ),
 ]

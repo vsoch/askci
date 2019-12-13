@@ -217,6 +217,7 @@ class Article(models.Model):
 
     secret = models.UUIDField(default=uuid.uuid4)
     archived = models.BooleanField(default=False)
+    webhook_issues = models.BooleanField(default=True)
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     created = models.DateTimeField("date created", auto_now_add=True)
     modified = models.DateTimeField("date modified", auto_now=True)
