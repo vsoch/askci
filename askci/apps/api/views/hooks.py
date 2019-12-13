@@ -46,10 +46,6 @@ def receive_webhook(request, provider="discourse"):
     """
     if request.method == "POST":
 
-        print(request.META)
-        print(request.POST)
-        print(request.body)
-
         providers = [x[0] for x in Webhook.WEBHOOK_SERVER_OPTIONS]
         if provider not in providers:
             return JsonResponseMessage(message="Invalid request.")
@@ -110,7 +106,7 @@ def receive_webhook(request, provider="discourse"):
 
             # Formulate the discourse url for the topic
             # https://ask.cyberinfrastructure.org/t/what-are-the-names-of-containers/1197/2
-            url = "%s/t/%s" % (
+            url = "%s/t/%s/%s/%s" % (
                 webhook.name,
                 body["post"]["topic_slug"],
                 body["post"]["topic_id"],
