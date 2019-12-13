@@ -61,11 +61,13 @@ def create_webhooks_issues(text, message, provider):
         lowercase_cleaned_name(x) for x in text.split(" ") if lowercase_cleaned_name(x)
     ]
     cleaned = set([x for x in cleaned if x not in skip])
+    print(cleaned)
 
     for term in cleaned:
         try:
             article = Article.objects.get(name=term)
             if article.webhook_issues:
+                print("opening issue for %s" %article)
                 title = "Updated content from %s for term %s" % (provider, article.name)
                 open_issue(article.owner, article, title, summary=message)
         except Article.DoesNotExist:
