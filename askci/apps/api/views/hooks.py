@@ -19,6 +19,8 @@ import re
 @csrf_exempt
 def receive_hook(request):
     """receive_hook will parse a valid GitHub hook, otherwise ignore it.
+       this function is explicitly for GitHub for the main operations of the
+       site. For general webhooks, see reveive_webhook below.
     """
     if request.method == "POST":
 
@@ -27,3 +29,18 @@ def receive_hook(request):
             return receive_github_hook(request)
 
     return JsonResponseMessage(message="Invalid request.")
+
+
+@csrf_exempt
+def receive_webhook(request):
+    """receive_webhook will parse a validated webhook from an external server.
+       for GitHub webhooks assciated with core functionality of the server,
+       see receive_hook above.
+    """
+    if request.method == "POST":
+
+        print(request.META)
+        print(request.POST)
+        print(request.body)
+
+    return JsonResponseMessage(message="received.", status=200)

@@ -24,5 +24,7 @@
           url: "docs/deployment/setup/"
         - title: Https
           url: "docs/deployment/https/"
+        - title: Admin
+          url: "docs/admin/"
     - title: "News"
       url: "news"
