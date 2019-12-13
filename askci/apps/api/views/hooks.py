@@ -87,7 +87,7 @@ def receive_webhook(request, provider="discourse"):
 
             if not validate_payload(
                 secret=str(webhook.secret),
-                payload=body,
+                payload=request.body,
                 request_signature=signature,
                 algorithm="sha256",
             ):
