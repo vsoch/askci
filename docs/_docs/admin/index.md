@@ -53,11 +53,17 @@ instructions. If you want to request the addition of a new provider, please [ope
 ### Discourse
 
 Click on the "Add Webhook" button shown previously. This will show a simple interface with a secret,
-and name that you will fill in. Under the name, put XXXXXXXXX, and click save.
+and name that you will fill in. Under the name, put the full name of the discourse instance, e.g:
+
+```
+https://ask.cyberinfrastructure.org
+```
+
+and click save.
 Under discourse, you'll need to be an admin, and navigate to Admin -> API -> Webhooks and click to add a new webhook.
 Fill in the following fields as follows:
 
- - Payload URL: https://askci.dev/webhook/receive (or replace with your server name)
+ - Payload URL: https://askci.dev/api/webhook/receive (or replace with your server name)
  - Content Type: application/json
  - Secret: Copy paste the secret from the add webhook view on your server
  - Events: Post Event is the default (leave it checked)
