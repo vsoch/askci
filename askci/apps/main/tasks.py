@@ -56,10 +56,14 @@ def create_webhooks_issues(text, message, provider):
     # Words to always skip
     skip = get_stopwords()
 
+    # Remove  html tags
+    cleaned = [re.sub("<.*?>", " ", x) for x in text.split(" ")]
+
     # Parse text and look for terms
     cleaned = [
-        lowercase_cleaned_name(x) for x in text.split(" ") if lowercase_cleaned_name(x)
+        lowercase_cleaned_name(x.strip()) for x in cleaned if lowercase_cleaned_name(x)
     ]
+
     cleaned = set([x for x in cleaned if x not in skip])
     print(cleaned)
 
@@ -67,9 +71,10 @@ def create_webhooks_issues(text, message, provider):
         try:
             article = Article.objects.get(name=term)
             if article.webhook_issues:
-                print("opening issue for %s" %article)
+                print("opening issue for %s" % article)
                 title = "Updated content from %s for term %s" % (provider, article.name)
-                open_issue(article.owner, article, title, summary=message)
+                res = open_issue(article.owner, article, title, summary=message)
+                print("Response for issue %s" % res)
         except Article.DoesNotExist:
             pass
 
