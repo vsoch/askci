@@ -33,7 +33,6 @@ sift through several online resources to put together a current, holistic pictur
 The negative consequences also fall on the centers, as they struggle to support the user bases with
 smaller teams, and have limited time to allocate to support and documentation. In that support by way
 of tickets or in-person help is essential, documentation usually falls to the wayside.
-
 Badly needed is a collaborative solution to take the burden off of any individual center or group, and
 one that moves knowledge into the open source domain.
 
@@ -43,10 +42,11 @@ AskCI Server [@askci-server] is a version controlled, collaborative knowledge an
 introduces the powerful concept of open source knowledge, or bringing best practices from open source development
 to the maintenance of knowledge. This means that knowledge is version controlled, worked on collaboratively
 across institutions, available programmatically, and syndicated in a central location. 
-Specifically, we use the following concepts to describe the AskCI Server:
+Specifically, AskCI Server is defined by the following concepts:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
  - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable. A user can search and find a specific question, and then be taken immediately to the location in an article's text where the answer resides.
+ - **Reviews**: Are submit by an authenticated user on the site, and map to pull requests (PRs) on GitHub [@github-pr]. In the same way that pull requests can be used to discuss changes of software, the environment is equally friendly to discuss changes to knowledge articles.
  - **User**: Can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repositories) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
 
 In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI Server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. 
