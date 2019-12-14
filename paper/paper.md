@@ -169,7 +169,7 @@ ticketing system, support queue, or similar.
 
 The beauty of the design of this documentation base is that knowledge repositories, even if disconnected from
 a central server, can be imported easily into a new server. For this reason, articles that are written during the development
-of AskCI Server will integrate easily into a production server. For more details about usage and development, screen shots, and
+of an AskCI Server will integrate easily into a production server. For more details about usage and development, screen shots, and
 links, see the official documentation at https://vsoch.github.io/askci [@askci-server].
 
 
