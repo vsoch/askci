@@ -31,11 +31,13 @@ similar technologies. By way of having small teams work on these documentation b
 stale or outdated material is large. The negative consequences largely fall on the user, as they must
 sift through several online resources to put together a current, holistic picture of a concept or tool.
 The negative consequences also fall on the centers, as they struggle to support the user bases with
-smaller teams, and limited time to allocate to support and documentation. In that support by way
+smaller teams, and have limited time to allocate to support and documentation. In that support by way
 of tickets or in person help is essential, documentation usually falls to the wayside.
 
-Recent efforts have aspired to help with this lack of resources, including ask.ci [@askci], a discourse
-installation that provides a discussion forum for many academic centers to answer questions about cyberinfrastructure.
+Badly needed is a collaborative solution to take the burden off of any individual center or group, and
+one that moves typically private knowledge into the open source domain. Recent efforts have aspired to 
+help with this lack of resources, including ask.ci [@askci], a discourse installation that provides a 
+discussion forum for many academic centers to answer questions about cyberinfrastructure.
 However, topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
 user would still need to browse through to form some cohesive understanding. Still missing from
 this landscape is a holistic representation of a concept or idea, and one that is still embedded with
@@ -44,7 +46,11 @@ questions so that a user can easily navigate to a location in an article that an
 
 ## Concepts
 
-AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. It is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. Specifically, we use the following concepts to describe the AskCI Server:
+AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. It
+introduces the powerful concept of open source knowledge, or bringing best practices from open source development
+to the maintenance of knowledge. This means that knowledge is version controlled, worked on collaboratively
+across institutions, available programmatically, and syndicated in a central location. 
+Specifically, we use the following concepts to describe the AskCI Server:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
  - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable.
@@ -54,7 +60,7 @@ In practice, this means that content is created, worked on, and updated on GitHu
 
 ## Use Cases
 
-AskCI Server can support the following properties and use cases:
+AskCI Server is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. AskCI Server can support the following properties and use cases:
 
 ### Version Control
 
