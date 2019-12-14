@@ -46,9 +46,9 @@ questions so that a user can easily navigate to a location in an article that an
 
 AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. Specifically, this means that we define the following concepts:
 
- - **articles**: Topics or concept that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
- - **questions and examples**: embedded inquiries or code snippets in an article that are indexed and searchable.
- - **user**: can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repos) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
+ - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
+ - **Questions and Examples**: embedded inquiries or code snippets in an article that are indexed and searchable.
+ - **User**: can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repos) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
 
 In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. More specific use cases and properties are discussed next.
 
@@ -75,8 +75,6 @@ The user is also able to easily search all content across the site, which are al
 via the AskCI Server Application Programming Interface (API). Command line tools to stream line
 asking and answering questions will be developed using this API.
 
-![Figure 2: Application Programming Interface](figure2.png)
-
 While not visible in the rendered markdown, questions and examples are embedded in the content
 by way of span tags. A question span can appear anywhere in the text, and marks the location where
 the answer beings. An example question might look like this:
@@ -88,24 +86,24 @@ the answer beings. An example question might look like this:
 The same kind of tag can be used for an example, except it would appear before a code block.
 Both of these structures are tested automatically, discussed next.
 
-### Automated
+### Automation
 
 #### Workflows
 
 Each term repository is based on a common template that comes with GitHub Workflows [@github-workflows] that
 can fully automate management of the term. These workflows include:
 
- - **testing**: Testing of the term content, or the README.md maintained in the respository, comes down to parsing the text for correctly structured example and question spans. The content is tested in the repository, and submissions are also tested on the server. A user that is requesting review is not be able to submit until validation passes.
- - **request for review**: A request for review is done by way of a dispatch event [@github-dispatch] that is identified based on a client metadata field, "request-review." When a user edits content and submits it for review, the dispatch event will receive the updated content, open up a new branch on the repository with the content, and open a pull request. The submitting author is notified on the pull request to allow for further discussion, and the pull request is linked from the term interface and site for others to see and give feedback on.
- - **template update**: an update to the template would be highly challenging if the template was used across, say, hundreds of repositories. To support ease of updating, a dispatch event exists identified based on a client metadata field "update-template" that can be triggered by an administrator of the server to update all or a subset of templates. An update comes down to cloning the upstream template, and updating the hidden `.github` folder scripts that drive the application. A pull request is opened for the term maintainers to review the changes.
+ - **Testing**: Testing of the term content, or the README.md maintained in the respository, comes down to parsing the text for correctly structured example and question spans. The content is tested in the repository, and submissions are also tested on the server. A user that is requesting review is not be able to submit until validation passes.
+ - **Request for Review**: A request for review is done by way of a dispatch event [@github-dispatch] that is identified based on a client metadata field, "request-review." When a user edits content and submits it for review, the dispatch event will receive the updated content, open up a new branch on the repository with the content, and open a pull request. The submitting author is notified on the pull request to allow for further discussion, and the pull request is linked from the term interface and site for others to see and give feedback on.
+ - **Template Update**: an update to the template would be highly challenging if the template was used across, say, hundreds of repositories. To support ease of updating, a dispatch event exists identified based on a client metadata field "update-template" that can be triggered by an administrator of the server to update all or a subset of templates. An update comes down to cloning the upstream template, and updating the hidden `.github` folder scripts that drive the application. A pull request is opened for the term maintainers to review the changes.
 
 #### Webhooks
 
 Along with workflows, webhooks are essential for keeping the latest content on GitHub in sync with the server. Webhooks are created automatically when a new term is added, which also coincides with creating a newly named copy of a term template. Webhooks include:
 
- - **push or deployment**: Any update of the term content in it's README.md that is pushed to the master branch notifies the server. The server validates the webhook, and then updates content on the server from the repository. 
- - **pull request**: As pull requests are linked from the server to solicit additional review, it's essential that any changes in status are also kept in sync. Whenever a pull request status is changed, the server is notified, and acts accordingly. For example, a pull request closing without a merge would result in a status of "rejected" for the review, while a pull request with a merged time stamp would indicate that it was accepted and closed.
- - **repository**: In the case that any information about a repository changes, including the name, owner, or metadata, a webhooks is triggered to update the server. If the name is changed to be outside of the AskCI Server namespace (in the format `askci-term-<term>`) or if any subsequent actions on the repository are not successful, then the repository is marked as archived on the server. Archived means that further updates will not happen unless the permissions or metadata issues are resolved.
+ - **Push or Deployment**: Any update of the term content in it's README.md that is pushed to the master branch notifies the server. The server validates the webhook, and then updates content on the server from the repository. 
+ - **Pull Request**: As pull requests are linked from the server to solicit additional review, it's essential that any changes in status are also kept in sync. Whenever a pull request status is changed, the server is notified, and acts accordingly. For example, a pull request closing without a merge would result in a status of "rejected" for the review, while a pull request with a merged time stamp would indicate that it was accepted and closed.
+ - **Repository**: In the case that any information about a repository changes, including the name, owner, or metadata, a webhooks is triggered to update the server. If the name is changed to be outside of the AskCI Server namespace (in the format `askci-term-<term>`) or if any subsequent actions on the repository are not successful, then the repository is marked as archived on the server. Archived means that further updates will not happen unless the permissions or metadata issues are resolved.
 
 #### Notifications
 
@@ -118,11 +116,11 @@ easily remove if desired.
 
 There are several ways for which incentive exists for generating updated content.
 
- - **Contributor**: Any authenticated user, even with minimal GitHub permissions, can edit an article, and then submit the changes to the open source knowledge maintainer for review (Figure 3). This is likely to happen if a user is browsing the site and sees content that he or she would like to update.
+ - **Contributor**: Any authenticated user, even with minimal GitHub permissions, can edit an article, and then submit the changes to the open source knowledge maintainer for review (Figure 2). This is likely to happen if a user is browsing the site and sees content that he or she would like to update.
  - **Asking Questions**: If a browsing user cannot find an answer to a question on any particular topic, he or she can easily click on "Ask a Question" and input the question content. The question is submit as an issue on a term GitHub board, and brought to the attention of the open source knowledge maintainer. This question asking most likely will happen in a web interface, but could also programmatically happen by way of the application programming interface.
  - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of Ask.CI, a post would come down to a user asking a specific question about some cyberinfrastructure topic. The AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert the maintainer that new knowledge exists that might be integrated into the resource.
 
-![Figure 3: Markdown Editing Interface for topic "Singularity"](figure3.png)
+![Figure 2: Markdown Editing Interface for topic "Singularity"](figure2.png)
 
 The webhook framework is generalized, so if another resource that supports webhooks is desired to add to ping the server with updated content, this can be easily implemented.
 
@@ -132,10 +130,10 @@ The webhook framework is generalized, so if another resource that supports webho
 
 There are four levels of roles provided by AskCI Server, three of which are available to the larger community.
 
- - **viewer**: any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
- - **editor**: is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
- - **owner**: is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge respositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
- - **admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks. In practice, this is typically one individual, this author.
+ - **Viewer**: any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
+ - **Editor**: is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
+ - **Owner**: is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge respositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
+ - **Admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks. In practice, this is typically one individual, this author.
 
 The flexibility with respect to roles allows for a user of the server to participate at whatever level is comfortable
 for him or her. Some will want to read passively, others will want to contribute content without taking on responsibility, and
