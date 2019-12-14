@@ -77,20 +77,20 @@ examples.
 
 ![Figure 1: Questions are Presented on the main page](figure1.png)
 
-The user is also able to easily search all content across the site, which are also made available
-via the AskCI Server Application Programming Interface (API). Command line tools to stream line
-asking and answering questions will be developed using this API.
-
+The user is also able to easily search all content across the site, which is also made available
+via the AskCI Server Application Programming Interface (API). Command line tools to streamline
+asking and answering questions will be developed using this API, and questions are linked
+to specific locations in the text. This is made possible by way of span tags. 
 While not visible in the rendered markdown, questions and examples are embedded in the content
-by way of span tags. A question span can appear anywhere in the text, and marks the location where
-the answer beings. An example question might look like this:
+by way of these tags. A span for a question or example can appear anywhere in the text, and marks the location where
+the content beings. An example question might look like this:
 
 ```html
 <span id="question-where-does-the-term-originate"></span> The term originates from...
 ```
 
-The same kind of tag can be used for an example, except it would appear before a code block.
-Both of these structures are tested automatically, discussed next.
+Clicking on a question from an article's page or otherwise navigating to the span highlights
+the location for the user. An example would appear before a code block. Both of these structures are tested automatically, discussed next.
 
 ### Automation
 
