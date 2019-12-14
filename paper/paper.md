@@ -35,14 +35,7 @@ smaller teams, and have limited time to allocate to support and documentation. I
 of tickets or in-person help is essential, documentation usually falls to the wayside.
 
 Badly needed is a collaborative solution to take the burden off of any individual center or group, and
-one that moves knowledge into the open source domain. Recent efforts have aspired to 
-help with this lack of resources, including ask.ci [@askci], a discourse installation that provides a 
-discussion forum for many academic centers to answer questions about cyberinfrastructure.
-However, topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
-user would still need to browse through to form some cohesive understanding. Still missing from
-this landscape is a holistic representation of a concept or idea, and one that is still embedded with
-questions so that a user can easily navigate to a location in an article that answers a specific question.
-
+one that moves knowledge into the open source domain.
 
 ## Concepts
 
@@ -53,14 +46,24 @@ across institutions, available programmatically, and syndicated in a central loc
 Specifically, we use the following concepts to describe the AskCI Server:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
- - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable.
+ - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable. A user can search and find a specific question, and then be taken immediately to the location in an article's text where the answer resides.
  - **User**: Can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repositories) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
 
-In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI Server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. More specific use cases and properties are discussed next.
+In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI Server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. 
+
+## The AskCI Community
+
+AskCI Server is branded alongside the discourse server ask.ci [@askci] as the two can serve different needs for the same community.  
+However, the two serve distinct use cases. While the discourse ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. While the discourse ask.ci [@askci] is intended to provide support forums for individual centers (categories called "locales"), AskCI Server acts more like a wiki with articles for meta- or super- concepts such as a container technologies, job managers, or software projects. In fact, there is a logical progression for high quality bits of content from the ask.ci discourse site to wind up on the AskCI Server, 
+and a [webhook](#webhooks) is set up to enable this process. 
+
 
 ## Use Cases
 
-AskCI Server is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. While ask.ci [@askci] is intended to provide support forums for individual centers (categories called "locales"), AskCI Server acts more like a wiki with articles for meta- or super- concepts such as a container technologies, job managers, or software projects. AskCI Server can support the following properties and use cases:
+The discourse installation ask.ci [@askci] provides a discussion forum for many academic centers to answer questions about cyberinfrastructure. Topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
+user would still need to browse through to form some cohesive understanding. 
+
+ AskCI Server can support the following properties and use cases:
 
 ### Version Control
 
