@@ -47,10 +47,10 @@ questions so that a user can easily navigate to a location in an article that an
 AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. It is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. Specifically, we use the following concepts to describe the AskCI Server:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
- - **Questions and Examples**: embedded inquiries or code snippets in an article that are indexed and searchable.
- - **User**: can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repos) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
+ - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable.
+ - **User**: Can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repos) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
 
-In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. More specific use cases and properties are discussed next.
+In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI Server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. More specific use cases and properties are discussed next.
 
 ## Use Cases
 
@@ -95,7 +95,7 @@ can fully automate management of the term. These workflows include:
 
  - **Testing**: Testing of the term content, or the README.md maintained in the respository, comes down to parsing the text for correctly structured example and question spans. The content is tested in the repository, and submissions are also tested on the server. A user that is requesting review is not be able to submit until validation passes.
  - **Request for Review**: A request for review is done by way of a dispatch event [@github-dispatch] that is identified based on a client metadata field, "request-review." When a user edits content and submits it for review, the dispatch event will receive the updated content, open up a new branch on the repository with the content, and open a pull request. The submitting author is notified on the pull request to allow for further discussion, and the pull request is linked from the term interface and site for others to see and give feedback on.
- - **Template Update**: an update to the template would be highly challenging if the template was used across, say, hundreds of repositories. To support ease of updating, a dispatch event exists identified based on a client metadata field "update-template" that can be triggered by an administrator of the server to update all or a subset of templates. An update comes down to cloning the upstream template, and updating the hidden `.github` folder scripts that drive the application. A pull request is opened for the term maintainers to review the changes.
+ - **Template Update**: An update to the template would be highly challenging if the template was used across, say, hundreds of repositories. To support ease of updating, a dispatch event exists identified based on a client metadata field "update-template" that can be triggered by an administrator of the server to update all or a subset of templates. An update comes down to cloning the upstream template, and updating the hidden `.github` folder scripts that drive the application. A pull request is opened for the term maintainers to review the changes.
 
 #### Webhooks
 
@@ -122,7 +122,7 @@ There are several ways for which incentive exists for generating updated content
 
 ![Figure 2: Markdown Editing Interface for topic "Singularity"](figure2.png)
 
-The webhook framework is generalized, so if another resource that supports webhooks is desired to add to ping the server with updated content, this can be easily implemented.
+The webhook framework is generalized, so if another resource is desired to notify the server of relevant content, this can be easily implemented.
 
 ## Server Design
 
@@ -130,9 +130,9 @@ The webhook framework is generalized, so if another resource that supports webho
 
 There are four levels of roles provided by AskCI Server, three of which are available to the larger community.
 
- - **Viewer**: any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
- - **Editor**: is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
- - **Owner**: is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge respositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
+ - **Viewer**: Any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
+ - **Editor**: Is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
+ - **Owner**: Is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge respositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
  - **Admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks. In practice, this is typically one individual, this author.
 
 The flexibility with respect to roles allows for a user of the server to participate at whatever level is comfortable
@@ -144,11 +144,11 @@ a third group will want to serve as open source knowledge maintainers.
 
 The AskCI Server is made possible by way of several Docker [@docker] containers, including:
 
- - **askci_base**: a uwsgi [@uwsgi] container that runs the main Django [@django] application
- - **askci_worker**: a `django_rq` [@django-rq] worker that can run asynchronous tasks
- - **askci_scheduler**: a scheduler for the worker
- - **askci_redis**: the redis database for the scheduler
- - **askci_postgres**: a database for the appication. For production, it's suggested to use a database outside of a container.
+ - **askci_base**: A uwsgi [@uwsgi] container that runs the main Django [@django] application
+ - **askci_worker**: A `django_rq` [@django-rq] worker that can run asynchronous tasks
+ - **askci_scheduler**: A scheduler for the worker
+ - **askci_redis**: The redis database for the scheduler
+ - **askci_postgres**: A database for the appication. For production, it's suggested to use a database outside of a container.
 
 These containers are deployed locally or in production by way of docker compose [@docker-compose]. A shell script, `askci.sh` is provided alongside the application for easier interaction to deploy or manage a development or production interface.
 
@@ -157,12 +157,12 @@ These containers are deployed locally or in production by way of docker compose 
 
 ### Scope of Use
 
-While this particular example has scoped the AskCI server to be about research computing and technology support,
-an AskCI server can easily be branded to support any kind of knowledge that can be maintained on GitHub. The setup steps walk the user through the server naming, and this can be easily changed. While the main
+While this particular example has scoped the AskCI Server to be about research computing and technology support,
+an AskCI Server can easily be branded to support any kind of knowledge that can be maintained on GitHub. The setup steps walk the user through the server naming, and this can be easily changed. While the main
 README.md was selected for this early template so that the main repository also renders the knowledge content, for a software repository
 that uses the main README.md for other purposes, a template could be customized to render one or more different files.
-An AskCI server could easily be branded to serve metadata about software, medical or biological knowledge, or specifications.
-Further, by way of the application programming interface, an AskCI server can be integrated with an external
+An AskCI Server could easily be branded to serve metadata about software, medical or biological knowledge, or specifications.
+Further, by way of the application programming interface, an AskCI Server can be integrated with an external
 ticketing system, support queue, or similar.
 
 ### Development
