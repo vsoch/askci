@@ -59,7 +59,7 @@ AskCI Server can support the following properties and use cases:
 ### Version Control
 
 In that each article, a concept or idea, is maintained under version control [@github], this means that 
-a history is kept for all changes over time pertaining to it's development. If an AskCI Server itself
+a history is kept for all changes over time pertaining to its development. If an AskCI Server itself
 were to go away for any reason, the repositories and knowledge would live on, and could easily be imported
 into another deployment.
 
@@ -101,7 +101,7 @@ can fully automate management of the term. These workflows include:
 
 Along with workflows, webhooks are essential for keeping the latest content on GitHub in sync with the server. Webhooks are created automatically when a new term is added, which also coincides with creating a newly named copy of a term template. Webhooks include:
 
- - **Push or Deployment**: Any update of the term content in it's README.md that is pushed to the master branch notifies the server. The server validates the webhook, and then updates content on the server from the repository. 
+ - **Push or Deployment**: Any update of the term content in its README.md that is pushed to the master branch notifies the server. The server validates the webhook, and then updates content on the server from the repository. 
  - **Pull Request**: As pull requests are linked from the server to solicit additional review, it's essential that any changes in status are also kept in sync. Whenever a pull request status is changed, the server is notified, and acts accordingly. For example, a pull request closing without a merge would result in a status of "rejected" for the review, while a pull request with a merged time stamp would indicate that it was accepted and closed.
  - **Repository**: In the case that any information about a repository changes, including the name, owner, or metadata, a webhooks is triggered to update the server. If the name is changed to be outside of the AskCI Server namespace (in the format `askci-term-<term>`) or if any subsequent actions on the repository are not successful, then the repository is marked as archived on the server. Archived means that further updates will not happen unless the permissions or metadata issues are resolved.
 
