@@ -34,9 +34,9 @@ The negative consequences also fall on the centers, as they struggle to support 
 smaller teams, and limited time to allocate to support and documentation. In that support by way
 of tickets or in person help is essential, documentation usually falls to the wayside.
 
-Recent efforts have aspired to help with this lack of resources, including Ask.CI [@askci], a discourse
+Recent efforts have aspired to help with this lack of resources, including ask.ci [@askci], a discourse
 installation that provides a discussion forum for many academic centers to answer questions about cyberinfrastructure.
-However, topics on AskCI do not represent holistic knowledge, but rather individual questions that a
+However, topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
 user would still need to browse through to form some cohesive understanding. Still missing from
 this landscape is a holistic representation of a concept or idea, and one that is still embedded with
 questions so that a user can easily navigate to a location in an article that answers a specific question.
@@ -44,7 +44,7 @@ questions so that a user can easily navigate to a location in an article that an
 
 ## Concepts
 
-AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. Specifically, this means that we define the following concepts:
+AskCI Server [@askci-server] is a version controlled, collaborative knowledge and support server. It is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. Specifically, we use the following concepts to describe the AskCI Server:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
  - **Questions and Examples**: embedded inquiries or code snippets in an article that are indexed and searchable.
@@ -108,7 +108,7 @@ Along with workflows, webhooks are essential for keeping the latest content on G
 #### Notifications
 
 For all of the above cases, in that a request for review, template update, or repository archive occurs,
-users are notified by way of an email powered by the SendGrid API [@sendgrid]. Users that contribute
+owners are notified by way of an email powered by the SendGrid API [@sendgrid]. Users that contribute
 content to respositories are also subscribed to receive further notifications, a status that they can
 easily remove if desired.
 
@@ -118,7 +118,7 @@ There are several ways for which incentive exists for generating updated content
 
  - **Contributor**: Any authenticated user, even with minimal GitHub permissions, can edit an article, and then submit the changes to the open source knowledge maintainer for review (Figure 2). This is likely to happen if a user is browsing the site and sees content that he or she would like to update.
  - **Asking Questions**: If a browsing user cannot find an answer to a question on any particular topic, he or she can easily click on "Ask a Question" and input the question content. The question is submit as an issue on a term GitHub board, and brought to the attention of the open source knowledge maintainer. This question asking most likely will happen in a web interface, but could also programmatically happen by way of the application programming interface.
- - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of Ask.CI, a post would come down to a user asking a specific question about some cyberinfrastructure topic. The AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert the maintainer that new knowledge exists that might be integrated into the resource.
+ - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of ask.ci [@askci], a post would come down to a user asking a specific question about some cyberinfrastructure topic. The AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert the maintainer that new knowledge exists that might be integrated into the resource.
 
 ![Figure 2: Markdown Editing Interface for topic "Singularity"](figure2.png)
 
