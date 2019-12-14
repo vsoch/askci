@@ -54,7 +54,7 @@ Specifically, we use the following concepts to describe the AskCI Server:
 
  - **Articles**: Topics or concepts that a user might want to ask a question about. On a high level, it's a piece of knowledge that can be collaboratively worked on. On a functional level, an article corresponds to a single GitHub repository based on a template specification that allows for interaction with the server [@tech-spec].
  - **Questions and Examples**: Embedded inquiries or code snippets in an article that are indexed and searchable.
- - **User**: Can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repos) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
+ - **User**: Can be a visitor (non-authenticated), an editor or reviewer (authenticated but without ownership of knowledge repositories) or an owner (authenticated with ownership). Visitors can browse content, editors and reviewers can update or ask new questions, and owners can do all of the above plus serve as maintainers for the knowledge repositories.
 
 In practice, this means that content is created, worked on, and updated on GitHub [@github], and each article (repository) corresponds to a single concept or idea, akin to Wikipedia [@wikipedia]. Interactions between GitHub and the AskCI Server are automated via webhooks and GitHub workflows. Since questions are embedded in articles and then indexed by the server, a user is allowed to ask a question via the interface or a connected tool to easily find an answer or code snippet example. More specific use cases and properties are discussed next.
 
@@ -99,7 +99,7 @@ Both of these structures are tested automatically, discussed next.
 Each term repository is based on a common template that comes with GitHub Workflows [@github-workflows] that
 can fully automate management of the term. These workflows include:
 
- - **Testing**: Testing of the term content, or the README.md maintained in the respository, comes down to parsing the text for correctly structured example and question spans. The content is tested in the repository, and submissions are also tested on the server. A user that is requesting review is not be able to submit until validation passes.
+ - **Testing**: Testing of the term content, or the README.md maintained in the repository, comes down to parsing the text for correctly structured example and question spans. The content is tested in the repository, and submissions are also tested on the server. A user that is requesting review is not be able to submit until validation passes.
  - **Request for Review**: A request for review is done by way of a dispatch event [@github-dispatch] that is identified based on a client metadata field, "request-review." When a user edits content and submits it for review, the dispatch event will receive the updated content, open up a new branch on the repository with the content, and open a pull request. The submitting author is notified on the pull request to allow for further discussion, and the pull request is linked from the term interface and site for others to see and give feedback on.
  - **Template Update**: An update to the template would be highly challenging if the template was used across, say, hundreds of repositories. To support ease of updating, a dispatch event exists identified based on a client metadata field "update-template" that can be triggered by an administrator of the server to update all or a subset of templates. An update comes down to cloning the upstream template, and updating the hidden `.github` folder scripts that drive the application. A pull request is opened for the term maintainers to review the changes.
 
@@ -115,7 +115,7 @@ Along with workflows, webhooks are essential for keeping the latest content on G
 
 For all of the above cases, in that a request for review, template update, or repository archive occurs,
 owners are notified by way of an email powered by the SendGrid API [@sendgrid]. Users that contribute
-content to respositories are also subscribed to receive further notifications, a status that they can
+content to repositories are also subscribed to receive further notifications, a status that they can
 easily remove if desired.
 
 ### Contributing Content
@@ -138,7 +138,7 @@ There are four levels of roles provided by AskCI Server, three of which are avai
 
  - **Viewer**: Any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
  - **Editor**: Is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
- - **Owner**: Is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge respositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
+ - **Owner**: Is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge repositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
  - **Admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks. In practice, this is typically one individual, this author.
 
 The flexibility with respect to roles allows for a user of the server to participate at whatever level is comfortable
@@ -154,7 +154,7 @@ The AskCI Server is made possible by way of several Docker [@docker] containers,
  - **askci_worker**: A `django_rq` [@django-rq] worker that can run asynchronous tasks
  - **askci_scheduler**: A scheduler for the worker
  - **askci_redis**: The redis database for the scheduler
- - **askci_postgres**: A database for the appication. For production, it's suggested to use a database outside of a container.
+ - **askci_postgres**: A database for the application. For production, it's suggested to use a database outside of a container.
 
 These containers are deployed locally or in production by way of docker compose [@docker-compose]. A shell script, `askci.sh` is provided alongside the application for easier interaction to deploy or manage a development or production interface.
 
