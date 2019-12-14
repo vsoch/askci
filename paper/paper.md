@@ -60,8 +60,7 @@ well suited to creating holistic knowledge. AskCI Server, on the other hand, act
 
 ## Use Cases
 
-The discourse installation ask.ci [@askci] provides a discussion forum for many academic centers to answer questions about cyberinfrastructure.  AskCI Server is intended for more holistic knowledge,
-and can support the following properties and use cases:
+AskCI Server can support the following properties and use cases:
 
 ### Version Control
 
