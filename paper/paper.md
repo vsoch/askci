@@ -162,7 +162,7 @@ For production, it's suggested to use a database outside of a container, and ess
 
 ### Scope of Use
 
-While this particular example has scoped the AskCI Server to be about research computing and technology support, and
+While this particular example has scoped the AskCI Server to be about research computing and technology support, and is
 branded alongside the discourse ask.ci [@askci], the AskCI Server is not limited to this community or use case. 
 An AskCI Server can easily be branded to support any kind of knowledge that can be maintained on GitHub. The setup steps walk the user through the server naming, and this can be easily changed. While the main
 README.md was selected for this early template so that the main repository also renders the knowledge content, for a software repository
