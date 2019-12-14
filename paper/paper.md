@@ -123,11 +123,11 @@ There are several ways for which incentive exists for generating updated content
 
  - **Contributor**: Any authenticated user, even with minimal GitHub permissions, can edit an article, and then submit the changes to the open source knowledge maintainer for review (Figure 2). This is likely to happen if a user is browsing the site and sees content that he or she would like to update.
  - **Asking Questions**: If a browsing user cannot find an answer to a question on any particular topic, he or she can easily click on "Ask a Question" and input the question content. The question is submit as a GitHub issue to the repository associated with the term, and brought to the attention of the open source knowledge maintainer(s). This question asking most likely will happen in a web interface, but could also programmatically happen by way of the application programming interface.
- - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of ask.ci [@askci], a post would come down to a user asking a specific question about some cyberinfrastructure topic. The AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert the maintainer that new knowledge exists that might be integrated into the resource.
+ - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of ask.ci [@askci], a post would come down to a user asking a specific question about some cyberinfrastructure topic. When the post is added to the ask.ci discourse server, it pings the webhook with it's content, and the AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert any maintainers that new knowledge exists that might be integrated into the article.
 
 ![Figure 2: Markdown Editing Interface for topic "Singularity"](figure2.png)
 
-The webhook framework is generalized, so if another resource is desired to notify the server of relevant content, this can be easily implemented.
+The webhook framework is generalized, so any other knowledge resource that supports sending webhooks could be integrated.
 
 ## Server Design
 
@@ -136,9 +136,9 @@ The webhook framework is generalized, so if another resource is desired to notif
 There are four levels of roles provided by AskCI Server, three of which are available to the larger community.
 
  - **Viewer**: Any unauthenticated user is allowed to browse knowledge on the site, including articles, questions, reviews, and examples.
- - **Editor**: Is a role associated with allowing read only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
- - **Owner**: Is a role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge repositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
- - **Admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks. In practice, this is typically one individual, this author.
+ - **Editor**: A role associated with allowing read-only access for the minimum set of public information provided by GitHub OAuth2 [@github-oauth2]. An editor is able to interactively edit the article content in the interface, and then submit the changes as a request for review.
+ - **Owner**: A role associated with read and write permissions required to copy template repositories and create webhooks on the user's behalf. An owner can easily generate new knowledge repositories for terms or concepts that do not exist yet. An owner is then responsible for being one of the maintainers of the term on GitHub, and will receive notification for reviews or new questions. If a repository is generated in a GitHub organization, this responsibility can be shared by a group of individuals with shared expertise, and this is the recommended approach.
+ - **Admin**: A site administrator is considered a staff or superuser of the application, meaning that she has full access to manage the site. Typically an admin would be responsible for responding to issues with respect to the site, updating templates when necessary, or setting up webhooks.
 
 The flexibility with respect to roles allows for a user of the server to participate at whatever level is comfortable
 for him or her. Some will want to read passively, others will want to contribute content without taking on responsibility, and
@@ -153,17 +153,18 @@ The AskCI Server is made possible by way of several Docker [@docker] containers,
  - **askci_worker**: A `django_rq` [@django-rq] worker that can run asynchronous tasks
  - **askci_scheduler**: A scheduler for the worker
  - **askci_redis**: The redis database for the scheduler
- - **askci_postgres**: A database for the application. For production, it's suggested to use a database outside of a container.
+ - **askci_postgres**: A database for the application
 
 These containers are deployed locally or in production by way of docker compose [@docker-compose]. A shell script, `askci.sh` is provided alongside the application for easier interaction to deploy or manage a development or production interface.
-
+For production, it's suggested to use a database outside of a container, and essential to be deployed with https.
 
 ## Discussion
 
 ### Scope of Use
 
-While this particular example has scoped the AskCI Server to be about research computing and technology support,
-an AskCI Server can easily be branded to support any kind of knowledge that can be maintained on GitHub. The setup steps walk the user through the server naming, and this can be easily changed. While the main
+While this particular example has scoped the AskCI Server to be about research computing and technology support, and
+branded alongside the discourse ask.ci [@askci], the AskCI Server is not limited to this community or use case. 
+An AskCI Server can easily be branded to support any kind of knowledge that can be maintained on GitHub. The setup steps walk the user through the server naming, and this can be easily changed. While the main
 README.md was selected for this early template so that the main repository also renders the knowledge content, for a software repository
 that uses the main README.md for other purposes, a template could be customized to render one or more different files.
 An AskCI Server could easily be branded to serve metadata about software, medical or biological knowledge, or specifications.
