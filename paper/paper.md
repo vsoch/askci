@@ -25,8 +25,8 @@ siloed. A research computing center is likely to provide documentation specific 
 a small technology group to provide support catered to their user base. Although there are benefits to
 maintaining isolated and specific documentation, the drawbacks for the community can be substantial.
 A researcher using the documentation typically experiences a large set of technologies in synchrony,
-and requires a more global context about how a tool might interact with another tool or resource. It is
-common to see redundancy in academic documentation bases, as many research groups or resources tend to use
+and might struggle with jumping between documentation bases trying to understand a more global context.
+ It is common to see redundancy in academic documentation bases, as many research groups or resources tend to use
 similar technologies. By way of having small teams work on these documentation bases, the potential for
 stale or outdated material is large. The negative consequences largely fall on the user, as they must
 sift through several online resources to put together a current, holistic picture of a concept or tool.
