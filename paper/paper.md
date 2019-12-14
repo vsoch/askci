@@ -23,7 +23,7 @@ Institutional knowledge about resources at academic centers pertaining to high p
 research software, and other ideas or concepts centered around cyberinfrastructure have historically been
 siloed. A research computing center is likely to provide documentation specific to their resources, or 
 a small technology group to provide support catered to their user base. Although there are benefits to
-maintaining high quality and specific documentation, the drawbacks for the community can be substantial.
+maintaining isolated and specific documentation, the drawbacks for the community can be substantial.
 A researcher using the documentation typically experiences a large set of technologies in synchrony,
 and requires a more global context about how a tool might interact with another tool or resource. It is
 common to see redundancy in academic documentation bases, as many research groups or resources tend to use
