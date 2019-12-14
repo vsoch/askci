@@ -53,14 +53,14 @@ In practice, this means that content is created, worked on, and updated on GitHu
 
 ## The AskCI Community
 
-AskCI Server is branded alongside the discourse server [@discourse] ask.ci [@askci] as the two can serve different needs for the same community. However, the two serve distinct use cases. While the discourse ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. While the discourse ask.ci [@askci] is intended to provide support forums for individual centers (categories called "locales"), AskCI Server acts more like a wiki with articles for meta- or super- concepts such as a container technologies, job managers, or software projects. In fact, there is a logical progression for high quality bits of content from the ask.ci discourse site to wind up on the AskCI Server, 
-and a [webhook](#webhooks) can be set up to enable this process. 
+AskCI Server is branded alongside the discourse server ask.ci [@askci] as the two can serve different needs for the same community. However, the two serve distinct use cases. While the discourse ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. 
+Topics on ask.ci, by way of being organized in a question and answer format [@discourse] do not represent holistic knowledge, but rather individual questions that a user would still need to browse through to form some cohesive understanding. While this structure is useful in that it allows individual centers to create support forums for their users (categories called "locales"), it isn't a design
+well suited to creating holistic knowledge. AskCI Server, on the other hand, acts more like a wiki with articles for meta- or super- concepts such as a container technologies, job managers, or software projects. If a user is searching for the answer to a question about a particular topic, he or she can be confident that if the question has been answered, it will be found on the topic's page. If it's not answered, the user can easily ask the question for the maintainers of the term to answer. In that the discourse ask.ci is scattered with snippets of high quality knowledge that might be organized to a concept, there is a logical progression for this content from the ask.ci discourse site to wind up on the AskCI Server. A [webhook](#webhooks) can be set up to enable this process. 
 
 
 ## Use Cases
 
-The discourse installation ask.ci [@askci] provides a discussion forum for many academic centers to answer questions about cyberinfrastructure. Topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
-user would still need to browse through to form some cohesive understanding. AskCI Server is intended for more holistic knowledge,
+The discourse installation ask.ci [@askci] provides a discussion forum for many academic centers to answer questions about cyberinfrastructure.  AskCI Server is intended for more holistic knowledge,
 and can support the following properties and use cases:
 
 ### Version Control
