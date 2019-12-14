@@ -21,7 +21,7 @@ bibliography: paper.bib
 
 Institutional knowledge about resources at academic centers pertaining to high performance computing,
 research software, and other ideas or concepts centered around cyberinfrastructure have historically been
-siloed. A research computing center is likely to provide documentation specific for their resources, or 
+siloed. A research computing center is likely to provide documentation specific to their resources, or 
 a small technology group to provide support catered to their user base. Although there are benefits to
 maintaining high quality and specific documentation, the drawbacks for the community can be substantial.
 A researcher using the documentation typically experiences a large set of technologies in synchrony,
@@ -32,10 +32,10 @@ stale or outdated material is large. The negative consequences largely fall on t
 sift through several online resources to put together a current, holistic picture of a concept or tool.
 The negative consequences also fall on the centers, as they struggle to support the user bases with
 smaller teams, and have limited time to allocate to support and documentation. In that support by way
-of tickets or in person help is essential, documentation usually falls to the wayside.
+of tickets or in-person help is essential, documentation usually falls to the wayside.
 
 Badly needed is a collaborative solution to take the burden off of any individual center or group, and
-one that moves typically private knowledge into the open source domain. Recent efforts have aspired to 
+one that moves knowledge into the open source domain. Recent efforts have aspired to 
 help with this lack of resources, including ask.ci [@askci], a discourse installation that provides a 
 discussion forum for many academic centers to answer questions about cyberinfrastructure.
 However, topics on ask.ci do not represent holistic knowledge, but rather individual questions that a
@@ -60,7 +60,7 @@ In practice, this means that content is created, worked on, and updated on GitHu
 
 ## Use Cases
 
-AskCI Server is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. AskCI Server can support the following properties and use cases:
+AskCI Server is branded alongside the discourse server ask.ci as the two can serve different needs for the same community. While ask.ci [@askci] is akin to a discussion based forum where concepts might appear on many topics scattered across the site, AskCI Server [@askci-server] provides a single article for each concept. While ask.ci [@askci] is intended to provide support forums for individual centers (categories called "locales"), AskCI Server acts more like a wiki with articles for meta- or super- concepts such as a container technologies, job managers, or software projects. AskCI Server can support the following properties and use cases:
 
 ### Version Control
 
