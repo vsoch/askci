@@ -8,6 +8,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
+
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
@@ -51,6 +53,7 @@ def index_view(request):
 
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
+@login_required
 def contact_view(request):
     if request.method == "POST":
         from askci.apps.users.email import send_email
