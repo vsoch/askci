@@ -75,7 +75,7 @@ A user browsing the site is first presented with the most recent articles and as
 and the site is organized to make it easy to browse articles, reviews under progress, or embedded questions and
 examples.
 
-![Figure 1: Questions are Presented on the main page](figure1.png)
+![Questions are Presented on the main page](figure1.png)
 
 The user is also able to easily search all content across the site, which is also made available
 via the AskCI Server Application Programming Interface (API). Command line tools to streamline
@@ -86,7 +86,7 @@ by way of these tags. A span for a question or example can appear anywhere in th
 the content beings. An example question might look like this:
 
 ```html
-<span id="question-where-does-the-term-originate"></span> The term originates from...
+<span id="question-where-does-hpc-originate"></span> HPC originates...
 ```
 
 An example would appear before a code block.  Clicking on a question or example from an article's page or otherwise navigating to the span highlights the location for the user. Both of these structures can be inserted easily in the markdown editor on an article's page, and content is tested automatically. This automation is discussed next.
@@ -125,7 +125,7 @@ There are several ways for which incentive exists for generating updated content
  - **Asking Questions**: If a browsing user cannot find an answer to a question on any particular topic, he or she can easily click on "Ask a Question" and input the question content. The question is submit as a GitHub issue to the repository associated with the term, and brought to the attention of the open source knowledge maintainer(s). This question asking most likely will happen in a web interface, but could also programmatically happen by way of the application programming interface.
  - **Discourse Webhook**: An external webhook can be configured to ping the AskCI Server when there is a post on an external discourse board. In the case of ask.ci [@askci], a post would come down to a user asking a specific question about some cyberinfrastructure topic. When the post is added to the ask.ci discourse server, it pings the webhook with it's content, and the AskCI Server parses the content, matches terms to existing terms on the server, and if a match is found, opens up an issue on GitHub to alert any maintainers that new knowledge exists that might be integrated into the article.
 
-![Figure 2: Markdown Editing Interface for topic "Singularity"](figure2.png)
+![Markdown Editing Interface for topic "Singularity"](figure2.png)
 
 The webhook framework is generalized, so any other knowledge resource that supports sending webhooks could be integrated.
 
