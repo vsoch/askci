@@ -1,0 +1,81 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{??}{dja}{2015}]{django}
+ 2015
+\newblock ``The Web framework for perfectionists with deadlines | Django.''.
+\newblock Accessed: 2015-11-4.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2017}]{github-topics}
+ February. 2017
+\newblock ``Introducing Topics - The {GitHub} Blog.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2019a}]{github-pr}
+ 2019
+\newblock ``About pull requests - {GitHub} Help.''.
+
+\bibitem[\protect\citeauthoryear{??}{ask}{2019a}]{askci-server}
+ 2019
+\newblock ``{AskCI} Documentation.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{??}{ask}{2019b}]{askci}
+ 2019
+\newblock ``{Ask.Cyberinfrastructure}.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2019b}]{github-oauth2}
+ 2019
+\newblock ``Authorizing {OAuth} Apps.''.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2019c}]{github}
+ 2019
+\newblock ``Build software better, together.''.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2019d}]{github-workflows}
+ 2019
+\newblock ``Configuring a workflow - {GitHub} Help.''.
+
+\bibitem[\protect\citeauthoryear{??}{dja}{2019}]{django-rq}
+ 2019
+\newblock ``django-rq.''.
+
+\bibitem[\protect\citeauthoryear{??}{doc}{2019}]{docker-compose}
+ June. 2019
+\newblock ``Docker Compose.''.
+\newblock Accessed: 2019-6-24.
+
+\bibitem[\protect\citeauthoryear{??}{sen}{2019}]{sendgrid}
+ 2019
+\newblock ``Email Delivery Service.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{??}{git}{2019e}]{github-dispatch}
+ 2019
+\newblock ``Event Types \& Payloads.''.
+
+\bibitem[\protect\citeauthoryear{??}{tec}{2019}]{tech-spec}
+ 2019
+\newblock ``Repository Specification.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{??}{uws}{2019}]{uwsgi}
+ 2019
+\newblock ``The {uWSGI} project --- {uWSGI} 2.0 documentation.''.
+\newblock Accessed: 2019-12-14.
+
+\bibitem[\protect\citeauthoryear{Merkel}{Merkel}{2014}]{docker}
+Merkel, Dirk.
+\newblock ``Docker: Lightweight Linux Containers for Consistent Development and
+  Deployment.''
+\newblock 2014 March. 2014
+\newblock \emph{Linux J.}
+
+\bibitem[\protect\citeauthoryear{{Wikipedia contributors}}{{Wikipedia
+  contributors}}{2019}]{wikipedia}
+{Wikipedia contributors}.
+\newblock  2019
+\newblock ``Wikipedia.''.
+\newblock Accessed: 2019-12-14.
+
+\end{thebibliography}
