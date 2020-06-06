@@ -10,18 +10,14 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.http import Http404, JsonResponse
+from django.shortcuts import render
 from ratelimit.decorators import ratelimit
 
 from askci.settings import DOMAIN_NAME
-from askci.apps.main.models import Article, Question
-from askci.apps.main.tasks import update_article
+from askci.apps.main.models import Article
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 from askci.apps.main.github import open_issue
 
-import os
-import uuid
 
 ## All Questions view is shown on front page in base -> main/index.html
 

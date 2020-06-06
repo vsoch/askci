@@ -19,7 +19,6 @@ from askci.apps.api.models import Webhook
 from askci.apps.main.tasks import create_webhooks_issues
 
 import django_rq
-import uuid
 import re
 
 

@@ -18,10 +18,7 @@ from askci.settings import (
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.db.models.aggregates import Count
 from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
-from django.db.models import Q, Sum
 from ratelimit.decorators import ratelimit
 
 

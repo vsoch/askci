@@ -14,7 +14,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from askci.apps.main.models import TemplateRepository
 from askci.settings import REPO_TEMPLATES
 
-import django_rq
 import hashlib
 import json
 import shutil

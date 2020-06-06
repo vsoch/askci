@@ -15,7 +15,7 @@ from django.http import Http404, JsonResponse
 from django.urls import reverse
 from ratelimit.decorators import ratelimit
 
-from askci.apps.main.models import Article, PullRequest, Tag, TemplateRepository
+from askci.apps.main.models import Article, TemplateRepository
 from askci.apps.main.utils import lowercase_cleaned_name, get_paginated
 from askci.apps.main.tasks import update_article, test_markdown
 from askci.settings import (
@@ -29,7 +29,6 @@ from askci.apps.main.github import (
     delete_webhook,
     get_admin_namespaces,
     get_repo,
-    get_repository_topics,
     list_repos,
     request_review,
     subscribe_to,
@@ -269,7 +268,7 @@ def add_article_tags(article):
     """
     if "topics" in article.webhook:
         if len(article.webhook["topics"]) > 0:
-            for tag in webhook["topics"]:
+            for tag in article.webhook["topics"]:
                 article.tags.add(tag)
             article.save()
     else:
@@ -320,7 +319,7 @@ def import_article(request):
 
         try:
             template = TemplateRepository.objects.get(uuid=template_uuid)
-        except Template.DoesNotExist:
+        except TemplateRepository.DoesNotExist:
             messages.error(request, "That template doesn't exist")
             return redirect("import_article")
 

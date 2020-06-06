@@ -1,0 +1,47 @@
+version: 2.1
+
+orbs:
+  # https://circleci.com/orbs/registry/orb/circleci/docker-publish
+  docker-publish: circleci/docker-publish@0.1.3
+
+workflows:
+
+  # This workflow will be run on all branches but master (to test)
+  build_without_publishing_job:
+    jobs:
+      - docker-publish/publish:
+          image: vsoch/askci
+          registry: quay.io
+          deploy: false
+          tag: latest
+          filters:
+            branches:
+              ignore: 
+                - master
+                - docs*
+          after_build:
+            - run:
+                name: Preview Docker Tag for Build
+                command: |
+                   DOCKER_TAG=$(cat VERSION)
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   echo "GitHub Commit is ${CIRCLE_SHA1}"
+
+  # This workflow will deploy images on merge to master only
+  docker_with_lifecycle:
+    jobs:
+      - docker-publish/publish:
+          image: vsoch/askci
+          registry: quay.io
+          tag: latest
+          filters:
+            branches:
+             only: master
+          after_build:
+            - run:
+                name: Publish Docker Tag with AskCI Version
+                command: |
+                   DOCKER_TAG=$(cat VERSION)
+                   echo "Version for Docker tag is ${DOCKER_TAG}"
+                   docker tag quay.io/vsoch/askci:latest quay.io/vsoch/askci:${DOCKER_TAG}
+                   docker tag quay.io/vsoch/askci:latest quay.io/vsoch/askci:${CIRCLE_SHA1}

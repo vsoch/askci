@@ -8,7 +8,7 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from django.conf.urls import include, url
+from django.conf.urls import url
 import askci.plugins.saml_auth.views as views
 
 urlpatterns = [url(r"^saml.xml$", views.saml_metadata_view, name="samlxml")]

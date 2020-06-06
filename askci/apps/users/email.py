@@ -18,13 +18,10 @@ from sendgrid.helpers.mail import (
     FileName,
     FileType,
     Disposition,
-    ContentId,
 )
 
 import base64
 import os
-import json
-import urllib.request as urllib
 
 
 def send_email(

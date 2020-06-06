@@ -1,4 +1,3 @@
-anyjson
 beautifulsoup4==4.7.1
 coreapi==2.3.3
 cython
@@ -19,12 +18,10 @@ django-rq
 django-taggit
 django-taggit-templatetags
 django-user-agents
-django==2.2.10
+django==2.2.13
 djangorestframework
-freegenes>=0.0.12
 h5py
 ipython
-jsonschema
 markdown
 numexpr
 oauth2client==3.0
@@ -32,7 +29,6 @@ Pillow
 PyYAML==5.1
 psycopg2-binary
 pygments
-python-jose==3.0.1
 python3-saml
 python-social-auth
 requests
@@ -40,12 +36,8 @@ requests-oauthlib
 requests-toolbelt
 retrying
 rq-scheduler
-shapely
 sendgrid==6.1.0
 sentry-sdk==0.11.2
-shippo==2.0.0rc1
 social-auth-app-django
 social-auth-core[saml]
-geopy==1.20.0
-uszipcode==0.2.2
 uwsgi

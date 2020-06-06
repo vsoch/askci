@@ -11,11 +11,10 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 
 from ratelimit.decorators import ratelimit
-from askci.apps.main.models import Article, Question, Tag
+from askci.apps.main.models import Question
 from askci.apps.main.utils import get_paginated
 from askci.settings import (
     VIEW_RATE_LIMIT as rl_rate,
@@ -58,7 +57,6 @@ def contact_view(request):
     if request.method == "POST":
         from askci.apps.users.email import send_email
 
-        name = request.POST.get("name")
         email = request.POST.get("_reply_to")
         message = request.POST.get("message")
         message = message.replace("\n", "<br>")

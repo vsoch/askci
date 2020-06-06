@@ -12,4 +12,5 @@ represented by the pull requests that fixed them. Critical items to know are:
 
 
 ## [master](https://github.com/vsoch/askci/tree/master) (master)
+ - Django bump to for Django security fix
  - initial draft (0.0.0)
