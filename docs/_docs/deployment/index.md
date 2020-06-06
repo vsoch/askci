@@ -117,7 +117,7 @@ making migrations).
  - askci_redis is a redis database for scheduled tasks
 
 If you need any previous built containers for specific versions, please see 
-the [vsoch/askci](https://quay.io/repository/vsoch/askci?tab=settings) collection on Quay.io. You would need to pull a base container, and then specify to be used for a particular image.
+the [vsoch/askci](https://quay.io/repository/vsoch/askci?tab=tags) collection on Quay.io. You would need to pull a base container, and then specify to be used for a particular image.
 
 
 ## Commands
