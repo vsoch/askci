@@ -9,18 +9,16 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 """
 
 from importlib import import_module
-from django.urls import path, re_path
+from django.urls import re_path
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.contrib.sitemaps.views import sitemap, index
 from django.views.generic.base import RedirectView
 from askci.apps.api import urls as api_urls
 from askci.apps.base import urls as base_urls
 from askci.apps.main import urls as main_urls
 from askci.apps.users import urls as user_urls
 from askci.settings import NODE_NAME
-from django.contrib import admin
 from rest_framework.schemas import get_schema_view
 from rest_framework.documentation import include_docs_urls
 

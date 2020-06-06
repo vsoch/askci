@@ -8,7 +8,6 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from django.conf import settings
 from askci.apps.main.models import Article, Question, Example, PullRequest, Tag
 from askci.apps.users.models import User
 from askci.apps.main.utils import lowercase_cleaned_name, get_stopwords
@@ -18,10 +17,8 @@ from itertools import chain
 
 import markdown
 import json
-import os
 import re
 import requests
-import sys
 
 
 def remove_language(code):

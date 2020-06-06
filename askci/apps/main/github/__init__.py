@@ -32,7 +32,6 @@ from .utils import (
 from datetime import datetime
 import re
 import requests
-import uuid
 import json
 
 api_base = "https://api.github.com"

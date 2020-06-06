@@ -13,8 +13,6 @@ import hashlib
 import hmac
 import json
 import requests
-import shutil
-import os
 
 
 ################################################################################

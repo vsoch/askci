@@ -15,7 +15,6 @@ from django.contrib.postgres.fields import JSONField
 import markdown
 import uuid
 import re
-import time
 
 
 class TemplateRepository(models.Model):

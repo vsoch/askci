@@ -17,8 +17,6 @@ from django.db import models
 from rest_framework.authtoken.models import Token
 from askci.apps.users.utils import get_usertoken
 
-import os
-
 
 class CustomUserManager(BaseUserManager):
     """Create and save a User with the given username, email and password.

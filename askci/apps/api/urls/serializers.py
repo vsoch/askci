@@ -8,17 +8,8 @@ with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 """
 
-from django.contrib.postgres.fields import JSONField
-from django.conf import settings
-from django.urls import reverse
-
 from askci.apps.main.models import Article, Question, Tag
-from .permissions import IsStaffOrSuperUser, AllowAnyGet
-from rest_framework import generics, mixins, serializers, viewsets, status
-from rest_framework.exceptions import PermissionDenied, NotFound
-
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import serializers, viewsets
 
 
 class ArticleSerializer(serializers.ModelSerializer):

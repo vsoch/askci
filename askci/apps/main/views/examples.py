@@ -15,9 +15,6 @@ from askci.apps.main.models import Example
 from askci.apps.main.utils import get_paginated
 from askci.settings import VIEW_RATE_LIMIT as rl_rate, VIEW_RATE_LIMIT_BLOCK as rl_block
 
-import os
-import uuid
-
 
 @ratelimit(key="ip", rate=rl_rate, block=rl_block)
 def all_examples(request):
