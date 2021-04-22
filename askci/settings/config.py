@@ -49,12 +49,12 @@ else:
 
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = DOMAIN_NAME
 
-ADMINS = (("vsochat", "vsochat@gmail.com"),)
+ADMINS = (("vsochat", "@vsoch"),)
 MANAGERS = ADMINS
 
 # AskCI Parameters
 
-HELP_CONTACT_EMAIL = os.environ.get("HELP_CONTACT_EMAIL", "vsochat@stanford.edu").strip(
+HELP_CONTACT_EMAIL = os.environ.get("HELP_CONTACT_EMAIL", "@vsoch").strip(
     '"'
 )
 HELP_INSTITUTION_SITE = os.environ.get(
